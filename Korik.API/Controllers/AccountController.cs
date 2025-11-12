@@ -508,11 +508,11 @@ namespace Korik.API.Controllers
         public IActionResult ResetPassword([FromQuery] string token, [FromQuery] string email)
         {
             if (string.IsNullOrWhiteSpace(token) || string.IsNullOrWhiteSpace(email))
-                return Redirect(_configuration["frontend:confirmEmailURL"]); // Redirect to frontend Failed To Confirm confirmation page
+                return Redirect(_configuration["frontend:confirmPasswordURL"]); // Redirect to frontend Failed To Confirm confirmation page
 
             else
             {
-                var frontendFailedURL = $"{_configuration["frontend:confirmEmailURL"]}/?{token = token}&{email = email}";
+                var frontendFailedURL = $"{_configuration["frontend:confirmPasswordURL"]}/?{token = token}&{email = email}";
                 return Redirect(frontendFailedURL); // Redirect to frontend confirmation page
 
             }

@@ -54,7 +54,7 @@ namespace Korik.Infrastructure
 
             // Relationships
             builder.HasOne(co => co.ApplicationUser)
-                   .WithOne()
+                   .WithOne(co => co.CarOwnerProfile)
                    .HasForeignKey<CarOwnerProfile>(co => co.ApplicationUserId)
                    .OnDelete(DeleteBehavior.NoAction);
 

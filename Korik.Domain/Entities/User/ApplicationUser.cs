@@ -20,6 +20,7 @@ namespace Korik.Domain
 
         #region Navigation Properties
         public virtual CarOwnerProfile? CarOwnerProfile { get; set; }
+        public virtual WorkShopProfile? WorkShopProfile { get; set; }
         #endregion
     }
 }
