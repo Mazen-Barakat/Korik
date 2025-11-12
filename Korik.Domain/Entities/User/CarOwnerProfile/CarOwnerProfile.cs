@@ -33,7 +33,6 @@ namespace Korik.Domain
 
         #region CarOwnerProfile 1---M Car
         public virtual ICollection<Car> Cars { get; set; } = new List<Car>();
-
         #endregion
 
     }

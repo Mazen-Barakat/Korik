@@ -31,7 +31,7 @@ namespace Korik.Domain
         public string Country { get; set; } = string.Empty;
         public string Governorate { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
-        public double Rating { get; set; }
+        public double Rating { get; set; } = 0;
         public VerificationStatus VerificationStatus { get; set; } = VerificationStatus.Pending;
         public string LicenceImageUrl { get; set; }
         public string? LogoImageUrl { get; set; }
@@ -63,8 +63,8 @@ namespace Korik.Domain
         public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
         #endregion
 
-        #region WorkShopProfile M----M Service
-
+        #region WorkShopProfile M----M WorshopService
+        public virtual ICollection<WorshopService> WorshopServices { get; set; } = new List<WorshopService>();
         #endregion
     }
 }

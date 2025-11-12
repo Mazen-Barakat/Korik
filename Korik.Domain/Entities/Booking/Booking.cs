@@ -46,6 +46,7 @@ namespace Korik.Domain
         public virtual ICollection<BookingPhoto> BookingPhotos { get; set; } = new List<BookingPhoto>();
         #endregion
 
+
         #region Booking M---1 Car
         [ForeignKey("Car")]
         public int CarId { get; set; }
@@ -55,30 +56,21 @@ namespace Korik.Domain
 
         #region Booking M---1 WorkShopProfile
         [ForeignKey("WorkShopProfile")]
-        public string WorkShopProfileId { get; set; }
+        public int WorkShopProfileId { get; set; }
         public virtual WorkShopProfile WorkShopProfile { get; set; }
         #endregion
 
 
-        #region Booking M---1 CarOwner
-        [ForeignKey("CarOwner")]
-        public string CarOwnerId { get; set; }
-        public virtual CarOwnerProfile CarOwner { get; set; }
-        #endregion
-
-
         #region Booking 1---1 Review
-        public virtual Review Review { get; set; }
-        [ForeignKey("Review")]
-        public int ReviewId { get; set; }
+        public virtual Review? Review { get; set; }
         #endregion
 
 
         #region Booking M---1 Service
+        [ForeignKey("Service")]
+        public int ServiceId { get; set; }
+        public virtual Service Service { get; set; }
         #endregion
-
-
-
 
     }
 }

@@ -42,6 +42,13 @@ namespace Korik.Domain
         public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
         #endregion
 
+        #region Car 1---M CarExpenses
+        public ICollection<CarExpenses> CarExpenses { get; set; } = new List<CarExpenses>();
+        #endregion
+
+        #region Car 1---M CarIdicator
+        public ICollection<CarIndicator> CarIndicators { get; set; } = new List<CarIndicator>();
+        #endregion
 
     }
 }
