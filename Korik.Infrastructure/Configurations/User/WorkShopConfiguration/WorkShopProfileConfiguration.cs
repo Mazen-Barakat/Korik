@@ -79,7 +79,7 @@ namespace Korik.Infrastructure
 
             // 1 : 1  ->  ApplicationUser
             builder.HasOne(w => w.ApplicationUser)
-                   .WithOne()
+                   .WithOne(w => w.WorkShopProfile)
                    .HasForeignKey<WorkShopProfile>(w => w.ApplicationUserId)
                    .OnDelete(DeleteBehavior.NoAction);
 
