@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Korik.API
 {
@@ -98,7 +99,8 @@ namespace Korik.API
             #region Controllers Service
             //SuppressModelStateInvalidFilter 
             // -> If Json is Not valid Suppress Model Validation To Reach Contorller and return Custom Error 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             //.ConfigureApiBehaviorOptions(options =>
             //{
             //    options.SuppressModelStateInvalidFilter = true;
@@ -106,7 +108,7 @@ namespace Korik.API
 
             #endregion
 
-            #region  Swagger Service
+            #region Swagger Service
             builder.Services.AddEndpointsApiExplorer();
 
             builder.Services.AddSwaggerGen(c =>

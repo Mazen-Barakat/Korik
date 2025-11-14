@@ -40,6 +40,20 @@ namespace Korik.Application
 
             #region Generic Service
             services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+
+            #endregion
+
+            #region Car Service
+            services.AddScoped<ICarService, CarService>();
+
+            #endregion
+
+            #region CarOwnerProfileService
+            services.AddScoped<ICarOwnerProfileService, CarOwnerProfileService>();
+            #endregion
+
+            #region Car Expense Service
+            services.AddScoped<ICarExpenseService, CarExpenseService>();
             #endregion
 
             #region Fluent Email

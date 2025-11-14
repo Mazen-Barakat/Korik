@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Korik.Application.Interfaces.Repositories.User.ICarOwnerProfileRepository;
 
 namespace Korik.Infrastructure
 {
@@ -26,6 +27,19 @@ namespace Korik.Infrastructure
             #region Generic Repository
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             #endregion
+
+            #region Car Repository
+            services.AddScoped<ICarRepository, CarRepository>();
+            #endregion
+
+            #region CarOwnerProfileRepository
+            services.AddScoped<ICarOwnerProfileRepository, CarOwnerProfileRepository>();
+            #endregion
+
+            #region Car Expense Repository
+            services.AddScoped<ICarExpenseRepository, CarExpenseRepository>();
+            #endregion
+
 
             #region Identity Services
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
