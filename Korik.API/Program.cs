@@ -1,5 +1,4 @@
-﻿
-using Korik.Application;
+﻿using Korik.Application;
 using Korik.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -16,18 +15,21 @@ namespace Korik.API
 
             var builder = WebApplication.CreateBuilder(args);
 
-            #region Built-In Services: Already dclared -> Need To Register 
+            #region Built-In Services: Already dclared -> Need To Register
 
-            #region Layers Registerations 
+            #region Layers Registerations
+
             // Configuration
             var configuration = builder.Configuration;
 
             // Register layers
             builder.Services.AddApplicationService(configuration);
             builder.Services.AddInfrastructureService(configuration);
-            #endregion
+
+            #endregion Layers Registerations
 
             #region JWT Authentication Service
+
             // Add Authentication with JWT instead of Cookies
             builder.Services.AddAuthentication(options =>
             {
@@ -52,8 +54,6 @@ namespace Korik.API
                 // Configure how the token will be validated
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-
-
                     // Ensure the token has a valid Issuer (the authority who issued it)
                     ValidateIssuer = true,
 
@@ -93,21 +93,26 @@ namespace Korik.API
             });
             //Google External Login
 
-
-            #endregion
+            #endregion JWT Authentication Service
 
             #region Controllers Service
-            //SuppressModelStateInvalidFilter 
-            // -> If Json is Not valid Suppress Model Validation To Reach Contorller and return Custom Error 
-            builder.Services.AddControllers();
+
+            //SuppressModelStateInvalidFilter
+            // -> If Json is Not valid Suppress Model Validation To Reach Contorller and return Custom Error
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+                });
             //.ConfigureApiBehaviorOptions(options =>
             //{
             //    options.SuppressModelStateInvalidFilter = true;
             //});
 
-            #endregion
+            #endregion Controllers Service
 
-            #region  Swagger Service
+            #region Swagger Service
+
             builder.Services.AddEndpointsApiExplorer();
 
             builder.Services.AddSwaggerGen(c =>
@@ -142,9 +147,11 @@ namespace Korik.API
                     }
                 });
             });
-            #endregion
+
+            #endregion Swagger Service
 
             #region CORS Policy
+
             ///// Browsers enforce CORS, not servers.
             ///// Server must explicitly allow cross - origin requests.
             ///// Simple requests go directly, complex ones require preflight(OPTIONS).
@@ -161,20 +168,16 @@ namespace Korik.API
                               .AllowCredentials();
                     });
             });
-            #endregion
 
-            #endregion
+            #endregion CORS Policy
 
-
-            #region Custom Service: -> Need To Register and Inject 
-
-            #endregion
+            #endregion Built-In Services: Already dclared -> Need To Register
 
             var app = builder.Build();
 
-            #endregion
+            #endregion App Builder
 
-            #region Middlewares 
+            #region Middlewares
 
             /////Browsers enforce CORS, not servers.
             /////Server must explicitly allow cross - origin requests.
@@ -201,8 +204,6 @@ namespace Korik.API
                 });
             }
 
-
-
             app.UseAuthentication(); // Who are you? (Identity) Before Authorization
             app.UseAuthorization(); // Do you have permission? (roles, policies, claims) After Authentication
 
@@ -210,7 +211,7 @@ namespace Korik.API
 
             app.Run(); //Start the app & stop pipeline here.
 
-            #endregion
+            #endregion Middlewares
         }
     }
 }
