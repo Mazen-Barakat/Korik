@@ -1,5 +1,4 @@
-﻿
-using Korik.Application;
+﻿using Korik.Application;
 using Korik.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -155,7 +154,10 @@ namespace Korik.API
                 options.AddPolicy("AllowFrontend",
                     policy =>
                     {
-                        policy.WithOrigins(builder.Configuration["consumers:AllowFrontend"]) // frontend origin
+                        policy.WithOrigins(
+                                builder.Configuration["consumers:AllowFrontend"], // frontend origin from configuration
+                                "http://localhost:4200" // explicitly added localhost origin
+                            )
                               .AllowAnyMethod()
                               .AllowAnyHeader()
                               .AllowCredentials();
