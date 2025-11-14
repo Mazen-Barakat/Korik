@@ -1,4 +1,4 @@
-﻿using Korik.Application;
+using Korik.Application;
 using Korik.Domain;
 using Microsoft.EntityFrameworkCore;
 using System;
