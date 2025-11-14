@@ -459,7 +459,7 @@ namespace Korik.API.Controllers
         [HttpPost("ForgotPassword")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDTO model)
         {
-            var origin = $"{Request.Scheme}://{Request.Host}";
+            var origin = $"{_configuration["frontend:confirmPasswordURL"]}";
 
             var result = await _mediator.Send(new ForgotPasswordRquest(model , origin));
 
@@ -514,7 +514,6 @@ namespace Korik.API.Controllers
             {
                 var frontendFailedURL = $"{_configuration["frontend:confirmPasswordURL"]}/?{token = token}&{email = email}";
                 return Redirect(frontendFailedURL); // Redirect to frontend confirmation page
-
             }
         }
 

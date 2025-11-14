@@ -32,9 +32,9 @@ namespace Korik.Infrastructure
 
             #region CarOwnerProfileRepository
 
-            services.AddScoped(typeof(ICarOwnerProfileRepository), typeof(CarOwnerProfileRepository));
-
-            #endregion CarOwnerProfileRepository
+            services.AddScoped<ICarOwnerProfileRepository, CarOwnerProfileRepository>();      
+                
+           #endregion CarOwnerProfileRepository
 
             #region Identity Services
 

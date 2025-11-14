@@ -27,6 +27,11 @@ namespace Korik.Domain
         Replaced,
     }
 
+
+    /// <summary>
+    /// hoihgfdutfriugt
+    /// </summary>
+
     public class CarIndicator : BaseEntity
     {
         public IndicatorType IndicatorType { get; set; }
