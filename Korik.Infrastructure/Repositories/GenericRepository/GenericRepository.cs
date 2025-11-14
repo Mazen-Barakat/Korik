@@ -20,14 +20,13 @@ namespace Korik.Infrastructure
             _context = context;
         }
 
-        #endregion
+        #endregion Dependence Injection
 
         public async Task<T?> AddAsync(T entity)
         {
             await _context.Set<T>().AddAsync(entity);
             var numerOfRowAffected = await _context.SaveChangesAsync();
             return numerOfRowAffected > 0 ? entity : null;
-
         }
 
         public IQueryable<T>? GetAllAsync()

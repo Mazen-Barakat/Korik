@@ -9,16 +9,20 @@ namespace Korik.Application
 {
     public class UpdateCarOwnerProfileDTOValidator : AbstractValidator<UpdateCarOwnerProfileDTO>
     {
-        public UpdateCarOwnerProfileDTOValidator()
+        private readonly ICarOwnerProfileService _carOwnerProfileService;
+
+        public UpdateCarOwnerProfileDTOValidator(ICarOwnerProfileService carOwnerProfileService)
         {
+            _carOwnerProfileService = carOwnerProfileService;
+
             RuleFor(x => x.FirstName)
                 .NotEmpty().WithMessage("First name is required.")
-                .MaximumLength(50).WithMessage("First name cannot exceed 50 characters.");
+                .MaximumLength(100).WithMessage("First name cannot exceed 50 characters.");
 
             // Last Name
             RuleFor(x => x.LastName)
                 .NotEmpty().WithMessage("Last name is required.")
-                .MaximumLength(50).WithMessage("Last name cannot exceed 50 characters.");
+                .MaximumLength(100).WithMessage("Last name cannot exceed 50 characters.");
 
             // Phone Number
             RuleFor(x => x.PhoneNumber)
@@ -50,12 +54,34 @@ namespace Korik.Application
             RuleFor(x => x.PreferredLanguage)
                 .IsInEnum()
                 .WithMessage("Preferred language must be either English or Arabic.");
+
+            // Authorization Check - User must own this profile
+            RuleFor(x => x)
+                .MustAsync(async (dto, cancellationToken) =>
+                    await UserOwnsProfile(dto.Id, dto.ApplicationUserId, cancellationToken))
+                .WithMessage("You are not authorized to update this profile.");
         }
 
         private bool BeAValidUrl(string? url)
         {
             return Uri.TryCreate(url, UriKind.Absolute, out var uriResult)
                    && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+        }
+
+        private async Task<bool> UserOwnsProfile(int profileId, string? applicationUserId, CancellationToken cancellationToken)
+        {
+            // If ApplicationUserId is not set, deny access
+            if (string.IsNullOrEmpty(applicationUserId))
+                return false;
+
+            // Get the profile by ID (without tracking)
+            var profile = await _carOwnerProfileService.GetByIdAsync(profileId);
+
+            // Profile doesn't exist
+            if (profile == null)
+                return false;
+
+            return profile?.Data?.ApplicationUserId == applicationUserId;
         }
     }
 }

@@ -17,6 +17,14 @@ namespace Korik.Application
 
             //Request => CarOwnerProfile || CarOwnerProfile => Request
             CreateMap<CarOwnerProfile, CreateCarOwnerProfileDTO>().ReverseMap();
+
+            CreateMap<CarOwnerProfile, UpdateCarOwnerProfileDTO>().ReverseMap();
+
+            // Map CarOwnerProfile to CarOwnerProfileWithCarDto
+            CreateMap<CarOwnerProfile, CarOwnerProfileWithCarDTO>();
+
+            // Map Car to ProfileWithCarDto
+            CreateMap<Car, ProfileWithCarDTO>();
         }
     }
 }

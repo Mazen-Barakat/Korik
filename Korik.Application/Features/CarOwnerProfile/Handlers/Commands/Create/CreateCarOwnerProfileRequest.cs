@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Korik.Application
 {
@@ -36,20 +35,25 @@ namespace Korik.Application
 
         #endregion Dependency Injection
 
-        //test1
         public async Task<ServiceResult<CarOwnerProfileDTO>> Handle(CreateCarOwnerProfileRequest request, CancellationToken cancellationToken)
         {
             #region Not Valid
 
-            var validationResult = await _validator.ValidateAsync(request.Model, cancellationToken);
+            var validationResult = await _validator.ValidateAsync
+                (
+                request.Model,
+                cancellationToken
+                );
 
             if (!validationResult.IsValid)
             {
-                var erors = string.Join(',', validationResult.Errors.Select(e => e.ErrorMessage));
-                return ServiceResult<CarOwnerProfileDTO>.Fail(erors);
+                var errors = string.Join(',', validationResult.Errors.Select(e => e.ErrorMessage));
+                return ServiceResult<CarOwnerProfileDTO>.Fail(errors);
             }
 
             #endregion Not Valid
+
+            #region Valid
 
             //Map Request => Entity
 
@@ -57,15 +61,17 @@ namespace Korik.Application
 
             var result = await _carOwnerProfileService.CreateAsync(carOwnerProfile);
 
-            //UpdateResult : Faild
+            //result : Faild
             if (!result.Success)
                 return ServiceResult<CarOwnerProfileDTO>.Fail(result.Message ?? "Failed to create Car Owner Profile.");
 
-            //createResult : Success
+            //result : Success
             //Map Entity => DTO
             var carOwnerProfileDTO = _mapper.Map<CarOwnerProfileDTO>(result.Data);
 
             return ServiceResult<CarOwnerProfileDTO>.Created(carOwnerProfileDTO);
+
+            #endregion Valid
         }
     }
 }
