@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Korik.Application;
 
 namespace Korik.Infrastructure
 {
@@ -33,9 +32,9 @@ namespace Korik.Infrastructure
 
             #region CarOwnerProfileRepository
 
-            services.AddScoped(typeof(ICarOwnerProfileRepository), typeof(CarOwnerProfileRepository));
-
-            #endregion CarOwnerProfileRepository
+            services.AddScoped<ICarOwnerProfileRepository, CarOwnerProfileRepository>();      
+                
+           #endregion CarOwnerProfileRepository
 
             #region Identity Services
 

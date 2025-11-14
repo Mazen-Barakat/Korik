@@ -50,9 +50,9 @@ namespace Korik.Application
 
             #endregion Generic Service
 
-            #region CarOwnerProfileService
+            #region CarOwnerProfile Service
 
-            services.AddScoped(typeof(ICarOwnerProfileService), typeof(CarOwnerProfileService));
+            services.AddScoped<ICarOwnerProfileService, CarOwnerProfileService>();
 
             #endregion CarOwnerProfileService
 
