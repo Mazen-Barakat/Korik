@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Korik.Application.Interfaces.Repositories.User;
+using Korik.Application;
 
 namespace Korik.Infrastructure
 {

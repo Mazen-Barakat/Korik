@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Korik.Application.Interfaces.Services;
+using Korik.Application;
 using Korik.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;

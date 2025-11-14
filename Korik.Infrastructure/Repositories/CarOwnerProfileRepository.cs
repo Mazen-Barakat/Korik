@@ -1,4 +1,4 @@
-﻿using Korik.Application.Interfaces.Repositories.User;
+﻿using Korik.Application;
 using Korik.Domain;
 using System;
 using System.Collections.Generic;

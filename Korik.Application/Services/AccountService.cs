@@ -31,6 +31,7 @@ namespace Korik.Application
         private readonly IValidator<ResetPasswordDTO> _resetPasswordValidator;
         private readonly IValidator<GoogleLoginDTO> _googleLoginValidator;
         private readonly IValidator<SetPasswordDTO> _setPasswordValidator;
+        private readonly ICarOwnerProfileService _carOwnerProfileService;
 
 
         public AccountService(
@@ -47,7 +48,8 @@ namespace Korik.Application
             IValidator<ForgotPasswordDTO> forgotPasswordValidator,
             IValidator<ResetPasswordDTO> resetPasswordValidator,
             IValidator<GoogleLoginDTO> googleLoginValidator,
-            IValidator<SetPasswordDTO> setPasswordValidator
+            IValidator<SetPasswordDTO> setPasswordValidator,
+            ICarOwnerProfileService carOwnerProfileService
             )
         {
             _userManager = userManager;
@@ -64,6 +66,7 @@ namespace Korik.Application
             _resetPasswordValidator = resetPasswordValidator;
             _googleLoginValidator = googleLoginValidator;
             _setPasswordValidator = setPasswordValidator;
+            _carOwnerProfileService = carOwnerProfileService;
         }
         #endregion
 
@@ -96,6 +99,27 @@ namespace Korik.Application
 
             // 5. Assign Role
             await _userManager.AddToRoleAsync(user, registerDTO.Role);
+
+            // 6. Create CarOwnerProfile if role is CarOwner
+            if (registerDTO.Role.Equals("CAROWNER", StringComparison.OrdinalIgnoreCase))
+            {
+                var profile = new CarOwnerProfile
+                {
+                    ApplicationUserId = user.Id,
+                    ProfileImageUrl = null,
+                    PreferredLanguage = PreferredLanguage.English
+                };
+                
+                var createProfileResult = await _carOwnerProfileService.CreateAsync(profile);
+
+                if (!createProfileResult.Success)
+                {
+                    // Rollback user creation if profile creation fails
+                    await _userManager.DeleteAsync(user);
+                    return ServiceResult<UserDTO>.Fail("Failed to create Car Owner Profile: " + createProfileResult.Message);
+                }
+            }
+
 
             // 6. Generate Tokens
             var token = await _authService.GenerateJwtTokenAsync(user);
