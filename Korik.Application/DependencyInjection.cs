@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Korik.Application;
 using Korik.Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -17,8 +18,8 @@ namespace Korik.Application
     {
         public static IServiceCollection AddApplicationService(this IServiceCollection services, IConfiguration configuration)
         {
-
             #region AutoMapper
+
             var licenseKey = configuration["AutoMapper:LicenseKey"];
             services.AddAutoMapper(cfg =>
             {
@@ -26,19 +27,25 @@ namespace Korik.Application
             },
                 Assembly.GetExecutingAssembly()
             );
-            #endregion
+
+            #endregion AutoMapper
 
             #region FluentValidation
+
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            #endregion
+
+            #endregion FluentValidation
 
             #region Mediator
+
             services.AddMediatR(config =>
                    config.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly())
             );
-            #endregion
+
+            #endregion Mediator
 
             #region Generic Service
+
             services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 
             #endregion
@@ -55,8 +62,16 @@ namespace Korik.Application
             #region Car Expense Service
             services.AddScoped<ICarExpenseService, CarExpenseService>();
             #endregion
+            #endregion Generic Service
+
+            #region CarOwnerProfile Service
+
+            services.AddScoped<ICarOwnerProfileService, CarOwnerProfileService>();
+
+            #endregion CarOwnerProfileService
 
             #region Fluent Email
+
             // Configure FluentEmail with Gmail
             services
                 .AddFluentEmail("ahmedmah1284@gmail.com") // sender email
@@ -69,20 +84,18 @@ namespace Korik.Application
                     ),
                     EnableSsl = true
                 });
-            #endregion
-        
-            #region AuthService & AccountService 
+
+            #endregion Fluent Email
+
+            #region AuthService & AccountService
 
             services.AddScoped<IAuthService, AuthService>();
 
             services.AddScoped<IAccountService, AccountService>();
 
-            #endregion
-
-
+            #endregion AuthService & AccountService
 
             return services;
-
         }
     }
 }

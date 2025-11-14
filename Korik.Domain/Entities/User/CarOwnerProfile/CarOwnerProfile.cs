@@ -12,6 +12,7 @@ namespace Korik.Domain
         English,
         Arabic
     }
+
     public class CarOwnerProfile : BaseEntity
     {
         public string FirstName { get; set; } = string.Empty;
@@ -23,17 +24,19 @@ namespace Korik.Domain
         public string? ProfileImageUrl { get; set; }
         public PreferredLanguage PreferredLanguage { get; set; } = PreferredLanguage.English;
 
-
-
         #region Relationships
+
         [ForeignKey(nameof(ApplicationUser))]
         public string ApplicationUserId { get; set; } = string.Empty;
+
         public virtual ApplicationUser ApplicationUser { get; set; } = null!;
-        #endregion
+
+        #endregion Relationships
 
         #region CarOwnerProfile 1---M Car
-        public virtual ICollection<Car> Cars { get; set; } = new List<Car>();
-        #endregion
 
+        public virtual ICollection<Car> Cars { get; set; } = new List<Car>();
+
+        #endregion CarOwnerProfile 1---M Car
     }
 }

@@ -23,7 +23,7 @@ namespace Korik.Infrastructure
         private readonly IAuthService _authService;
         private readonly IConfiguration _configuration;
         private readonly IValidator<GoogleLoginDTO> _googleLoginValidator;
-
+        private readonly ICarOwnerProfileService _carOwnerProfileService;
 
         public GoogleAuthService(
             UserManager<ApplicationUser> userManager,
@@ -31,7 +31,8 @@ namespace Korik.Infrastructure
             IMapper mapper,
             IAuthService authService,
             IConfiguration configuration,
-            IValidator<GoogleLoginDTO> googleLoginValidator
+            IValidator<GoogleLoginDTO> googleLoginValidator,
+            ICarOwnerProfileService carOwnerProfileService
             )
         {
             _userManager = userManager;
@@ -40,6 +41,7 @@ namespace Korik.Infrastructure
             _authService = authService;
             _configuration = configuration;
             _googleLoginValidator = googleLoginValidator;
+            _carOwnerProfileService = carOwnerProfileService;
         }
         #endregion
 
@@ -51,7 +53,7 @@ namespace Korik.Infrastructure
 
             var validation = await _googleLoginValidator.ValidateAsync(model);
             if (!validation.IsValid)
-                return ServiceResult<UserDTO>.Fail(string.Join(" | ", validation.Errors.Select(e => e.ErrorMessage)));
+                return ServiceResult<UserDTO>.Fail(string.Join(" , ", validation.Errors.Select(e => e.ErrorMessage)));
 
             GoogleJsonWebSignature.Payload payload;
             try
@@ -75,9 +77,30 @@ namespace Korik.Infrastructure
 
                 var createResult = await _userManager.CreateAsync(user);
                 if (!createResult.Succeeded)
-                    return ServiceResult<UserDTO>.Fail(string.Join(" | ", createResult.Errors.Select(e => e.Description)));
+                    return ServiceResult<UserDTO>.Fail(string.Join(" , ", createResult.Errors.Select(e => e.Description)));
 
                 await _userManager.AddToRoleAsync(user, model.Role);
+
+                // 6. Create CarOwnerProfile if role is CarOwner
+                if (model.Role.Equals("CAROWNER", StringComparison.OrdinalIgnoreCase))
+                {
+                    var profile = new CarOwnerProfile
+                    {
+                        ApplicationUserId = user.Id,
+                        ProfileImageUrl = null,
+                        PreferredLanguage = PreferredLanguage.English
+                    };
+
+                    var createProfileResult = await _carOwnerProfileService.CreateAsync(profile);
+
+                    if (!createProfileResult.Success)
+                    {
+                        // Rollback user creation if profile creation fails
+                        await _userManager.DeleteAsync(user);
+                        return ServiceResult<UserDTO>.Fail("Failed to create Car Owner Profile: " + createProfileResult.Message);
+                    }
+                }
+
             }
 
             var jwtToken = await _authService.GenerateJwtTokenAsync(user);

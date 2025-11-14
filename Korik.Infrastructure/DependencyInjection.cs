@@ -18,15 +18,24 @@ namespace Korik.Infrastructure
     {
         public static IServiceCollection AddInfrastructureService(this IServiceCollection services, IConfiguration configuration)
         {
-
             #region AddDbContext
+
             services.AddDbContext<Korik>(options =>
                                options.UseSqlServer(configuration.GetConnectionString("Korik")));
-            #endregion
+
+            #endregion AddDbContext
 
             #region Generic Repository
+
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            #endregion
+
+            #endregion Generic Repository
+
+            #region CarOwnerProfileRepository
+
+            services.AddScoped<ICarOwnerProfileRepository, CarOwnerProfileRepository>();      
+                
+           #endregion CarOwnerProfileRepository
 
             #region Car Repository
             services.AddScoped<ICarRepository, CarRepository>();
@@ -42,6 +51,7 @@ namespace Korik.Infrastructure
 
 
             #region Identity Services
+
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 // -------------------
@@ -62,14 +72,12 @@ namespace Korik.Infrastructure
                 options.User.AllowedUserNameCharacters =
                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+"; // Allowed username chars
 
-
                 // -------------------
                 // Lockout settings
                 // -------------------
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5); // Lockout duration
                 options.Lockout.MaxFailedAccessAttempts = 5;                       // Max failed attempts
                 options.Lockout.AllowedForNewUsers = true;                         // Lockout enabled for new users
-
 
                 // -------------------
                 // SignIn settings
@@ -79,14 +87,14 @@ namespace Korik.Infrastructure
             })
             .AddEntityFrameworkStores<Korik>()
             .AddDefaultTokenProviders(); // <-- THIS IS IMPORTANT
-            #endregion
 
+            #endregion Identity Services
 
             #region Auth External Services
+
             services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 
-
-            #endregion
+            #endregion Auth External Services
 
             return services;
         }
