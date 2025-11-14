@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Common\Behaviors\" />
     <Folder Include="Features\Account\Handlers\Queries\" />
-    <Folder Include="Features\CarOwnerProfile\Handlers\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

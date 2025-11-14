@@ -7,7 +7,18 @@ using System.Threading.Tasks;
 
 namespace Korik.Application
 {
-    public class CarOwnerProfileDTO
+    public class ProfileWithCarDTO
+    {
+        public int Id { get; set; }
+        public string Make { get; set; } = string.Empty;
+        public string Model { get; set; } = string.Empty;
+        public int Year { get; set; }
+        public int EngineCapacity { get; set; }
+        public int CurrentMileage { get; set; }
+        public string LicensePlate { get; set; } = string.Empty;
+    }
+
+    public class CarOwnerProfileWithCarDTO
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -19,5 +30,7 @@ namespace Korik.Application
         public string? ProfileImageUrl { get; set; }
 
         public PreferredLanguage PreferredLanguage { get; set; }
+
+        public List<ProfileWithCarDTO> Cars { get; set; } = new List<ProfileWithCarDTO>();
     }
 }
