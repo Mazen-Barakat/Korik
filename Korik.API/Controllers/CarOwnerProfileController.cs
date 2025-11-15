@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -28,6 +29,8 @@ namespace Korik.API.Controllers
         #region Commands
 
         [HttpPost]
+        [SwaggerOperation(Summary = "Create car Owner Profile",
+                              Description = "This endpoint allows the creation of a car owner's profile with personal details including their name, phone number, address, preferred language, and an optional profile image. The provided information is used to generate and store a new car owner profile for future interactions or services.")]
         public async Task<IActionResult> PostCarOwnerProfile([FromBody] CreateCarOwnerProfileDTO model)
         {
             // Get user ID from JWT token
@@ -40,7 +43,8 @@ namespace Korik.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCarOwnerProfile([FromBody] UpdateCarOwnerProfileDTO model)
+        [SwaggerOperation(Summary = "Update car Owner Profile")]
+        public async Task<IActionResult> UpdateCarOwnerProfile([FromForm] UpdateCarOwnerProfileDTO model)
         {
             // Get user ID from JWT token
             var applicationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -56,6 +60,7 @@ namespace Korik.API.Controllers
         #region Queries
 
         [HttpGet("profile")]
+        [SwaggerOperation(Summary = "Get car Owner Profile Data only")]
         public async Task<IActionResult> GetCarOwnerProfile()
         {
             // Get user ID from JWT token
@@ -67,6 +72,7 @@ namespace Korik.API.Controllers
         }
 
         [HttpGet("profile-with-cars")]
+        [SwaggerOperation(Summary = "Get car Owner Profile Data with car main data")]
         public async Task<IActionResult> GetCarOwnerProfileWithCars()
         {
             // Get user ID from JWT token

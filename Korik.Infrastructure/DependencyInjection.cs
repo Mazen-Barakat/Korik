@@ -32,22 +32,27 @@ namespace Korik.Infrastructure
 
             #region CarOwnerProfileRepository
 
-            services.AddScoped<ICarOwnerProfileRepository, CarOwnerProfileRepository>();      
-                
-           #endregion CarOwnerProfileRepository
+            services.AddScoped<ICarOwnerProfileRepository, CarOwnerProfileRepository>();
+
+            #endregion CarOwnerProfileRepository
 
             #region Car Repository
+
             services.AddScoped<ICarRepository, CarRepository>();
-            #endregion
+
+            #endregion Car Repository
 
             #region CarOwnerProfileRepository
+
             services.AddScoped<ICarOwnerProfileRepository, CarOwnerProfileRepository>();
-            #endregion
+
+            #endregion CarOwnerProfileRepository
 
             #region Car Expense Repository
-            services.AddScoped<ICarExpenseRepository, CarExpenseRepository>();
-            #endregion
 
+            services.AddScoped<ICarExpenseRepository, CarExpenseRepository>();
+
+            #endregion Car Expense Repository
 
             #region Identity Services
 
@@ -94,6 +99,12 @@ namespace Korik.Infrastructure
             services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 
             #endregion Auth External Services
+
+            #region File Storage Service
+
+            services.AddScoped<IFileStorageService, FileStorageService>();
+
+            #endregion File Storage Service
 
             return services;
         }

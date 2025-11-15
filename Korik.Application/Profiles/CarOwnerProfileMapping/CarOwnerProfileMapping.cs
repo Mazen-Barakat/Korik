@@ -18,8 +18,9 @@ namespace Korik.Application
             //Request => CarOwnerProfile || CarOwnerProfile => Request
             CreateMap<CarOwnerProfile, CreateCarOwnerProfileDTO>().ReverseMap();
 
-            CreateMap<CarOwnerProfile, UpdateCarOwnerProfileDTO>().ReverseMap();
-
+            CreateMap<CarOwnerProfile, UpdateCarOwnerProfileDTO>().ReverseMap()
+                            .ForAllMembers(opt =>
+                                opt.Condition((src, dest, srcMember) => srcMember != null));
             // Map CarOwnerProfile to CarOwnerProfileWithCarDto
             CreateMap<CarOwnerProfile, CarOwnerProfileWithCarDTO>();
 
