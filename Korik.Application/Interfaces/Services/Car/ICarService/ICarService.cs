@@ -10,7 +10,7 @@ namespace Korik.Application
 {
     public interface ICarService : IGenericService<Car>
     {
-        Task<ServiceResult<Car>> GetByLicensePlateAsync(string licensePlate);
+        Task<ServiceResult<bool>> GetByLicensePlateAsync(string licensePlate, int id);
 
         Task<ServiceResult<IEnumerable<Car>>> GetAllCarsByCarOwnerProfileIdAsync(int carOwnerProfileId);
     }

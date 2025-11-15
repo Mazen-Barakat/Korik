@@ -17,19 +17,16 @@ namespace Korik.Application
             _repository = repository;
         }
 
-        public async Task<ServiceResult<Car>> GetByLicensePlateAsync(string licensePlate)
+        public async Task<ServiceResult<bool>> GetByLicensePlateAsync(string licensePlate, int id)
         {
             try
             {
-                var entity = await _repository.GetByLicensePlateAsync(licensePlate);
-                if (entity == null)
-                    return ServiceResult<Car>.Fail("Entity not found.");
-
-                return ServiceResult<Car>.Ok(entity);
+                var isExists = await _repository.GetByLicensePlateAsync(licensePlate, id);
+                return ServiceResult<bool>.Ok(isExists);
             }
             catch (Exception ex)
             {
-                return ServiceResult<Car>.Fail(ex.Message);
+                return ServiceResult<bool>.Fail(ex.Message);
             }
         }
 
