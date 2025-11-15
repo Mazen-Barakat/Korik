@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Korik.Application
 {
-    public interface ICarExpenseService : IGenericService<CarExpenses>
+    public interface ICarIndicatorRepository : IGenericRepository<CarIndicator>
     {
-        Task<ServiceResult<IEnumerable<CarExpenses>>> GetAllCarExpensesByCarId(int carId);
+        Task<IQueryable<CarIndicator>> GetAllCarIndicatorsByCarId(int CarId);
     }
 }
