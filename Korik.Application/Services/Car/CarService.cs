@@ -35,6 +35,7 @@ namespace Korik.Application
             try
             {
                 var entities = await _repository.GetAllCarsByCarOwnerProfileIdAsync(carOwnerProfileId);
+
                 return ServiceResult<IEnumerable<Car>>.Ok(entities);
             }
             catch (Exception ex)

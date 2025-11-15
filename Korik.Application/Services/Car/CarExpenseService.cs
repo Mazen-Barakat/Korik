@@ -15,5 +15,19 @@ namespace Korik.Application
         {
             _repository = repository;
         }
+
+        public async Task<ServiceResult<IEnumerable<CarExpenses>>> GetAllCarExpensesByCarId(int carId)
+        {
+            try
+            {
+                var expenses = await _repository.GetAllCarExpensesByCarId(carId);
+
+                return ServiceResult<IEnumerable<CarExpenses>>.Ok(expenses);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<IEnumerable<CarExpenses>>.Fail(ex.Message);
+            }
+        }
     }
 }

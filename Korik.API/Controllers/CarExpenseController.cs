@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Korik.Application;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -60,6 +61,14 @@ namespace Korik.API.Controllers
         public async Task<IActionResult> GetAllCarExpenses()
         {
             var result = await _mediator.Send(new GetAllCarExpenseRequest());
+            return ApiResponse.FromResult(this, result);
+        }
+
+        [HttpGet("ByCarId/{carId}")]
+        [SwaggerOperation(Summary = "Get all car expenses by Car Id")]
+        public async Task<IActionResult> GetAllCarExpensesByCarId([FromRoute] int carId)
+        {
+            var result = await _mediator.Send(new GetAllCarExpensesByCarIdRequest(new GetAllCarExpensesByCarIdDTO { CarId = carId }));
             return ApiResponse.FromResult(this, result);
         }
 

@@ -9,6 +9,6 @@ namespace Korik.Application
 {
     public interface ICarExpenseRepository : IGenericRepository<CarExpenses>
     {
-
+        Task<IQueryable<CarExpenses>> GetAllCarExpensesByCarId(int carId);
     }
 }
