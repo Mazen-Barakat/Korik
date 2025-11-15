@@ -1,4 +1,5 @@
 ﻿using Korik.Domain;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,12 @@ namespace Korik.Application
         public string Country { get; set; }
         public string Governorate { get; set; }
         public string City { get; set; }
+
+        [JsonIgnore]
         public string? ProfileImageUrl { get; set; }
+
+        [JsonIgnore]
+        public IFormFile? ProfileImage { get; set; }
 
         public PreferredLanguage PreferredLanguage { get; set; }
 
