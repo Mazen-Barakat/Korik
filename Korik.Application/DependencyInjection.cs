@@ -62,7 +62,6 @@ namespace Korik.Application
             #region Car Expense Service
             services.AddScoped<ICarExpenseService, CarExpenseService>();
             #endregion
-            #endregion Generic Service
 
             #region CarOwnerProfile Service
 

@@ -16,5 +16,6 @@ namespace Korik.Application
         Task<ServiceResult<T>> CreateAsync(T entity);
         Task<ServiceResult<T>> UpdateAsync(T entity);
         Task<ServiceResult<T>> DeleteAsync(int id);
+        Task<ServiceResult<bool>> IsExistAsync(int id);
     }
 }

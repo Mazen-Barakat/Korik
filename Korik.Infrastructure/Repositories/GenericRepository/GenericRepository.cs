@@ -95,5 +95,11 @@ namespace Korik.Infrastructure
             }
             return entity;
         }
+
+        public async Task<bool> IsExistAsync(int id)
+        {
+            var exists = await _context.Set<T>().AnyAsync(e => EF.Property<int>(e, "Id") == id);
+            return exists;
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Korik.Application.DTOs.CarExpenses.Request_DTOs.CreateCarExpenseDTO
+namespace Korik.Application
 {
     public class CreateCarExpanseDTO
     {

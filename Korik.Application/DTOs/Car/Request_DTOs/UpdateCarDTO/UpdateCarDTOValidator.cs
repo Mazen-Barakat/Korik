@@ -19,12 +19,7 @@ namespace Korik.Application
 
             // Id
             RuleFor(x => x.Id)
-                .GreaterThan(0).WithMessage("Id must be greater than 0.")
-                .MustAsync(async (id, cancellation) =>
-                {
-                    var carResult = await _carService.GetByIdAsync(id);
-                    return carResult.Success && carResult.Data != null;
-                }).WithMessage("The specified car does not exist.");
+                .GreaterThan(0).WithMessage("Id must be greater than 0.");
 
             // Make
             RuleFor(x => x.Make)
@@ -56,14 +51,11 @@ namespace Korik.Application
                 .MaximumLength(20).WithMessage("LicensePlate cannot exceed 20 characters.")
                 .MustAsync(async (dto, licensePlate, cancellation) =>
                 {
-                    var carResult = await _carService.GetByLicensePlateAsync(licensePlate);
-                    if (!carResult.Success || carResult.Data == null)
-                    {
-                        return true; // License plate is not in use
-                    }
+                    // Check if the license plate exists in the database and does not belong to the current car
+                    var isLicensePlateInUse = await _carService.GetByLicensePlateAsync(licensePlate, dto.Id);
 
-                    // Check if the license plate belongs to the same car
-                    return carResult.Data.Id == dto.Id;
+                    // Allow the same license plate for the car being updated or a new unique license plate
+                    return !isLicensePlateInUse.Data;
                 }).WithMessage("The LicensePlate is already in use by another car owner.");
 
             // Enums

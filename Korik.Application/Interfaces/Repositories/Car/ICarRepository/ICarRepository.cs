@@ -10,7 +10,8 @@ namespace Korik.Application
 {
     public interface ICarRepository : IGenericRepository<Car>
     {
-        Task<Car> GetByLicensePlateAsync(string licensePlate);
+        Task<bool> GetByLicensePlateAsync(string licensePlate, int id);
+
         Task<IQueryable<Car>> GetAllCarsByCarOwnerProfileIdAsync(int carOwnerProfileId);
     }
 }

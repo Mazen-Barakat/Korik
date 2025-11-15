@@ -43,8 +43,19 @@ namespace Korik.Application
 
             #region Valid
 
+            // Retrieve the existing entity to ensure it is tracked
+            var isEntityExistsResult = await _service.GetByIdAsync(request.Model.Id);
+
+            if (!isEntityExistsResult.Success)
+            {
+                return ServiceResult<CarDTO>.Fail(isEntityExistsResult.Message ?? "Entity not found.");
+            }
+
+            // Map updated properties to the existing entity
+            var updatedCar = _mapper.Map<Car>(request.Model);
+
             // Update entity
-            var updateResult = await _service.UpdateAsync(_mapper.Map<Car>(request.Model));
+            var updateResult = await _service.UpdateAsync(updatedCar);
 
             if (!updateResult.Success)
             {

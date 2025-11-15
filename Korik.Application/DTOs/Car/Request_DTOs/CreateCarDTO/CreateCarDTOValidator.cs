@@ -43,8 +43,11 @@ namespace Korik.Application
                 .MaximumLength(20).WithMessage("LicensePlate cannot exceed 20 characters.")
                 .MustAsync(async (licensePlate, cancellation) =>
                 {
-                    var result = await _carService.GetByLicensePlateAsync(licensePlate);
-                    return !result.Success;
+                    // Check if the license plate exists in the database
+                    var isLicensePlateInUse = await _carService.GetByLicensePlateAsync(licensePlate, 0);
+
+                    // Ensure the license plate is unique
+                    return !isLicensePlateInUse.Data;
                 }).WithMessage("LicensePlate must be unique.");
 
             // Enums

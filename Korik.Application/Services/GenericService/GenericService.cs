@@ -121,5 +121,18 @@ namespace Korik.Application
                 return ServiceResult<T>.Fail(ex.Message);
             }
         }
+
+        public async Task<ServiceResult<bool>> IsExistAsync(int id)
+        {
+            try
+            {
+                var exists = await _repository.IsExistAsync(id);
+                return ServiceResult<bool>.Ok(exists);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<bool>.Fail(ex.Message);
+            }
+        }
     }
 }

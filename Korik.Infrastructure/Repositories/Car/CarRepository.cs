@@ -24,12 +24,9 @@ namespace Korik.Infrastructure
             return cars;
         }
 
-        public async Task<Car> GetByLicensePlateAsync(string licensePlate)
+        public async Task<bool> GetByLicensePlateAsync(string licensePlate, int id)
         {
-            var entity = await _context.Cars
-                .FirstOrDefaultAsync(c => c.LicensePlate == licensePlate);
-            return entity!;
+            return await _context.Cars.AnyAsync(c => c.LicensePlate == licensePlate && c.Id != id);
         }
-
     }
 }
