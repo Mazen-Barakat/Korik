@@ -5,7 +5,6 @@ using AutoMapper;
 using FluentValidation;
 using MediatR;
 using Korik.Domain;
-using Korik.Application.DTOs.CarExpenses.Request_DTOs.CreateCarExpenseDTO;
 
 namespace Korik.Application
 {

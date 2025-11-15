@@ -52,7 +52,9 @@ namespace Korik.Infrastructure
 
             services.AddScoped<ICarExpenseRepository, CarExpenseRepository>();
 
-            #endregion Car Expense Repository
+            #region Car Indicator Repository
+            services.AddScoped<ICarIndicatorRepository, CarIndicatorRepository>();
+            #endregion
 
             #region Identity Services
 

@@ -67,7 +67,14 @@ namespace Korik.API.Controllers
             return ApiResponse.FromResult(this, result);
         }
 
-        #endregion Queries
+        [HttpGet("ByCarId/{carId}")]
+        [SwaggerOperation(Summary = "Get all car expenses by Car Id")]
+        public async Task<IActionResult> GetAllCarExpensesByCarId([FromRoute] int carId)
+        {
+            var result = await _mediator.Send(new GetAllCarExpensesByCarIdRequest(new GetAllCarExpensesByCarIdDTO { CarId = carId }));
+            return ApiResponse.FromResult(this, result);
+        }
 
+        #endregion    
     }
 }
