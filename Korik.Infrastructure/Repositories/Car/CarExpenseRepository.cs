@@ -16,5 +16,11 @@ namespace Korik.Infrastructure
         {
             _context = Context;
         }
+
+        public Task<IQueryable<CarExpenses>> GetAllCarExpensesByCarId(int carId)
+        {
+            var carExpenses = _context.CarExpenses.Where(ce => ce.CarId == carId);
+            return Task.FromResult(carExpenses);
+        }
     }
 }

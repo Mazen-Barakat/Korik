@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Korik.Application.DTOs.CarExpenses.Request_DTOs.CreateCarExpenseDTO;
 using Korik.Domain;
 
 namespace Korik.Application

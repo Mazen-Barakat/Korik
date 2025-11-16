@@ -11,6 +11,7 @@ namespace Korik.API.Controllers
     public class CarExpenseController : ControllerBase
     {
         #region Dependency Injection
+
         private readonly IMediator _mediator;
 
         public CarExpenseController(IMediator mediator)
@@ -18,9 +19,10 @@ namespace Korik.API.Controllers
             _mediator = mediator;
         }
 
-        #endregion
+        #endregion Dependency Injection
 
         #region Commands
+
         [HttpPost]
         [SwaggerOperation(Summary = "Create a new car expense")]
         public async Task<IActionResult> PostCarExpense([FromBody] CreateCarExpanseDTO model)
@@ -45,9 +47,10 @@ namespace Korik.API.Controllers
             return ApiResponse.FromResult(this, result);
         }
 
-        #endregion
+        #endregion Commands
 
         #region Queries
+
         [HttpGet("{id}")]
         [SwaggerOperation(Summary = "Get a car expense by Id")]
         public async Task<IActionResult> GetCarExpenseById([FromRoute] int id)
@@ -61,6 +64,14 @@ namespace Korik.API.Controllers
         public async Task<IActionResult> GetAllCarExpenses()
         {
             var result = await _mediator.Send(new GetAllCarExpenseRequest());
+            return ApiResponse.FromResult(this, result);
+        }
+
+        [HttpGet("ByCarId/{carId}")]
+        [SwaggerOperation(Summary = "Get all car expenses by Car Id")]
+        public async Task<IActionResult> GetAllCarExpensesByCarId([FromRoute] int carId)
+        {
+            var result = await _mediator.Send(new GetAllCarExpensesByCarIdRequest(new GetAllCarExpensesByCarIdDTO { CarId = carId }));
             return ApiResponse.FromResult(this, result);
         }
 
