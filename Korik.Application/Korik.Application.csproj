@@ -9,6 +9,9 @@
   <ItemGroup>
     <Folder Include="Common\Behaviors\" />
     <Folder Include="Features\Account\Handlers\Queries\" />
+    <Folder Include="Features\Subcategory\Handlers\Commands\Delete\" />
+    <Folder Include="Features\Subcategory\Handlers\Queries\GetById\" />
+    <Folder Include="Features\Subcategory\Handlers\Queries\GetAll\" />
   </ItemGroup>
 
   <ItemGroup>

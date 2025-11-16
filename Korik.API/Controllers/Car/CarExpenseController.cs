@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Korik.Application;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;

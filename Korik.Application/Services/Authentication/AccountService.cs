@@ -32,6 +32,7 @@ namespace Korik.Application
         private readonly IValidator<GoogleLoginDTO> _googleLoginValidator;
         private readonly IValidator<SetPasswordDTO> _setPasswordValidator;
         private readonly ICarOwnerProfileService _carOwnerProfileService;
+        private readonly IWorkShopProfileService _workShopProfileService;
 
 
         public AccountService(
@@ -49,7 +50,8 @@ namespace Korik.Application
             IValidator<ResetPasswordDTO> resetPasswordValidator,
             IValidator<GoogleLoginDTO> googleLoginValidator,
             IValidator<SetPasswordDTO> setPasswordValidator,
-            ICarOwnerProfileService carOwnerProfileService
+            ICarOwnerProfileService carOwnerProfileService,
+            IWorkShopProfileService workShopProfileService
             )
         {
             _userManager = userManager;
@@ -67,6 +69,7 @@ namespace Korik.Application
             _googleLoginValidator = googleLoginValidator;
             _setPasswordValidator = setPasswordValidator;
             _carOwnerProfileService = carOwnerProfileService;
+            _workShopProfileService = workShopProfileService;
         }
         #endregion
 
@@ -119,6 +122,39 @@ namespace Korik.Application
                     return ServiceResult<UserDTO>.Fail("Failed to create Car Owner Profile: " + createProfileResult.Message);
                 }
             }
+
+
+            // 6. Create WorkShopProfile if role is WORKSHOP
+            if (registerDTO.Role.Equals("WORKSHOP", StringComparison.OrdinalIgnoreCase))
+            {
+                var profile = new WorkShopProfile
+                {
+                    ApplicationUserId = user.Id,
+                    Name = "New Workshop",
+                    Description = string.Empty,
+                    WorkShopType = WorkShopType.Independent,
+                    Country = string.Empty,
+                    Governorate = string.Empty,
+                    City = string.Empty,
+                    PhoneNumber = string.Empty,
+                    Latitude = 0,
+                    Longitude = 0,
+                    NumbersOfTechnicians = 0,
+                    LicenceImageUrl = string.Empty,   // REQUIRED FIELD
+                    LogoImageUrl = null               // optional
+                };
+
+
+                var createProfileResult = await _workShopProfileService.CreateAsync(profile);
+
+                if (!createProfileResult.Success)
+                {
+                    // Rollback user creation if profile creation fails
+                    await _userManager.DeleteAsync(user);
+                    return ServiceResult<UserDTO>.Fail("Failed to create WorkShop Profile: " + createProfileResult.Message);
+                }
+            }
+
 
 
             // 6. Generate Tokens

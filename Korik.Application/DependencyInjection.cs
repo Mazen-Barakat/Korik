@@ -50,13 +50,17 @@ namespace Korik.Application
 
             #endregion
 
+            #region CarOwnerProfileService
+            services.AddScoped<ICarOwnerProfileService, CarOwnerProfileService>();
+            #endregion
+
+            #region WorkShopProfile Service
+            services.AddScoped<IWorkShopProfileService, WorkShopProfileService>();
+            #endregion
+
             #region Car Service
             services.AddScoped<ICarService, CarService>();
 
-            #endregion
-
-            #region CarOwnerProfileService
-            services.AddScoped<ICarOwnerProfileService, CarOwnerProfileService>();
             #endregion
 
             #region Car Expense Service
@@ -68,6 +72,14 @@ namespace Korik.Application
             services.AddScoped<ICarOwnerProfileService, CarOwnerProfileService>();
 
             #endregion CarOwnerProfileService
+
+            #region Category Service
+            services.AddScoped<ICategoryService, CategoryService>();
+            #endregion
+
+            #region SubcategoryService
+            services.AddScoped<ISubcategoryService, SubcategoryService>();  
+            #endregion
 
             #region Fluent Email
 
