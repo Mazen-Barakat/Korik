@@ -16,35 +16,47 @@ namespace Korik.Infrastructure
             // Table name
             builder.ToTable("CarIndicators");
 
-            // Primary Key
+            // Primary Key (inherited from BaseEntity)
             builder.HasKey(ci => ci.Id);
 
-            // Properties
+            // Enum properties as string (optional, better readability)
             builder.Property(ci => ci.IndicatorType)
-                   .IsRequired()
-                   .HasConversion<string>() // store enum as string for readability
-                   .HasMaxLength(50);
+                   .HasConversion<string>()
+                   .IsRequired();
 
             builder.Property(ci => ci.CarStatus)
-                   .IsRequired()
                    .HasConversion<string>()
-                   .HasMaxLength(50);
+                   .IsRequired();
 
+            // DateTime properties
             builder.Property(ci => ci.LastCheckedDate)
                    .IsRequired();
 
             builder.Property(ci => ci.NextCheckedDate)
                    .IsRequired();
 
+            // Mileage properties
+            builder.Property(ci => ci.NextMileage)
+                   .IsRequired();
+
+            builder.Property(ci => ci.MileageDifference)
+                   .IsRequired();
+
+            // TimeSpan and double properties
+            builder.Property(ci => ci.TimeDifference)
+                   .HasConversion(
+                       v => v.Ticks,          // store TimeSpan as long
+                       v => TimeSpan.FromTicks(v))
+                   .IsRequired();
+
+            builder.Property(ci => ci.TimeDifferenceAsPercentage)
+                   .IsRequired();
+
             // Relationships
             builder.HasOne(ci => ci.Car)
                    .WithMany(c => c.CarIndicators)
                    .HasForeignKey(ci => ci.CarId)
-                   .OnDelete(DeleteBehavior.NoAction);
-
-            // Optional: enforce unique indicator type per car
-            builder.HasIndex(ci => new { ci.CarId, ci.IndicatorType })
-                   .IsUnique();
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

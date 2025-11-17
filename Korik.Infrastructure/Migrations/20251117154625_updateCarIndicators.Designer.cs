@@ -4,6 +4,7 @@ using Korik.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Korik.Infrastructure.Migrations
 {
     [DbContext(typeof(Korik))]
-    partial class KorikModelSnapshot : ModelSnapshot
+    [Migration("20251117154625_updateCarIndicators")]
+    partial class updateCarIndicators
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -294,6 +297,9 @@ namespace Korik.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("MileageDifference")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MileageDifferenceAsPercentage")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("NextCheckedDate")

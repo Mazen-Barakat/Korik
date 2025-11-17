@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using Korik.Application;
 using Korik.Domain;
 using Microsoft.AspNetCore.Identity;
@@ -80,6 +80,10 @@ namespace Korik.Application
             services.AddScoped<ICarIndicatorService, CarIndicatorService>();
 
             #endregion Car Indicator Service
+
+            #region ICarIndicatorStatusService
+            services.AddScoped<ICarIndicatorStatusService, CarIndicatorStatusService>();
+            #endregion
 
             #region CarOwnerProfile Service
 

@@ -158,8 +158,5 @@ namespace Korik.Infrastructure
 
             return ServiceResult<UserDTO>.Ok(response, "Google login successful.");
         }
-
-
-
     }
 }

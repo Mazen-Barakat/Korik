@@ -58,6 +58,7 @@ namespace Korik.Infrastructure
             #region Car Expense Repository
 
             services.AddScoped<ICarExpenseRepository, CarExpenseRepository>();
+            #endregion Car Expense Repository
 
             #endregion Car Expense Repository
 
