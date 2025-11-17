@@ -70,7 +70,7 @@ namespace Korik.Application
                 if (existingCarOwnerProfile.Data.ProfileImageUrl != null)
                     await _fileStorageService.DeleteFileAsync(existingCarOwnerProfile.Data.ProfileImageUrl);
                 // Save image
-                var imageResult = await _fileStorageService.SaveFileAsync(request.Model.ProfileImage, "profiles");
+                var imageResult = await _fileStorageService.SaveFileAsync(request.Model.ProfileImage, "CarOwnerProfiles");
 
                 // Update the DTO with new image path
                 request.Model.ProfileImageUrl = imageResult.Data;
