@@ -47,11 +47,41 @@ namespace Korik.API.Controllers
             return ApiResponse.FromResult(this, result);
         }
 
+
+        [HttpDelete("{id:int}")]
+        [SwaggerOperation(
+            Summary = "Delete a Subcategory by Id",
+            Description = "Deletes a subcategory identified by its ID."
+        )]
+        public async Task<IActionResult> DeleteSubcategory([FromRoute] int id)
+        {
+            var result = await _mediator.Send(
+                new DeleteSubcategoryRequest(
+                    new DeleteSubcategoryDTO() { Id = id }
+                    ));
+
+            return ApiResponse.FromResult(this, result);
+        }
         #endregion
 
-
-
         #region Queries
+        [HttpGet("{id:int}")]
+        [SwaggerOperation(
+            Summary = "Get a Subcategory by Id",
+            Description = "Retrieves a subcategory identified by its ID."
+        )]
+        public async Task<IActionResult> GetSubcategoryById([FromRoute] int id)
+        {
+            var result = await _mediator.Send(
+                new GetSubcategoryByIdRequest(
+                    new GetSubcategoryByIdDTO() { Id = id }
+                    ));
+            return ApiResponse.FromResult(this, result);
+        }
+
+
+
+
 
         #endregion
 
