@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Korik.Application
@@ -17,6 +18,8 @@ namespace Korik.Application
         public string LicensePlate { get; set; }
         public TransmissionType TransmissionType { get; set; }
         public FuelType FuelType { get; set; }
+
+        [JsonIgnore]
         public int CarOwnerProfileId { get; set; }
     }
 }

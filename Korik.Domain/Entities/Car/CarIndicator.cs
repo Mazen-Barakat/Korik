@@ -9,9 +9,8 @@ namespace Korik.Domain
 {
     public enum IndicatorType
     {
-        FuelLevel,
-        TirePressure,
-        OilLevel,
+        TireRotation,
+        OilChange,
         BatteryHealth,
         EngineTemperature
     }
@@ -38,6 +37,7 @@ namespace Korik.Domain
         public CarStatus CarStatus { get; set; }
         public DateTime LastCheckedDate { get; set; }
         public DateTime NextCheckedDate{ get; set;}
+
 
         #region CarInicator M----1 Car
         [ForeignKey("Car")]
