@@ -48,42 +48,56 @@ namespace Korik.Application
 
             services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 
-            #endregion
+            #endregion Generic Service
 
             #region CarOwnerProfileService
-            services.AddScoped<ICarOwnerProfileService, CarOwnerProfileService>();
-            #endregion
-
-            #region WorkShopProfile Service
-            services.AddScoped<IWorkShopProfileService, WorkShopProfileService>();
-            #endregion
-
-            #region Car Service
-            services.AddScoped<ICarService, CarService>();
-
-            #endregion
-
-            #region Car Expense Service
-            services.AddScoped<ICarExpenseService, CarExpenseService>();
-            #endregion
-
-            #region Car Indicator Service
-            services.AddScoped<ICarIndicatorService, CarIndicatorService>();
-            #endregion
-
-            #region CarOwnerProfile Service
 
             services.AddScoped<ICarOwnerProfileService, CarOwnerProfileService>();
 
             #endregion CarOwnerProfileService
 
+            #region WorkShopProfile Service
+
+            services.AddScoped<IWorkShopProfileService, WorkShopProfileService>();
+            services.AddScoped<IWorkShopPhotoService, WorkShopPhotoService>();
+
+            #endregion WorkShopProfile Service
+
+            #region Car Service
+
+            services.AddScoped<ICarService, CarService>();
+
+            #endregion Car Service
+
+            #region Car Expense Service
+
+            services.AddScoped<ICarExpenseService, CarExpenseService>();
+
+            #endregion Car Expense Service
+
+            #region Car Indicator Service
+
+            services.AddScoped<ICarIndicatorService, CarIndicatorService>();
+
+            #endregion Car Indicator Service
+
+            #region CarOwnerProfile Service
+
+            services.AddScoped<ICarOwnerProfileService, CarOwnerProfileService>();
+
+            #endregion CarOwnerProfile Service
+
             #region Category Service
+
             services.AddScoped<ICategoryService, CategoryService>();
-            #endregion
+
+            #endregion Category Service
 
             #region SubcategoryService
-            services.AddScoped<ISubcategoryService, SubcategoryService>();  
-            #endregion
+
+            services.AddScoped<ISubcategoryService, SubcategoryService>();
+
+            #endregion SubcategoryService
 
             #region Fluent Email
 

@@ -37,8 +37,11 @@ namespace Korik.Infrastructure
             #endregion CarOwnerProfileRepository
 
             #region WorkShopProfile Repository
+
             services.AddScoped<IWorkShopProfileRepository, WorkShopProfileRepository>();
-            #endregion
+            services.AddScoped<IWorkShopPhotoRepository, WorkShopPhotoRepository>();
+
+            #endregion WorkShopProfile Repository
 
             #region Car Repository
 
@@ -56,17 +59,25 @@ namespace Korik.Infrastructure
 
             services.AddScoped<ICarExpenseRepository, CarExpenseRepository>();
 
+            #endregion Car Expense Repository
+
             #region Car Indicator Repository
+
             services.AddScoped<ICarIndicatorRepository, CarIndicatorRepository>();
-            #endregion
+
+            #endregion Car Indicator Repository
 
             #region Category Repository
+
             services.AddScoped<ICategoryRepository, CategoryRepository>();
-            #endregion
+
+            #endregion Category Repository
 
             #region Subcategory Repository
+
             services.AddScoped<ISubcategoryRepository, SubcategoryRepository>();
-            #endregion
+
+            #endregion Subcategory Repository
 
             #region Identity Services
 

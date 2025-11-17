@@ -25,7 +25,7 @@ namespace Korik.Infrastructure
 
         public async Task<CarOwnerProfile?> GetByApplicationUserIdAsync(string applicationUserId)
         {
-            var entity = await _context.Set<CarOwnerProfile>().AsNoTracking().FirstOrDefaultAsync(model => EF.Property<string>(model, "ApplicationUserId") == applicationUserId);
+            var entity = await _context.Set<CarOwnerProfile>().AsNoTracking().FirstOrDefaultAsync(e => e.ApplicationUserId == applicationUserId);
             return entity;
         }
 
@@ -36,7 +36,7 @@ namespace Korik.Infrastructure
             {
                 query = query.Include(include);
             }
-            var entity = await query.AsNoTracking().FirstOrDefaultAsync(e => EF.Property<string>(e, "ApplicationUserId") == applicationUserId);
+            var entity = await query.AsNoTracking().FirstOrDefaultAsync(e => e.ApplicationUserId == applicationUserId);
             return entity!;
         }
     }

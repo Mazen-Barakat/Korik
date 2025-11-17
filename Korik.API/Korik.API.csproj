@@ -28,7 +28,9 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\uploads\" />
-    <Folder Include="wwwroot\uploads\profiles\" />
+    <Folder Include="wwwroot\uploads\WorkShopProfile\Licence\" />
+    <Folder Include="wwwroot\uploads\WorkShopProfile\Logo\" />
+    <Folder Include="wwwroot\uploads\WorkShopProfile\photos\" />
   </ItemGroup>
 
 </Project>
