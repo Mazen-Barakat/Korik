@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using Korik.Application;
 using Korik.Domain;
 using Microsoft.AspNetCore.Identity;
@@ -48,28 +48,38 @@ namespace Korik.Application
 
             services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 
-            #endregion
+            #endregion Generic Service
 
             #region CarOwnerProfileService
+
             services.AddScoped<ICarOwnerProfileService, CarOwnerProfileService>();
-            #endregion
+
+            #endregion CarOwnerProfileService
 
             #region WorkShopProfile Service
+
             services.AddScoped<IWorkShopProfileService, WorkShopProfileService>();
-            #endregion
+            services.AddScoped<IWorkShopPhotoService, WorkShopPhotoService>();
+
+            #endregion WorkShopProfile Service
 
             #region Car Service
+
             services.AddScoped<ICarService, CarService>();
 
-            #endregion
+            #endregion Car Service
 
             #region Car Expense Service
+
             services.AddScoped<ICarExpenseService, CarExpenseService>();
-            #endregion
+
+            #endregion Car Expense Service
 
             #region Car Indicator Service
+
             services.AddScoped<ICarIndicatorService, CarIndicatorService>();
-            #endregion
+
+            #endregion Car Indicator Service
 
             #region ICarIndicatorStatusService
             services.AddScoped<ICarIndicatorStatusService, CarIndicatorStatusService>();
@@ -79,15 +89,19 @@ namespace Korik.Application
 
             services.AddScoped<ICarOwnerProfileService, CarOwnerProfileService>();
 
-            #endregion CarOwnerProfileService
+            #endregion CarOwnerProfile Service
 
             #region Category Service
+
             services.AddScoped<ICategoryService, CategoryService>();
-            #endregion
+
+            #endregion Category Service
 
             #region SubcategoryService
-            services.AddScoped<ISubcategoryService, SubcategoryService>();  
-            #endregion
+
+            services.AddScoped<ISubcategoryService, SubcategoryService>();
+
+            #endregion SubcategoryService
 
             #region Fluent Email
 
