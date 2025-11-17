@@ -13,10 +13,12 @@ namespace Korik.API.Controllers
         #region Dependency Injection
 
         private readonly IMediator _mediator;
+        private readonly ICarService _carService;
 
-        public CarExpenseController(IMediator mediator)
+        public CarExpenseController(IMediator mediator, ICarService carService)
         {
             _mediator = mediator;
+            _carService = carService;
         }
 
         #endregion Dependency Injection
@@ -31,13 +33,15 @@ namespace Korik.API.Controllers
             return ApiResponse.FromResult(this, result);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [SwaggerOperation(Summary = "Delete a car expense by Id")]
-        public async Task<IActionResult> DeleteCarExpense([FromBody] DeleteCarExpenseDTO model)
+        public async Task<IActionResult> DeleteCarExpense([FromRoute] int id)
         {
-            var result = await _mediator.Send(new DeleteCarExpenseRequest(model));
+            var result = await _mediator.Send(new DeleteCarExpenseRequest(new DeleteCarExpenseDTO { Id = id }));
             return ApiResponse.FromResult(this, result);
         }
+
+
 
         [HttpPut]
         [SwaggerOperation(Summary = "Update an existing car expense")]
