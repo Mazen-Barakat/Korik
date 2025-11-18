@@ -32,28 +32,37 @@ namespace Korik.Application
             // 2️. Automatically calculate all business fields
             // -------------------------------
             RuleFor(x => x)
-                .CustomAsync(async (dto, context, ct) =>
-                {
-                    var carResult = await _carService.GetByIdAsync(dto.CarId);
-                    if (carResult == null)
-                    {
-                        context.AddFailure("Car not found.");
-                        return;
-                    }
+             .CustomAsync(async (dto, context, ct) =>
+             {
+                 var carResult = await _carService.GetByIdAsync(dto.CarId);
+                 if (carResult == null || carResult.Data == null)
+                 {
+                     context.AddFailure("Car not found.");
+                     return;
+                 }
 
-                    var calculated = _statusService.CalculateAll(
-                        dto.IndicatorType,
-                        dto.LastCheckedDate,
-                        dto.NextCheckedDate,
-                        dto.NextMileage,
-                        carResult.Data.CurrentMileage
-                    );
+                 // Ensure dates are valid
+                 if (dto.LastCheckedDate == default || dto.NextCheckedDate == default)
+                 {
+                     context.AddFailure("LastCheckedDate and NextCheckedDate must be provided.");
+                     return;
+                 }
 
-                    dto.CarStatus = calculated.CarStatus;
-                    dto.MileageDifference = calculated.MileageDifference;
-                    dto.TimeDifference = calculated.TimeDifference;
-                    dto.TimeDifferenceAsPercentage = calculated.TimeDifferenceAsPercentage;
-                });
+                 var calculated = _statusService.CalculateAll(
+                     dto.IndicatorType,
+                     dto.LastCheckedDate,
+                     dto.NextCheckedDate,
+                     dto.NextMileage,
+                     carResult.Data.CurrentMileage
+                 );
+
+                 // Safely assign calculated values
+                 dto.CarStatus = calculated?.CarStatus ?? CarStatus.UnKnown;
+                 dto.MileageDifference = calculated?.MileageDifference ?? 0;
+                 dto.TimeDifference = calculated?.TimeDifference ?? TimeSpan.Zero; ;
+                 dto.TimeDifferenceAsPercentage = calculated?.TimeDifferenceAsPercentage ?? 0;
+             });
+
 
             // -------------------------------
             // 3️. Additional simple validations

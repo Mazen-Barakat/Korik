@@ -9,12 +9,12 @@ namespace Korik.Application
 {
     public class CarIndicatorStatusService : ICarIndicatorStatusService
     {
-        public CarIndicator CalculateAll(
-            IndicatorType type,
-            DateTime lastChecked,
-            DateTime nextChecked,
-            int nextMileage,
-            int currentMileage)
+            public CarIndicator CalculateAll(
+        IndicatorType type,
+        DateTime lastChecked,
+        DateTime nextChecked,
+        int nextMileage,
+        int currentMileage)
         {
             var result = new CarIndicator();
 
@@ -24,17 +24,22 @@ namespace Korik.Application
             result.MileageDifference = nextMileage - currentMileage;
 
             // -----------------------------
-            // Time Difference
+            // Time Difference & Percentage
             // -----------------------------
             var now = DateTime.Now;
-            result.TimeDifference = nextChecked - now;
 
-            double totalDays = (nextChecked - lastChecked).TotalDays;
-            if (totalDays <= 0) totalDays = 1;
+            // Total duration in days
+            var totalDays = (nextChecked - lastChecked).TotalDays;
+            if (totalDays <= 0) totalDays = 1; // avoid divide by zero
 
-            double remainingDays = (nextChecked - now).TotalDays;
+            // Remaining days from now to nextChecked
+            var remainingDays = (nextChecked - now).TotalDays;
+
+            // Clamp remainingDays to 0..totalDays
+            if (remainingDays > totalDays) remainingDays = totalDays;
             if (remainingDays < 0) remainingDays = 0;
 
+            result.TimeDifference = nextChecked - now;
             result.TimeDifferenceAsPercentage = (remainingDays / totalDays) * 100;
 
             // -----------------------------
@@ -44,6 +49,7 @@ namespace Korik.Application
 
             return result;
         }
+
 
         // -----------------------------
         // Determine CarStatus based on type
@@ -76,9 +82,10 @@ namespace Korik.Application
         // -----------------------------
         private CarStatus TimeBasedStatus(double timePercentage)
         {
-            if (timePercentage < 50) return CarStatus.Normal;      // less than 50% time passed
-            if (timePercentage < 85) return CarStatus.Warning;     // 50%-85%
-            return CarStatus.Critical;                              // >85%
+            if (timePercentage > 50) return CarStatus.Normal;
+            if (timePercentage > 15 && timePercentage <= 50) return CarStatus.Warning;
+            return CarStatus.Critical;
+            // >85%
         }
 
         // -----------------------------
