@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace Korik.Application
 {
-    public interface ISubcategoryService : IGenericService<Subcategory>
+    public interface IServiceRepository : IGenericRepository<Service>
     {
-        Task<ServiceResult<IEnumerable<Subcategory>>> GetAllSubcategoriesByCategoryIdAsync(int categoryId);
     }
 }

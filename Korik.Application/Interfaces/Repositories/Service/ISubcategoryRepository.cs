@@ -9,5 +9,6 @@ namespace Korik.Application
 {
     public interface ISubcategoryRepository : IGenericRepository<Subcategory>
     {
+        Task<IQueryable<Subcategory>> GetAllSubcategoriesByCategoryIdAsync(int categoryId);
     }
 }

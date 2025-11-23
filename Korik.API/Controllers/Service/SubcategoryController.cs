@@ -80,8 +80,19 @@ namespace Korik.API.Controllers
         }
 
 
-
-
+        [HttpGet("ByCategory/{categoryId:int}")]
+        [SwaggerOperation(
+            Summary = "Get all Subcategories by Category Id",
+            Description = "Retrieves all subcategories associated with a specific category ID."
+        )]
+        public async Task<IActionResult> GetAllSubcategoriesByCategoryId([FromRoute] int categoryId)
+        {
+            var result = await _mediator.Send(
+                new GetAllSubcategoriesByCategoryIdRequest(
+                    new GetAllSubcategoriesByCategoryIdDTO() { CategoryId = categoryId }
+                    ));
+            return ApiResponse.FromResult(this, result);
+        }
 
         #endregion
 

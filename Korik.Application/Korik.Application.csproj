@@ -10,6 +10,10 @@
     <Folder Include="Common\Behaviors\" />
     <Folder Include="DTOs\CarIndicators\Request_DTOs\GetAllCarIndicatorDTO\" />
     <Folder Include="Features\Account\Handlers\Queries\" />
+    <Folder Include="Features\Service\Handlers\Commands\Delete\" />
+    <Folder Include="Features\Service\Handlers\Commands\Update\" />
+    <Folder Include="Features\Service\Handlers\Queries\GetById\" />
+    <Folder Include="Features\Service\Handlers\Queries\GetServicesBySubcategoryId\" />
   </ItemGroup>
 
   <ItemGroup>
