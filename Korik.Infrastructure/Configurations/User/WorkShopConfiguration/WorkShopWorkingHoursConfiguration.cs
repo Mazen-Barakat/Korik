@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Korik.Infrastructure
 {
-    public class WorkingHoursConfiguration : IEntityTypeConfiguration<WorkingHours>
+    public class WorkShopWorkingHoursConfiguration : IEntityTypeConfiguration<WorkingHours>
     {
         public void Configure(EntityTypeBuilder<WorkingHours> builder)
         {
