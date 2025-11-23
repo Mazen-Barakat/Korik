@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -27,10 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\uploads\" />
-    <Folder Include="wwwroot\uploads\WorkShopProfile\Licence\" />
-    <Folder Include="wwwroot\uploads\WorkShopProfile\Logo\" />
-    <Folder Include="wwwroot\uploads\WorkShopProfile\photos\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

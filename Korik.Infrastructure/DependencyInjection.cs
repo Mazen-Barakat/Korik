@@ -1,10 +1,11 @@
-﻿using Korik.Application;
+﻿using FluentValidation;
+using Korik.Application;
 using Korik.Domain;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +42,12 @@ namespace Korik.Infrastructure
             services.AddScoped<IWorkShopProfileRepository, WorkShopProfileRepository>();
             services.AddScoped<IWorkShopPhotoRepository, WorkShopPhotoRepository>();
 
+ 
+            // WorkingHours
+            services.AddScoped<IWorkshopWorkingHoursRepository, WorkshopWorkingHoursRepository>();
+            services.AddScoped<IWorkShopWorkingHoursService, WorkShopWorkingHoursService>();
+            services.AddScoped<IValidator<CreateWorkShopWorkingHoursDTO>, CreateWorkShopWorkingHoursDTOValidator>();
+            services.AddScoped<IValidator<UpdateWorkShopWorkingHoursDTO>, UpdateWorkShopWorkingHoursDTOValidator>();
             #endregion WorkShopProfile Repository
 
             #region Car Repository
