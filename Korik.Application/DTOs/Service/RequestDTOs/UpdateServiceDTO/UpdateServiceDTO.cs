@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Korik.Application
 {
-    public class ServiceDTO
+    public class UpdateServiceDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -15,10 +15,6 @@ namespace Korik.Application
         public decimal MinPrice { get; set; }
         public decimal MaxPrice { get; set; }
         public string ImageUrl { get; set; }
-
         public int SubcategoryId { get; set; }
-
-        //optional: Include SubcategoryName if needed
-        public string? SubcategoryName { get; set; }
     }
 }
