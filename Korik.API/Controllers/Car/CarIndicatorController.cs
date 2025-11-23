@@ -28,11 +28,14 @@ namespace Korik.API.Controllers
             return ApiResponse.FromResult(this, result);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id:int}")]
         [SwaggerOperation(Summary = "Delete a car indicator by Id")]
-        public async Task<IActionResult> DeleteCarIndicator([FromBody] DeleteCarIndicatorDTO model)
+        public async Task<IActionResult> DeleteCarIndicator([FromRoute] int id)
         {
-            var result = await _mediator.Send(new DeleteCarIndicatorRequest(model));
+            var result = await _mediator.Send(new DeleteCarIndicatorRequest
+                (
+                new DeleteCarIndicatorDTO() { Id = id}
+                ));
             return ApiResponse.FromResult(this, result);
         }
 
