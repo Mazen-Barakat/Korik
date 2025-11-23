@@ -45,7 +45,6 @@ namespace Korik.Infrastructure
  
             // WorkingHours
             services.AddScoped<IWorkshopWorkingHoursRepository, WorkshopWorkingHoursRepository>();
-            services.AddScoped<IWorkShopWorkingHoursService, WorkShopWorkingHoursService>();
             services.AddScoped<IValidator<CreateWorkShopWorkingHoursDTO>, CreateWorkShopWorkingHoursDTOValidator>();
             services.AddScoped<IValidator<UpdateWorkShopWorkingHoursDTO>, UpdateWorkShopWorkingHoursDTOValidator>();
             #endregion WorkShopProfile Repository

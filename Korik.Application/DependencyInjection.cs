@@ -61,6 +61,8 @@ namespace Korik.Application
             services.AddScoped<IWorkShopProfileService, WorkShopProfileService>();
             services.AddScoped<IWorkShopPhotoService, WorkShopPhotoService>();
 
+            services.AddScoped<IWorkShopWorkingHoursService, WorkShopWorkingHoursService>();
+
             #endregion WorkShopProfile Service
 
             #region Car Service
