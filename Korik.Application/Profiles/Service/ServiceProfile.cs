@@ -16,6 +16,8 @@ namespace Korik.Application
 
             CreateMap<Service , ServiceDTO>().ReverseMap();
 
+            CreateMap <Service , UpdateServiceDTO>().ReverseMap();
+
         }
     }
 }

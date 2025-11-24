@@ -29,6 +29,18 @@ namespace Korik.API.Controllers.Service
             return ApiResponse.FromResult(this, result);
         }
 
+
+
+        [HttpPut]
+        [SwaggerOperation(
+            Summary = "Update an existing Service",
+            Description = "Updates an existing service's details using the provided data."
+        )]
+        public async Task<IActionResult> PutService([FromBody] UpdateServiceDTO model)
+        {
+            var result = await _mediator.Send(new UpdateServiceRequest(model));
+            return ApiResponse.FromResult(this, result);
+        }
         #endregion
 
 
