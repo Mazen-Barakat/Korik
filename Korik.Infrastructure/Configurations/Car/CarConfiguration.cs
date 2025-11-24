@@ -51,6 +51,11 @@ namespace Korik.Infrastructure
                    .HasConversion<string>()
                    .HasMaxLength(20);
 
+            builder.Property(c => c.Origin)
+                .IsRequired()
+                .HasConversion<string>()
+                .HasMaxLength(50);
+
             // Relationships
 
             // Many-to-One with CarOwnerProfile

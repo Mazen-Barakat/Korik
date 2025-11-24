@@ -9,8 +9,11 @@ namespace Korik.Domain
 {
     public class WorshopService : BaseEntity
     {
-        public decimal Price { get; set; }  
         public int Duration { get; set; }
+        public decimal MinPrice { get; set; }
+        public decimal MaxPrice { get; set; }
+        public CarOrigin Origin { get; set; }
+
 
 
         #region WorshopService M---1 Service
