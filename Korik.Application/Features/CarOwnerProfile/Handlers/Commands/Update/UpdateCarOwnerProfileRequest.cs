@@ -19,17 +19,20 @@ namespace Korik.Application
         private readonly ICarOwnerProfileService _carOwnerProfileService;
         private readonly IValidator<UpdateCarOwnerProfileDTO> _validator;
         private readonly IMapper _mapper;
+        private readonly IFileStorageService _fileStorageService;
 
         public UpdateCarOwnerProfileRequestHandler
             (
             ICarOwnerProfileService carOwnerProfileService,
             IValidator<UpdateCarOwnerProfileDTO> validator,
-            IMapper mapper
+            IMapper mapper,
+            IFileStorageService fileStorageService
             )
         {
             _carOwnerProfileService = carOwnerProfileService;
             _validator = validator;
             _mapper = mapper;
+            _fileStorageService = fileStorageService;
         }
 
         #endregion Dependency Injection
@@ -58,6 +61,22 @@ namespace Korik.Application
 
             if (existingCarOwnerProfile == null || existingCarOwnerProfile.Data == null)
                 return ServiceResult<CarOwnerProfileDTO>.Fail("Car Owner Profile not found.");
+
+            #region Handle Image Upload
+
+            // Image is optional
+            if (request.Model.ProfileImage != null)
+            {
+                if (existingCarOwnerProfile.Data.ProfileImageUrl != null)
+                    await _fileStorageService.DeleteFileAsync(existingCarOwnerProfile.Data.ProfileImageUrl);
+                // Save image
+                var imageResult = await _fileStorageService.SaveFileAsync(request.Model.ProfileImage, "CarOwnerProfiles");
+
+                // Update the DTO with new image path
+                request.Model.ProfileImageUrl = imageResult.Data;
+            }
+
+            #endregion Handle Image Upload
 
             // Map only the updatable properties, preserving the relationship
             _mapper.Map(request.Model, existingCarOwnerProfile.Data);

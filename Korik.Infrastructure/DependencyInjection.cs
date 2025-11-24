@@ -1,10 +1,11 @@
-﻿using Korik.Application;
+﻿using FluentValidation;
+using Korik.Application;
 using Korik.Domain;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,6 +98,75 @@ namespace Korik.Infrastructure
             services.AddScoped<IGoogleAuthService, GoogleAuthService>();
 
             #endregion Auth External Services
+
+            #region File Storage Service
+
+            services.AddScoped<IFileStorageService, FileStorageService>();
+
+            #endregion File Storage Service
+
+            #region Generic Repository
+
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            #endregion Generic Repository
+
+            #region CarOwnerProfileRepository
+
+            services.AddScoped<ICarOwnerProfileRepository, CarOwnerProfileRepository>();
+
+            #endregion CarOwnerProfileRepository
+
+            #region WorkShopProfile Repository
+
+            services.AddScoped<IWorkShopProfileRepository, WorkShopProfileRepository>();
+            services.AddScoped<IWorkShopPhotoRepository, WorkShopPhotoRepository>();
+
+ 
+            // WorkingHours
+            services.AddScoped<IWorkshopWorkingHoursRepository, WorkshopWorkingHoursRepository>();
+            services.AddScoped<IValidator<CreateWorkShopWorkingHoursDTO>, CreateWorkShopWorkingHoursDTOValidator>();
+            services.AddScoped<IValidator<UpdateWorkShopWorkingHoursDTO>, UpdateWorkShopWorkingHoursDTOValidator>();
+            #endregion WorkShopProfile Repository
+
+            #region Car Repository
+
+            services.AddScoped<ICarRepository, CarRepository>();
+
+            #endregion Car Repository
+
+            #region CarOwnerProfileRepository
+
+            services.AddScoped<ICarOwnerProfileRepository, CarOwnerProfileRepository>();
+
+            #endregion CarOwnerProfileRepository
+
+            #region Car Expense Repository
+
+            services.AddScoped<ICarExpenseRepository, CarExpenseRepository>();
+            #endregion Car Expense Repository
+
+            #region Car Indicator Repository
+
+            services.AddScoped<ICarIndicatorRepository, CarIndicatorRepository>();
+
+            #endregion Car Indicator Repository
+
+            #region Category Repository
+
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+            #endregion Category Repository
+
+            #region Subcategory Repository
+
+            services.AddScoped<ISubcategoryRepository, SubcategoryRepository>();
+
+            #endregion Subcategory Repository
+
+            #region Service Repository 
+            services.AddScoped<IServiceRepository, ServiceRepository>();
+            #endregion
 
             return services;
         }

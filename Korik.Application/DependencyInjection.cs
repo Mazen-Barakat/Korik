@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+using FluentValidation;
 using Korik.Application;
 using Korik.Domain;
 using Microsoft.AspNetCore.Identity;
@@ -44,35 +44,6 @@ namespace Korik.Application
 
             #endregion Mediator
 
-            #region Generic Service
-
-            services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
-
-            #endregion
-
-            #region Car Service
-            services.AddScoped<ICarService, CarService>();
-
-            #endregion
-
-            #region CarOwnerProfileService
-            services.AddScoped<ICarOwnerProfileService, CarOwnerProfileService>();
-            #endregion
-
-            #region Car Expense Service
-            services.AddScoped<ICarExpenseService, CarExpenseService>();
-            #endregion
-
-            #region Car Indicator Service
-            services.AddScoped<ICarIndicatorService, CarIndicatorService>();
-            #endregion
-
-            #region CarOwnerProfile Service
-
-            services.AddScoped<ICarOwnerProfileService, CarOwnerProfileService>();
-
-            #endregion CarOwnerProfileService
-
             #region Fluent Email
 
             // Configure FluentEmail with Gmail
@@ -97,6 +68,72 @@ namespace Korik.Application
             services.AddScoped<IAccountService, AccountService>();
 
             #endregion AuthService & AccountService
+
+            #region Generic Service
+
+            services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+
+            #endregion Generic Service
+
+            #region CarOwnerProfileService
+
+            services.AddScoped<ICarOwnerProfileService, CarOwnerProfileService>();
+
+            #endregion CarOwnerProfileService
+
+            #region WorkShopProfile Service
+
+            services.AddScoped<IWorkShopProfileService, WorkShopProfileService>();
+            services.AddScoped<IWorkShopPhotoService, WorkShopPhotoService>();
+
+            services.AddScoped<IWorkShopWorkingHoursService, WorkShopWorkingHoursService>();
+
+            #endregion WorkShopProfile Service
+
+            #region Car Service
+
+            services.AddScoped<ICarService, CarService>();
+
+            #endregion Car Service
+
+            #region Car Expense Service
+
+            services.AddScoped<ICarExpenseService, CarExpenseService>();
+
+            #endregion Car Expense Service
+
+            #region Car Indicator Service
+
+            services.AddScoped<ICarIndicatorService, CarIndicatorService>();
+
+            #endregion Car Indicator Service
+
+            #region ICarIndicatorStatusService
+            services.AddScoped<ICarIndicatorStatusService, CarIndicatorStatusService>();
+            #endregion
+
+            #region CarOwnerProfile Service
+
+            services.AddScoped<ICarOwnerProfileService, CarOwnerProfileService>();
+
+            #endregion CarOwnerProfile Service
+
+            #region Category Service
+
+            services.AddScoped<ICategoryService, CategoryService>();
+
+            #endregion Category Service
+
+            #region SubcategoryService
+
+            services.AddScoped<ISubcategoryService, SubcategoryService>();
+
+            #endregion SubcategoryService
+
+            #region Service Service
+            services.AddScoped<IServiceService, ServiceService>();
+            #endregion
+
 
             return services;
         }

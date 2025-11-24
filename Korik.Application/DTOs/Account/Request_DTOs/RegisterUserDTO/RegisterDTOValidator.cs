@@ -21,8 +21,8 @@ namespace Korik.Application.DTOs.Account.RegisterUserDTO
             //Role 
             RuleFor(x => x.Role)
                .NotEmpty().WithMessage("Role is required.")
-               .Must(role => role == "CAROWNER" || role == "MECHANIC")
-               .WithMessage("Role must be either 'CAROWNER' or 'MECHANIC'.");
+               .Must(role => role == "CAROWNER" || role == "WORKSHOP")
+               .WithMessage("Role must be either 'CAROWNER' or 'WORKSHOP'.");
            
             // Email
             RuleFor(x => x.Email)

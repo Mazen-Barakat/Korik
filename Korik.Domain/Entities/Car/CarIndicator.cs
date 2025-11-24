@@ -9,10 +9,12 @@ namespace Korik.Domain
 {
     public enum IndicatorType
     {
-        TireRotation,
-        OilChange,
-        BatteryHealth,
-        EngineTemperature
+        ACService, ///Time
+        CarLicenseAndEnsuranceExpiry, ///Time
+        GeneralMaintenance,//Time , Mileage
+        OilChange, //Mileage 
+        BatteryHealth,//Time
+        TireChange, //Mileage , Time
     }
 
     public enum CarStatus
@@ -20,23 +22,26 @@ namespace Korik.Domain
         Normal,
         Warning,
         Critical,
-        NotChecked,
-        Checked,
+        //NotChecked,
+        //Checked,
         UnKnown,
-        Replaced,
+        //Replaced,
     }
 
-
-    /// <summary>
-    /// hoihgfdutfriugt
-    /// </summary>
 
     public class CarIndicator : BaseEntity
     {
         public IndicatorType IndicatorType { get; set; }
         public CarStatus CarStatus { get; set; }
         public DateTime LastCheckedDate { get; set; }
-        public DateTime NextCheckedDate{ get; set;}
+        public DateTime NextCheckedDate { get; set; }
+        public int NextMileage { get; set; }
+
+        public int MileageDifference { get; set; }
+        public TimeSpan TimeDifference { get; set; }
+
+        public double TimeDifferenceAsPercentage { get; set; }
+
 
 
         #region CarInicator M----1 Car

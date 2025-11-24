@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Korik.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Korik.Application
-{ 
+{
     public class GenericService<T> : IGenericService<T> where T : class
     {
         private readonly IGenericRepository<T> _repository;
@@ -132,6 +133,24 @@ namespace Korik.Application
             catch (Exception ex)
             {
                 return ServiceResult<bool>.Fail(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResult<PagedResult<T>>> GetAllPagedAsync
+            (
+            int pageNumber,
+            int pageSize,
+            Expression<Func<T, bool>>? filter = null, params Expression<Func<T, object>>[]? includes
+            )
+        {
+            try
+            {
+                var pagedResult = await _repository.GetAllPagedAsync(pageNumber, pageSize, filter, includes);
+                return ServiceResult<PagedResult<T>>.Ok(pagedResult);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<PagedResult<T>>.Fail(ex.Message);
             }
         }
     }

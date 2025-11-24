@@ -10,49 +10,109 @@ namespace Korik.Application
 {
     public class UpdateCarIndicatorDTOValidator : AbstractValidator<UpdateCarIndicatorDTO>
     {
-        private readonly ICarIndicatorService _carIndicatorService;
         private readonly ICarService _carService;
+        private readonly ICarIndicatorService _indicatorService;
+        private readonly ICarIndicatorStatusService _statusService;
 
         public UpdateCarIndicatorDTOValidator(
-            ICarIndicatorService carIndicatorService,
-            ICarService carService)
+            ICarService carService,
+            ICarIndicatorService indicatorService,
+            ICarIndicatorStatusService statusService)
         {
-            _carIndicatorService = carIndicatorService;
             _carService = carService;
+            _indicatorService = indicatorService;
+            _statusService = statusService;
 
-            // Validate Id
+            // -----------------------------------------------------
+            // 1️⃣ Id must exist
+            // -----------------------------------------------------
             RuleFor(x => x.Id)
-                .GreaterThan(0).WithMessage("Id must be greater than 0.")
-                .MustAsync(async (id, cancellation) =>
+                .MustAsync(async (id, ct) =>
                 {
-                    var result = await _carIndicatorService.IsExistAsync(id);
+                    var result = await _indicatorService.IsExistAsync(id);
                     return result.Success && result.Data;
-                }).WithMessage("No car indicator exists with the provided Id.");
+                })
+                .WithMessage("The specified indicator does not exist.");
 
-            // Validate IndicatorType
-            RuleFor(x => x.IndicatorType)
-                .IsInEnum().WithMessage("Invalid IndicatorType.");
-
-            // Validate CarStatus
-            RuleFor(x => x.CarStatus)
-                .IsInEnum().WithMessage("Invalid CarStatus.");
-
-            // Validate LastCheckedDate
-            RuleFor(x => x.LastCheckedDate)
-                .LessThanOrEqualTo(DateTime.UtcNow).WithMessage("LastCheckedDate cannot be in the future.");
-
-            // Validate NextCheckedDate
-            RuleFor(x => x.NextCheckedDate)
-                .GreaterThan(x => x.LastCheckedDate).WithMessage("NextCheckedDate must be after LastCheckedDate.");
-
-            // Validate CarId
+            // -----------------------------------------------------
+            // 2️⃣ Car must exist
+            // -----------------------------------------------------
             RuleFor(x => x.CarId)
-                .GreaterThan(0).WithMessage("CarId must be greater than 0.")
-                .MustAsync(async (carId, cancellation) =>
+                .MustAsync(async (carId, ct) =>
                 {
                     var result = await _carService.IsExistAsync(carId);
                     return result.Success && result.Data;
-                }).WithMessage("No car exists with the provided CarId.");
+                })
+                .WithMessage("The specified car does not exist.");
+
+            // -----------------------------------------------------
+            // 3️⃣ Ensure indicator belongs to this car
+            // -----------------------------------------------------
+            RuleFor(x => x)
+                .MustAsync(async (dto, ct) =>
+                {
+                    var indicator = await _indicatorService.GetByIdAsync(dto.Id);
+
+                    if (indicator == null || indicator.Data == null)
+                        return false;
+
+                    return indicator.Data.CarId == dto.CarId;
+                })
+                .WithMessage("This indicator does not belong to the specified car.");
+
+            // -----------------------------------------------------
+            // 4️⃣ Recalculate business fields (same as Create)
+            // -----------------------------------------------------
+            RuleFor(x => x)
+                .CustomAsync(async (dto, context, ct) =>
+                {
+                    var carResult = await _carService.GetByIdAsync(dto.CarId);
+                    if (carResult == null || carResult.Data == null)
+                    {
+                        context.AddFailure("Car not found.");
+                        return;
+                    }
+
+                    if (dto.LastCheckedDate == default || dto.NextCheckedDate == default)
+                    {
+                        context.AddFailure("LastCheckedDate and NextCheckedDate must be valid.");
+                        return;
+                    }
+
+                    var calculated = _statusService.CalculateAll(
+                        dto.IndicatorType,
+                        dto.LastCheckedDate,
+                        dto.NextCheckedDate,
+                        dto.NextMileage,
+                        carResult.Data.CurrentMileage
+                    );
+
+                    dto.CarStatus = calculated?.CarStatus ?? CarStatus.UnKnown;
+                    dto.MileageDifference = calculated?.MileageDifference ?? 0;
+                    dto.TimeDifference = calculated?.TimeDifference ?? TimeSpan.Zero;
+                    dto.TimeDifferenceAsPercentage = calculated?.TimeDifferenceAsPercentage ?? 0;
+                });
+
+            // -----------------------------------------------------
+            // 5️⃣ Date validations
+            // -----------------------------------------------------
+            RuleFor(x => x.NextCheckedDate)
+                .GreaterThan(x => x.LastCheckedDate)
+                .WithMessage("NextCheckedDate must be greater than LastCheckedDate.");
+
+            // -----------------------------------------------------
+            // 6️⃣ Mileage validations
+            // -----------------------------------------------------
+            RuleFor(x => x.NextMileage)
+                .MustAsync(async (dto, nextMileage, ct) =>
+                {
+                    var carResult = await _carService.GetByIdAsync(dto.CarId);
+                    if (carResult == null || carResult.Data == null)
+                        return false;
+
+                    return nextMileage > carResult.Data.CurrentMileage;
+                })
+                .WithMessage("NextMileage must be greater than the car's current mileage.");
         }
     }
 }

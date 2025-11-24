@@ -101,5 +101,46 @@ namespace Korik.Infrastructure
             var exists = await _context.Set<T>().AnyAsync(e => EF.Property<int>(e, "Id") == id);
             return exists;
         }
+
+        public async Task<PagedResult<T>> GetAllPagedAsync
+            (
+            int pageNumber,
+            int pageSize,
+            Expression<Func<T, bool>>? filter = null,
+            params Expression<Func<T, object>>[]? includes
+            )
+        {
+            var query = _context.Set<T>().AsNoTracking();
+
+            if (includes != null && includes.Length > 0)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            // Apply filter if provided
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            var totalRecords = await query.CountAsync();
+
+            var data = await query
+                .OrderBy(e => EF.Property<int>(e, "Id"))
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return new PagedResult<T>
+            {
+                Items = data,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalRecords = totalRecords
+            };
+        }
     }
 }

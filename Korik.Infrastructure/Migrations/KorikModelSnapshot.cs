@@ -284,24 +284,33 @@ namespace Korik.Infrastructure.Migrations
 
                     b.Property<string>("CarStatus")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IndicatorType")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastCheckedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("MileageDifference")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("NextCheckedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("NextMileage")
+                        .HasColumnType("int");
+
+                    b.Property<long>("TimeDifference")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("TimeDifferenceAsPercentage")
+                        .HasColumnType("float");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CarId", "IndicatorType")
-                        .IsUnique();
+                    b.HasIndex("CarId");
 
                     b.ToTable("CarIndicators", (string)null);
                 });
@@ -890,7 +899,7 @@ namespace Korik.Infrastructure.Migrations
                     b.HasOne("Korik.Domain.Car", "Car")
                         .WithMany("CarIndicators")
                         .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Car");

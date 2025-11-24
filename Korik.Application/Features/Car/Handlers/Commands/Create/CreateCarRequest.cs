@@ -43,7 +43,6 @@ namespace Korik.Application
             }
             #endregion
 
-
             #region Valid
             // Map DTO -> Entity
             var carEntity = _mapper.Map<Car>(request.Model);
