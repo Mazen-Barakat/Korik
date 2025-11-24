@@ -20,6 +20,8 @@ namespace Korik.Application
         public TransmissionType TransmissionType { get; set; }
         public FuelType FuelType { get; set; }
 
+        public CarOrigin Origin { get; set; }
+
         [JsonIgnore]
         public int CarOwnerProfileId { get; set; }
     }

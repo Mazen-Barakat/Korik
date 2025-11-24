@@ -20,12 +20,24 @@ namespace Korik.Infrastructure
             builder.HasKey(ws => ws.Id);
 
             // Properties
-            builder.Property(ws => ws.Price)
-                   .IsRequired()
-                   .HasPrecision(10, 2); // e.g., 99999999.99 max
 
             builder.Property(ws => ws.Duration)
-                   .IsRequired(); // duration in minutes
+                     .IsRequired(); // duration in minutes
+
+            builder.Property(ws => ws.MinPrice)
+                   .IsRequired()
+                   .HasPrecision(10, 2);
+
+            builder.Property(ws => ws.MaxPrice)
+                   .IsRequired()
+                   .HasPrecision(10, 2);
+
+            builder.Property(ws => ws.Origin)
+                   .IsRequired()
+                   .HasConversion<string>()
+                   .HasMaxLength(50);
+
+
 
             // Relationships
 
