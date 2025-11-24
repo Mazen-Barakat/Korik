@@ -25,6 +25,34 @@ namespace Korik.Infrastructure
 
             #endregion AddDbContext
 
+            #region Generic Repository
+
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            #endregion Generic Repository
+
+            #region CarOwnerProfileRepository
+
+            services.AddScoped<ICarOwnerProfileRepository, CarOwnerProfileRepository>();      
+                
+           #endregion CarOwnerProfileRepository
+
+            #region Car Repository
+            services.AddScoped<ICarRepository, CarRepository>();
+            #endregion
+
+            #region CarOwnerProfileRepository
+            services.AddScoped<ICarOwnerProfileRepository, CarOwnerProfileRepository>();
+            #endregion
+
+            #region Car Expense Repository
+            services.AddScoped<ICarExpenseRepository, CarExpenseRepository>();
+            #endregion Car Expense Repository
+
+            #region Car Indicator Repository
+            services.AddScoped<ICarIndicatorRepository, CarIndicatorRepository>();
+            #endregion
+
             #region Identity Services
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>

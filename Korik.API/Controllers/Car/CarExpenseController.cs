@@ -29,6 +29,8 @@ namespace Korik.API.Controllers
         [SwaggerOperation(Summary = "Create a new car expense")]
         public async Task<IActionResult> PostCarExpense([FromBody] CreateCarExpanseDTO model)
         {
+
+
             var result = await _mediator.Send(new CreateCarExpenseRequest(model));
             return ApiResponse.FromResult(this, result);
         }
