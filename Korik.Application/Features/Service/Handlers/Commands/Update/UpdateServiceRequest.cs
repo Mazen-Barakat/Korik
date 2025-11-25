@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Korik.Application
 {
-    public record UpdateServiceRequest(UpdateServiceDTO model) : IRequest<ServiceResult<ServiceDTO>> { }
+    public record UpdateServiceRequest(UpdateServiceDTO model) : IRequest<ServiceResult<ServiceDTO>>{ }
 
     public class UpdateServiceRequestHandler : IRequestHandler<UpdateServiceRequest, ServiceResult<ServiceDTO>>
     {
@@ -21,7 +21,8 @@ namespace Korik.Application
         public UpdateServiceRequestHandler(
             IServiceService serviceService,
             IValidator<UpdateServiceDTO> validator,
-            IMapper mapper)
+            IMapper mapper
+            )
         {
             _serviceService = serviceService;
             _validator = validator;
