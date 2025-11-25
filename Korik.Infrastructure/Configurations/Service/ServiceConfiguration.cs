@@ -27,19 +27,7 @@ namespace Korik.Infrastructurec
             builder.Property(s => s.Description)
                    .HasMaxLength(1000);
 
-            builder.Property(s => s.Duration)
-                   .IsRequired(); // duration in minutes
-
-            builder.Property(s => s.MinPrice)
-                   .IsRequired()
-                   .HasPrecision(10, 2);
-
-            builder.Property(s => s.MaxPrice)
-                   .IsRequired()
-                   .HasPrecision(10, 2);
-
-            builder.Property(s => s.ImageUrl)
-                   .HasMaxLength(300);
+           
 
             // Relationships
 

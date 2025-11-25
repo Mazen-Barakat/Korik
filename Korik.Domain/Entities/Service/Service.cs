@@ -11,13 +11,9 @@ namespace Korik.Domain
     {
         public string Name {  get; set; }
         public string Description { get; set; }
-        public int Duration { get; set; }
-        public decimal MinPrice { get; set; }
-        public decimal MaxPrice { get; set; }
-        public string ImageUrl { get; set; }
+ 
+        #region Service M----1 Subcategory
 
-
-        #region Service M----1 Subcategory 
         [ForeignKey("Subcategory")]
         public int SubcategoryId { get; set; }
         public Subcategory Subcategory {get; set;}
