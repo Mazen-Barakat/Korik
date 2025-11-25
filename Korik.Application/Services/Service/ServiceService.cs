@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace Korik.Application
 {
-    public class ServiceService : GenericService<Service>, IServiceService
+    public class ServiceService :GenericService<Service>, IServiceService
     {
         private readonly IServiceRepository _repository;
-
         public ServiceService(IServiceRepository repository) : base(repository)
         {
             _repository = repository;
