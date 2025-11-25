@@ -57,6 +57,9 @@ namespace Korik.Application
             RuleFor(x => x.FuelType)
                 .IsInEnum().WithMessage("Invalid FuelType.");
 
+            RuleFor(x => x.Origin)
+                .IsInEnum().WithMessage("Invalid Car Origin");
+
             // Foreign key
             RuleFor(x => x.CarOwnerProfileId)
                 .GreaterThan(0).WithMessage("CarOwnerProfileId is required and must be greater than 0.")

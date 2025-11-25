@@ -109,8 +109,10 @@ namespace Korik.Application
             #endregion Car Indicator Service
 
             #region ICarIndicatorStatusService
+
             services.AddScoped<ICarIndicatorStatusService, CarIndicatorStatusService>();
-            #endregion
+
+            #endregion ICarIndicatorStatusService
 
             #region CarOwnerProfile Service
 
@@ -131,9 +133,16 @@ namespace Korik.Application
             #endregion SubcategoryService
 
             #region Service Service
-            services.AddScoped<IServiceService, ServiceService>();
-            #endregion
 
+            services.AddScoped<IServiceService, ServiceService>();
+
+            #endregion Service Service
+
+            #region WorkshopServiceService
+
+            services.AddScoped<IWorkshopServiceService, WorkshopServiceService>();
+
+            #endregion WorkshopServiceService
 
             return services;
         }

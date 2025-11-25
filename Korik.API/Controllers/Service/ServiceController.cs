@@ -42,6 +42,7 @@ namespace Korik.API.Controllers
             var result = await _mediator.Send(new UpdateServiceRequest(model));
             return ApiResponse.FromResult(this, result);
         }
+        #endregion
 
         [HttpDelete("{id:int}")]
         [SwaggerOperation(

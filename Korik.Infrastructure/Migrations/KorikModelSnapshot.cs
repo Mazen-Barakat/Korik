@@ -219,6 +219,11 @@ namespace Korik.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("Origin")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<string>("TransmissionType")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -649,7 +654,7 @@ namespace Korik.Infrastructure.Migrations
                     b.ToTable("WorkingHours", (string)null);
                 });
 
-            modelBuilder.Entity("Korik.Domain.WorshopService", b =>
+            modelBuilder.Entity("Korik.Domain.WorkshopService", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -660,9 +665,18 @@ namespace Korik.Infrastructure.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal>("MaxPrice")
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("MinPrice")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<string>("Origin")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("ServiceId")
                         .HasColumnType("int");
@@ -674,7 +688,7 @@ namespace Korik.Infrastructure.Migrations
 
                     b.HasIndex("WorkShopProfileId");
 
-                    b.HasIndex("ServiceId", "WorkShopProfileId")
+                    b.HasIndex("ServiceId", "WorkShopProfileId", "Origin")
                         .IsUnique();
 
                     b.ToTable("WorkshopServices", (string)null);
@@ -961,16 +975,16 @@ namespace Korik.Infrastructure.Migrations
                     b.Navigation("WorkShopProfile");
                 });
 
-            modelBuilder.Entity("Korik.Domain.WorshopService", b =>
+            modelBuilder.Entity("Korik.Domain.WorkshopService", b =>
                 {
                     b.HasOne("Korik.Domain.Service", "Service")
-                        .WithMany("WorshopServices")
+                        .WithMany("WorkshopServices")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Korik.Domain.WorkShopProfile", "WorkShopProfile")
-                        .WithMany("WorshopServices")
+                        .WithMany("WorkshopServices")
                         .HasForeignKey("WorkShopProfileId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -1068,7 +1082,7 @@ namespace Korik.Infrastructure.Migrations
                 {
                     b.Navigation("Bookings");
 
-                    b.Navigation("WorshopServices");
+                    b.Navigation("WorkshopServices");
                 });
 
             modelBuilder.Entity("Korik.Domain.Subcategory", b =>
@@ -1084,7 +1098,7 @@ namespace Korik.Infrastructure.Migrations
 
                     b.Navigation("WorkingHours");
 
-                    b.Navigation("WorshopServices");
+                    b.Navigation("WorkshopServices");
                 });
 #pragma warning restore 612, 618
         }

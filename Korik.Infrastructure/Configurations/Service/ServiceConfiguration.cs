@@ -44,7 +44,7 @@ namespace Korik.Infrastructurec
                    .OnDelete(DeleteBehavior.NoAction);
 
             // One-to-Many with WorkshopService
-            builder.HasMany(s => s.WorshopServices)
+            builder.HasMany(s => s.WorkshopServices)
                    .WithOne(ws => ws.Service)
                    .HasForeignKey(ws => ws.ServiceId)
                    .OnDelete(DeleteBehavior.NoAction);

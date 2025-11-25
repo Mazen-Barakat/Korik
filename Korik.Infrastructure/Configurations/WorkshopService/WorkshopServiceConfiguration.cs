@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Korik.Infrastructure
 {
-    public class WorkshopServiceConfiguration : IEntityTypeConfiguration<WorshopService>
+    public class WorkshopServiceConfiguration : IEntityTypeConfiguration<WorkshopService>
     {
-        public void Configure(EntityTypeBuilder<WorshopService> builder)
+        public void Configure(EntityTypeBuilder<WorkshopService> builder)
         {
             // Table name
             builder.ToTable("WorkshopServices");
@@ -20,29 +20,39 @@ namespace Korik.Infrastructure
             builder.HasKey(ws => ws.Id);
 
             // Properties
-            builder.Property(ws => ws.Price)
-                   .IsRequired()
-                   .HasPrecision(10, 2); // e.g., 99999999.99 max
 
             builder.Property(ws => ws.Duration)
-                   .IsRequired(); // duration in minutes
+                     .IsRequired(); // duration in minutes
+
+            builder.Property(ws => ws.MinPrice)
+                   .IsRequired()
+                   .HasPrecision(10, 2);
+
+            builder.Property(ws => ws.MaxPrice)
+                   .IsRequired()
+                   .HasPrecision(10, 2);
+
+            builder.Property(ws => ws.Origin)
+                   .IsRequired()
+                   .HasConversion<string>()
+                   .HasMaxLength(50);
 
             // Relationships
 
             // Many-to-One with Service
             builder.HasOne(ws => ws.Service)
-                   .WithMany(s => s.WorshopServices)
+                   .WithMany(s => s.WorkshopServices)
                    .HasForeignKey(ws => ws.ServiceId)
                    .OnDelete(DeleteBehavior.NoAction);
 
             // Many-to-One with WorkShopProfile
             builder.HasOne(ws => ws.WorkShopProfile)
-                   .WithMany(w => w.WorshopServices)
+                   .WithMany(w => w.WorkshopServices)
                    .HasForeignKey(ws => ws.WorkShopProfileId)
                    .OnDelete(DeleteBehavior.NoAction);
 
             // Optional: enforce unique combination of Service + Workshop
-            builder.HasIndex(ws => new { ws.ServiceId, ws.WorkShopProfileId })
+            builder.HasIndex(ws => new { ws.ServiceId, ws.WorkShopProfileId, ws.Origin })
                    .IsUnique();
         }
     }
