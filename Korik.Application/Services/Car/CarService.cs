@@ -43,5 +43,7 @@ namespace Korik.Application
                 return ServiceResult<IEnumerable<Car>>.Fail(ex.Message);
             }
         }
+
+
     }
 }

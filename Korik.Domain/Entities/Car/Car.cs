@@ -31,6 +31,8 @@ namespace Korik.Domain
         public TransmissionType TransmissionType { get; set; }
         public FuelType FuelType { get; set; }
 
+        public CarOrigin Origin { get; set; }
+
 
         #region Car M----1 CarOwnerProfile
         public virtual CarOwnerProfile CarOwnerProfile { get; set; }

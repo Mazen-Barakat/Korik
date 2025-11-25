@@ -1,4 +1,5 @@
 ﻿using Korik.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,18 @@ namespace Korik.Application
             _repository = repository;
         }
 
+        public async Task<ServiceResult<IEnumerable<Service>>> GetBySubcategoryIdAsync(int subcategoryId)
+        {
+            try
+            {
+                var query = _repository.GetBySubcategoryIdAsync(subcategoryId);
+                var list = query != null ? await query.ToListAsync() : new List<Service>();
+                return ServiceResult<IEnumerable<Service>>.Ok(list);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<IEnumerable<Service>>.Fail(ex.Message);
+            }
+        }
     }
 }

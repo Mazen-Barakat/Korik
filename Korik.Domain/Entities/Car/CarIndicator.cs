@@ -43,6 +43,7 @@ namespace Korik.Domain
         public double TimeDifferenceAsPercentage { get; set; }
 
 
+
         #region CarInicator M----1 Car
         [ForeignKey("Car")]
         public int CarId { get; set; }

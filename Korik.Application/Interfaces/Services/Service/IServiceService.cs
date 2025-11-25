@@ -9,5 +9,6 @@ namespace Korik.Application
 {
     public interface IServiceService : IGenericService<Service>
     {
+        Task<ServiceResult<IEnumerable<Service>>> GetBySubcategoryIdAsync(int subcategoryId);
     }
 }
