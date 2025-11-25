@@ -27,8 +27,7 @@ namespace Korik.Infrastructurec
             builder.Property(s => s.Description)
                    .HasMaxLength(1000);
 
-            builder.Property(s => s.ImageUrl)
-                   .HasMaxLength(300);
+           
 
             // Relationships
 
