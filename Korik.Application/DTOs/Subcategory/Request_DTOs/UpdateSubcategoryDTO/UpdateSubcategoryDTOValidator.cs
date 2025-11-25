@@ -36,11 +36,6 @@ namespace Korik.Application
                 .MinimumLength(3).WithMessage("Name must be at least 3 characters long.")
                 .MaximumLength(100).WithMessage("Name cannot exceed 100 characters.");
 
-            // ----- Description -----
-            RuleFor(x => x.Description)
-                .NotEmpty().WithMessage("Description is required.")
-                .MaximumLength(500).WithMessage("Description cannot exceed 500 characters.");
-
             // ----- Validate Category Id (using ICategoryService) -----
             RuleFor(x => x.CategoryId)
                 .GreaterThan(0).WithMessage("Category Id must be greater than zero.")
