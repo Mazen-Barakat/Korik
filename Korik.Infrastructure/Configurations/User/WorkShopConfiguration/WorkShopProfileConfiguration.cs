@@ -101,8 +101,8 @@ namespace Korik.Infrastructure
                    .HasForeignKey(b => b.WorkShopProfileId)
                    .OnDelete(DeleteBehavior.NoAction);
 
-            // M : M  ->  WorshopService
-            builder.HasMany(w => w.WorshopServices)
+            // M : M  ->  WorkshopService
+            builder.HasMany(w => w.WorkshopServices)
                    .WithOne(ws => ws.WorkShopProfile)
                    .HasForeignKey(ws => ws.WorkShopProfileId)
                    .OnDelete(DeleteBehavior.NoAction);

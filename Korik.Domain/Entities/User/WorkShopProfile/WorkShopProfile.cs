@@ -42,29 +42,37 @@ namespace Korik.Domain
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 
-
         #region WorkShop 1---M WorkshopPhoto
+
         public virtual ICollection<WorkShopPhoto> WorkShopPhotos { get; set; } = new List<WorkShopPhoto>();
-        #endregion
+
+        #endregion WorkShop 1---M WorkshopPhoto
 
         #region WorkShopProfile 1---M WorkingHours
-        public virtual ICollection<WorkingHours> WorkingHours { get; set; } = new List<WorkingHours>();
-        #endregion
 
+        public virtual ICollection<WorkingHours> WorkingHours { get; set; } = new List<WorkingHours>();
+
+        #endregion WorkShopProfile 1---M WorkingHours
 
         #region WorkShopProfile 1---1 ApplicationUser
+
         [ForeignKey("ApplicationUser")]
         public string ApplicationUserId { get; set; }
+
         public virtual ApplicationUser ApplicationUser { get; set; } = null!;
-        #endregion
 
+        #endregion WorkShopProfile 1---1 ApplicationUser
 
-        #region WorkShopProfile 1----M Booking 
+        #region WorkShopProfile 1----M Booking
+
         public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
-        #endregion
 
-        #region WorkShopProfile M----M WorshopService
-        public virtual ICollection<WorshopService> WorshopServices { get; set; } = new List<WorshopService>();
-        #endregion
+        #endregion WorkShopProfile 1----M Booking
+
+        #region WorkShopProfile M----M WorkshopService
+
+        public virtual ICollection<WorkshopService> WorkshopServices { get; set; } = new List<WorkshopService>();
+
+        #endregion WorkShopProfile M----M WorkshopService
     }
 }
