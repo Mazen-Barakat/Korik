@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Korik.Infrastructure
 {
-    public class WorkshopServiceConfiguration : IEntityTypeConfiguration<WorshopService>
+    public class WorkshopServiceConfiguration : IEntityTypeConfiguration<WorkshopService>
     {
-        public void Configure(EntityTypeBuilder<WorshopService> builder)
+        public void Configure(EntityTypeBuilder<WorkshopService> builder)
         {
             // Table name
             builder.ToTable("WorkshopServices");
@@ -37,24 +37,22 @@ namespace Korik.Infrastructure
                    .HasConversion<string>()
                    .HasMaxLength(50);
 
-
-
             // Relationships
 
             // Many-to-One with Service
             builder.HasOne(ws => ws.Service)
-                   .WithMany(s => s.WorshopServices)
+                   .WithMany(s => s.WorkshopServices)
                    .HasForeignKey(ws => ws.ServiceId)
                    .OnDelete(DeleteBehavior.NoAction);
 
             // Many-to-One with WorkShopProfile
             builder.HasOne(ws => ws.WorkShopProfile)
-                   .WithMany(w => w.WorshopServices)
+                   .WithMany(w => w.WorkshopServices)
                    .HasForeignKey(ws => ws.WorkShopProfileId)
                    .OnDelete(DeleteBehavior.NoAction);
 
             // Optional: enforce unique combination of Service + Workshop
-            builder.HasIndex(ws => new { ws.ServiceId, ws.WorkShopProfileId })
+            builder.HasIndex(ws => new { ws.ServiceId, ws.WorkShopProfileId, ws.Origin })
                    .IsUnique();
         }
     }

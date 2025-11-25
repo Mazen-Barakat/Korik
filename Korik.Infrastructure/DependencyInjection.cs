@@ -33,25 +33,27 @@ namespace Korik.Infrastructure
 
             #region CarOwnerProfileRepository
 
-            services.AddScoped<ICarOwnerProfileRepository, CarOwnerProfileRepository>();      
-                
-           #endregion CarOwnerProfileRepository
+            services.AddScoped<ICarOwnerProfileRepository, CarOwnerProfileRepository>();
+
+            #endregion CarOwnerProfileRepository
 
             #region Car Repository
-            services.AddScoped<ICarRepository, CarRepository>();
-            #endregion
 
-            #region CarOwnerProfileRepository
-            services.AddScoped<ICarOwnerProfileRepository, CarOwnerProfileRepository>();
-            #endregion
+            services.AddScoped<ICarRepository, CarRepository>();
+
+            #endregion Car Repository
 
             #region Car Expense Repository
+
             services.AddScoped<ICarExpenseRepository, CarExpenseRepository>();
+
             #endregion Car Expense Repository
 
             #region Car Indicator Repository
+
             services.AddScoped<ICarIndicatorRepository, CarIndicatorRepository>();
-            #endregion
+
+            #endregion Car Indicator Repository
 
             #region Identity Services
 
@@ -105,52 +107,17 @@ namespace Korik.Infrastructure
 
             #endregion File Storage Service
 
-            #region Generic Repository
-
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-
-            #endregion Generic Repository
-
-            #region CarOwnerProfileRepository
-
-            services.AddScoped<ICarOwnerProfileRepository, CarOwnerProfileRepository>();
-
-            #endregion CarOwnerProfileRepository
-
             #region WorkShopProfile Repository
 
             services.AddScoped<IWorkShopProfileRepository, WorkShopProfileRepository>();
             services.AddScoped<IWorkShopPhotoRepository, WorkShopPhotoRepository>();
 
- 
             // WorkingHours
             services.AddScoped<IWorkshopWorkingHoursRepository, WorkshopWorkingHoursRepository>();
             services.AddScoped<IValidator<CreateWorkShopWorkingHoursDTO>, CreateWorkShopWorkingHoursDTOValidator>();
             services.AddScoped<IValidator<UpdateWorkShopWorkingHoursDTO>, UpdateWorkShopWorkingHoursDTOValidator>();
+
             #endregion WorkShopProfile Repository
-
-            #region Car Repository
-
-            services.AddScoped<ICarRepository, CarRepository>();
-
-            #endregion Car Repository
-
-            #region CarOwnerProfileRepository
-
-            services.AddScoped<ICarOwnerProfileRepository, CarOwnerProfileRepository>();
-
-            #endregion CarOwnerProfileRepository
-
-            #region Car Expense Repository
-
-            services.AddScoped<ICarExpenseRepository, CarExpenseRepository>();
-            #endregion Car Expense Repository
-
-            #region Car Indicator Repository
-
-            services.AddScoped<ICarIndicatorRepository, CarIndicatorRepository>();
-
-            #endregion Car Indicator Repository
 
             #region Category Repository
 
@@ -164,9 +131,17 @@ namespace Korik.Infrastructure
 
             #endregion Subcategory Repository
 
-            #region Service Repository 
+            #region Service Repository
+
             services.AddScoped<IServiceRepository, ServiceRepository>();
-            #endregion
+
+            #endregion Service Repository
+
+            #region WorkshopService
+
+            services.AddScoped<IWorkshopServiceRepository, WorkshopServiceRepository>();
+
+            #endregion WorkshopService
 
             return services;
         }

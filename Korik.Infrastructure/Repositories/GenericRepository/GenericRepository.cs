@@ -114,10 +114,7 @@ namespace Korik.Infrastructure
 
             if (includes != null && includes.Length > 0)
             {
-                foreach (var include in includes)
-                {
-                    query = query.Include(include);
-                }
+                query = includes.Aggregate(query, (current, include) => current.Include(include));
             }
 
             // Apply filter if provided
