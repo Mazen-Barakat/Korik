@@ -89,6 +89,18 @@ namespace Korik.API.Controllers
             return ApiResponse.FromResult(this, result);
         }
 
+        [HttpGet("Get-Workshop-Services-By-Profile-ID")]
+        [Authorize]
+        [SwaggerOperation(
+            Summary = "Get workshop services by workshop profile ID",
+            Description = "Returns a list of workshop services associated with a specific workshop profile ID. Includes details such as service name, duration, pricing, and other relevant information."
+        )]
+        public async Task<IActionResult> GetWorkshopServicesByProfileID([FromQuery] GetWorkshopServicesByProfileIDDTO model)
+        {
+            var result = await _mediator.Send(new GetWorkshopServicesByProfileIDRequest(model));
+            return ApiResponse.FromResult(this, result);
+        }
+
         #endregion Queries
     }
 }
