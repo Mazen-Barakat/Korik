@@ -154,6 +154,10 @@ namespace Korik.Application
 
             #endregion WorkshopServiceService
 
+            #region Booking Service
+            services.AddScoped<IBookingService, BookingService>();
+            #endregion Booking Service
+
             return services;
         }
     }
