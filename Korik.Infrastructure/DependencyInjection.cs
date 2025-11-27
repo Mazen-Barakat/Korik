@@ -143,6 +143,8 @@ namespace Korik.Infrastructure
 
             #endregion WorkshopService
 
+            #region ReviewRepository
+            services.AddScoped<IReviewRepository, ReviewRepository>();
             #region Booking Repository
             services.AddScoped<IBookingRepository, BookingRepository>();
             #endregion
