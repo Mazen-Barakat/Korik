@@ -61,6 +61,16 @@ namespace Korik.Application
 
             #endregion Fluent Email
 
+            #region SignalR
+            //services.AddSignalR(options =>
+            //{
+            //    options.EnableDetailedErrors = true;
+            //    //options.KeepAliveInterval = TimeSpan.FromSeconds(15);
+            //    //options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
+            //});
+
+            #endregion
+
             #region AuthService & AccountService
 
             services.AddScoped<IAuthService, AuthService>();
