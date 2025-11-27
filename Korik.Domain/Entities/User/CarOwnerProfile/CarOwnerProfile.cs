@@ -38,5 +38,9 @@ namespace Korik.Domain
         public virtual ICollection<Car> Cars { get; set; } = new List<Car>();
 
         #endregion CarOwnerProfile 1---M Car
+
+        #region CarOwnerProfile 1---M Review
+        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
+        #endregion
     }
 }

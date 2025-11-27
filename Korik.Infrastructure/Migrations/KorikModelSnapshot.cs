@@ -137,9 +137,6 @@ namespace Korik.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -148,13 +145,16 @@ namespace Korik.Infrastructure.Migrations
                     b.Property<int>("WorkShopProfileId")
                         .HasColumnType("int");
 
+                    b.Property<int>("WorkshopServiceId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CarId");
 
-                    b.HasIndex("ServiceId");
-
                     b.HasIndex("WorkShopProfileId");
+
+                    b.HasIndex("WorkshopServiceId");
 
                     b.ToTable("Bookings", (string)null);
                 });
@@ -421,6 +421,9 @@ namespace Korik.Infrastructure.Migrations
                     b.Property<int>("BookingId")
                         .HasColumnType("int");
 
+                    b.Property<int>("CarOwnerProfileId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasMaxLength(1000)
@@ -438,10 +441,17 @@ namespace Korik.Infrastructure.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
+                    b.Property<int>("WorkShopProfileId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BookingId")
                         .IsUnique();
+
+                    b.HasIndex("CarOwnerProfileId");
+
+                    b.HasIndex("WorkShopProfileId");
 
                     b.ToTable("Reviews", (string)null);
                 });
@@ -835,23 +845,23 @@ namespace Korik.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Korik.Domain.Service", "Service")
-                        .WithMany("Bookings")
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("Korik.Domain.WorkShopProfile", "WorkShopProfile")
                         .WithMany("Bookings")
                         .HasForeignKey("WorkShopProfileId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("Korik.Domain.WorkshopService", "WorkshopService")
+                        .WithMany("Bookings")
+                        .HasForeignKey("WorkshopServiceId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.Navigation("Car");
 
-                    b.Navigation("Service");
-
                     b.Navigation("WorkShopProfile");
+
+                    b.Navigation("WorkshopService");
                 });
 
             modelBuilder.Entity("Korik.Domain.BookingPhoto", b =>
@@ -859,7 +869,7 @@ namespace Korik.Infrastructure.Migrations
                     b.HasOne("Korik.Domain.Booking", "Booking")
                         .WithMany("BookingPhotos")
                         .HasForeignKey("BookingId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Booking");
@@ -870,7 +880,7 @@ namespace Korik.Infrastructure.Migrations
                     b.HasOne("Korik.Domain.CarOwnerProfile", "CarOwnerProfile")
                         .WithMany("Cars")
                         .HasForeignKey("CarOwnerProfileId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("CarOwnerProfile");
@@ -881,7 +891,7 @@ namespace Korik.Infrastructure.Migrations
                     b.HasOne("Korik.Domain.Car", "Car")
                         .WithMany("CarExpenses")
                         .HasForeignKey("CarId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Car");
@@ -917,7 +927,23 @@ namespace Korik.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
+                    b.HasOne("Korik.Domain.CarOwnerProfile", "CarOwnerProfile")
+                        .WithMany("Reviews")
+                        .HasForeignKey("CarOwnerProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Korik.Domain.WorkShopProfile", "WorkShopProfile")
+                        .WithMany("Reviews")
+                        .HasForeignKey("WorkShopProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Booking");
+
+                    b.Navigation("CarOwnerProfile");
+
+                    b.Navigation("WorkShopProfile");
                 });
 
             modelBuilder.Entity("Korik.Domain.Service", b =>
@@ -947,7 +973,7 @@ namespace Korik.Infrastructure.Migrations
                     b.HasOne("Korik.Domain.WorkShopProfile", "WorkShopProfile")
                         .WithMany("WorkShopPhotos")
                         .HasForeignKey("WorkShopProfileId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("WorkShopProfile");
@@ -969,7 +995,7 @@ namespace Korik.Infrastructure.Migrations
                     b.HasOne("Korik.Domain.WorkShopProfile", "WorkShopProfile")
                         .WithMany("WorkingHours")
                         .HasForeignKey("WorkShopProfileId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("WorkShopProfile");
@@ -1071,6 +1097,8 @@ namespace Korik.Infrastructure.Migrations
             modelBuilder.Entity("Korik.Domain.CarOwnerProfile", b =>
                 {
                     b.Navigation("Cars");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Korik.Domain.Category", b =>
@@ -1080,8 +1108,6 @@ namespace Korik.Infrastructure.Migrations
 
             modelBuilder.Entity("Korik.Domain.Service", b =>
                 {
-                    b.Navigation("Bookings");
-
                     b.Navigation("WorkshopServices");
                 });
 
@@ -1094,11 +1120,18 @@ namespace Korik.Infrastructure.Migrations
                 {
                     b.Navigation("Bookings");
 
+                    b.Navigation("Reviews");
+
                     b.Navigation("WorkShopPhotos");
 
                     b.Navigation("WorkingHours");
 
                     b.Navigation("WorkshopServices");
+                });
+
+            modelBuilder.Entity("Korik.Domain.WorkshopService", b =>
+                {
+                    b.Navigation("Bookings");
                 });
 #pragma warning restore 612, 618
         }

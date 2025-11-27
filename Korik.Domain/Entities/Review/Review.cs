@@ -20,5 +20,17 @@ namespace Korik.Domain
         public int BookingId { get; set; }
         public Booking Booking { get; set; }
         #endregion
+
+        #region Review M---1 WorkShopProfile
+        [ForeignKey("WorkShopProfile")]
+        public int WorkShopProfileId { get; set; }
+        public WorkShopProfile WorkShopProfile { get; set; }
+        #endregion
+
+        #region Review M---1 CarOwnerProfile
+        [ForeignKey("CarOwnerProfile")]
+        public int CarOwnerProfileId { get; set; }
+        public CarOwnerProfile CarOwnerProfile { get; set; }
+        #endregion
     }
 }

@@ -42,6 +42,18 @@ namespace Korik.Infrastructure
 
             // Optional: enforce unique BookingId (redundant due to 1:1, but explicit)
             builder.HasIndex(r => r.BookingId).IsUnique();
+
+            // Many-to-One with WorkShopProfile
+            builder.HasOne(r => r.WorkShopProfile)
+                   .WithMany(wp => wp.Reviews)
+                   .HasForeignKey(r => r.WorkShopProfileId)
+                   .OnDelete(DeleteBehavior.Cascade);
+
+            // Many-to-One with CarOwnerProfile
+            builder.HasOne(r => r.CarOwnerProfile)
+                   .WithMany(cop => cop.Reviews)
+                   .HasForeignKey(r => r.CarOwnerProfileId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

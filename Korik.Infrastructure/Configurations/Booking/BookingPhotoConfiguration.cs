@@ -29,7 +29,7 @@ namespace Korik.Infrastructure
             builder.HasOne(bp => bp.Booking)
                    .WithMany(b => b.BookingPhotos)
                    .HasForeignKey(bp => bp.BookingId)
-                   .OnDelete(DeleteBehavior.NoAction);
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

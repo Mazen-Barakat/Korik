@@ -21,12 +21,6 @@ namespace Korik.Domain
 
         #endregion Service M----1 Subcategory
 
-        #region Service 1---M Booking
-
-        public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
-
-        #endregion Service 1---M Booking
-
         #region Service 1---M WorkshopService
 
         public virtual ICollection<WorkshopService> WorkshopServices { get; set; } = new List<WorkshopService>();

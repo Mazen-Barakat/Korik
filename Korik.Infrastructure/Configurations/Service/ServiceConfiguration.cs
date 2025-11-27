@@ -37,11 +37,6 @@ namespace Korik.Infrastructurec
                    .HasForeignKey(s => s.SubcategoryId)
                    .OnDelete(DeleteBehavior.NoAction);
 
-            // One-to-Many with Booking
-            builder.HasMany(s => s.Bookings)
-                   .WithOne(b => b.Service)
-                   .HasForeignKey(b => b.ServiceId)
-                   .OnDelete(DeleteBehavior.NoAction);
 
             // One-to-Many with WorkshopService
             builder.HasMany(s => s.WorkshopServices)
