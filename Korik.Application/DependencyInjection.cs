@@ -144,6 +144,10 @@ namespace Korik.Application
 
             #endregion WorkshopServiceService
 
+            #region Review Service
+            services.AddScoped<IReviewService, ReviewService>();
+            #endregion
+
             return services;
         }
     }
