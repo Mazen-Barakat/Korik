@@ -39,6 +39,12 @@ namespace Korik.Infrastructure
 
             // Relationships
 
+            // Many-to-One with WorkshopService
+            builder.HasMany(s => s.Bookings)
+                   .WithOne(b => b.WorkshopService)
+                   .HasForeignKey(b => b.WorkshopServiceId)
+                   .OnDelete(DeleteBehavior.NoAction);
+
             // Many-to-One with Service
             builder.HasOne(ws => ws.Service)
                    .WithMany(s => s.WorkshopServices)

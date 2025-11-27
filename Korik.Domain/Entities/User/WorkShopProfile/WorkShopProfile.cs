@@ -74,5 +74,9 @@ namespace Korik.Domain
         public virtual ICollection<WorkshopService> WorkshopServices { get; set; } = new List<WorkshopService>();
 
         #endregion WorkShopProfile M----M WorkshopService
+
+        #region WorkShopProfile 1---M Review
+        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
+        #endregion
     }
 }

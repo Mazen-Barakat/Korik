@@ -66,11 +66,13 @@ namespace Korik.Domain
         #endregion
 
 
-        #region Booking M---1 Service
-        [ForeignKey("Service")]
-        public int ServiceId { get; set; }
-        public virtual Service Service { get; set; }
+        #region Booking M---1 WorkshopService
+        [ForeignKey("WorkshopService")]
+        public int WorkshopServiceId { get; set; }
+        public virtual WorkshopService WorkshopService { get; set; }
+
         #endregion
+
 
     }
 }

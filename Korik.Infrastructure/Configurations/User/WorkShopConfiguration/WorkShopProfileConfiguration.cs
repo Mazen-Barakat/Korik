@@ -87,13 +87,13 @@ namespace Korik.Infrastructure
             builder.HasMany(w => w.WorkShopPhotos)
                    .WithOne(p => p.WorkShopProfile)
                    .HasForeignKey(p => p.WorkShopProfileId)
-                   .OnDelete(DeleteBehavior.NoAction);
+                   .OnDelete(DeleteBehavior.Cascade);
 
             // 1 : M  ->  WorkingHours
             builder.HasMany(w => w.WorkingHours)
                    .WithOne(h => h.WorkShopProfile)
                    .HasForeignKey(h => h.WorkShopProfileId)
-                   .OnDelete(DeleteBehavior.NoAction);
+                   .OnDelete(DeleteBehavior.Cascade);
 
             // 1 : M  ->  Booking
             builder.HasMany(w => w.Bookings)
@@ -105,7 +105,7 @@ namespace Korik.Infrastructure
             builder.HasMany(w => w.WorkshopServices)
                    .WithOne(ws => ws.WorkShopProfile)
                    .HasForeignKey(ws => ws.WorkShopProfileId)
-                   .OnDelete(DeleteBehavior.NoAction);
+                   .OnDelete(DeleteBehavior.Cascade);
 
             // Index for performance
             builder.HasIndex(w => w.ApplicationUserId).IsUnique();
