@@ -10,12 +10,12 @@ namespace Korik.Application
 {
     public class CreateReviewDTOValidator : AbstractValidator<CreateReviewDTO>
     {
-        private readonly IGenericRepository<Booking> _bookingRepository;
+        private readonly IBookingRepository _bookingRepository;
         private readonly ICarOwnerProfileRepository _carOwnerProfileRepository;
         private readonly IWorkShopProfileRepository _workShopProfileRepository;
 
         public CreateReviewDTOValidator(
-            IGenericRepository<Booking> bookingRepository,
+            IBookingRepository bookingRepository,
             ICarOwnerProfileRepository carOwnerProfileRepository,
             IWorkShopProfileRepository workShopProfileRepository)
         {
