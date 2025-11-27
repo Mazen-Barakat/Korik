@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Korik.Application
 {
-    public class UpdateSubcategoryDTO
+    public class GetWorkshopServicesByProfileIDDTO
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public int CategoryId { get; set; }
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
     }
 }

@@ -37,7 +37,6 @@ namespace Korik.Application
             RuleFor(x => x.PageSize)
                 .GreaterThanOrEqualTo(1)
                 .WithMessage("Page size must be greater than or equal to 1.");
-            _serviceService = serviceService;
         }
     }
 }
