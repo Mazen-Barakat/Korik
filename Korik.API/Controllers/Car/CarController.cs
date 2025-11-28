@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace Korik.API.Controllers
 {
-    [Authorize(Roles ="CAROWNER,WORKSHOP")]
+    [Authorize(Roles = "CAROWNER,WORKSHOP")]
     [Route("api/[controller]")]
     [ApiController]
 
@@ -27,6 +27,7 @@ namespace Korik.API.Controllers
         }
         #endregion
 
+        #region Commands
         [HttpPost]
         [SwaggerOperation(Summary = "Create a new car")]
         public async Task<IActionResult> PostCar([FromBody] CreateCarDTO model)
@@ -35,11 +36,11 @@ namespace Korik.API.Controllers
 
             var carOwnerProfileResult = await _carOwnerProfileService.GetByApplicationUserIdAsync(applicationUserId);
 
-            if(!carOwnerProfileResult.Success)
+            if (!carOwnerProfileResult.Success)
             {
                 return ApiResponse.FromResult(this, ServiceResult<CarDTO>.Fail("Car owner profile not found for the current user."));
             }
-            
+
             model.CarOwnerProfileId = carOwnerProfileResult.Data.Id;
 
             var result = await _mediator.Send(new CreateCarRequest(model));
@@ -51,7 +52,7 @@ namespace Korik.API.Controllers
         [SwaggerOperation(Summary = "Delete a car by Id")]
         public async Task<IActionResult> DeleteCar([FromRoute] int id)
         {
-            var result = await _mediator.Send(new DeleteCarRequest(new DeleteCarDTO { Id = id}));
+            var result = await _mediator.Send(new DeleteCarRequest(new DeleteCarDTO { Id = id }));
             return ApiResponse.FromResult(this, result);
         }
 
@@ -76,7 +77,10 @@ namespace Korik.API.Controllers
             var result = await _mediator.Send(new UpdateCarRequest(model));
             return ApiResponse.FromResult(this, result);
         }
+        #endregion
 
+
+        #region Queries
         [HttpGet("{id:int}")]
         [SwaggerOperation(Summary = "Get a car by Id")]
         public async Task<IActionResult> GetByIdCar([FromRoute] int id)
@@ -104,5 +108,7 @@ namespace Korik.API.Controllers
 
             return ApiResponse.FromResult(this, result);
         }
+        #endregion
+
     }
 }
