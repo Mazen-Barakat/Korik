@@ -62,6 +62,7 @@ namespace Korik.Application
             #endregion Fluent Email
 
             #region SignalR
+
             //services.AddSignalR(options =>
             //{
             //    options.EnableDetailedErrors = true;
@@ -69,7 +70,7 @@ namespace Korik.Application
             //    //options.ClientTimeoutInterval = TimeSpan.FromSeconds(30);
             //});
 
-            #endregion
+            #endregion SignalR
 
             #region AuthService & AccountService
 
@@ -153,6 +154,12 @@ namespace Korik.Application
             services.AddScoped<IWorkshopServiceService, WorkshopServiceService>();
 
             #endregion WorkshopServiceService
+
+            #region BookingPhoto
+
+            services.AddScoped<IBookingPhotoService, BookingPhotoService>();
+
+            #endregion BookingPhoto
 
             return services;
         }
