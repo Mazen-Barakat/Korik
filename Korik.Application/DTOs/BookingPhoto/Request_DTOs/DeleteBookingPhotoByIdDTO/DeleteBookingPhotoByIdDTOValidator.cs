@@ -17,13 +17,13 @@ namespace Korik.Application
 
             RuleFor(x => x.Id)
                 .GreaterThanOrEqualTo(1)
-                .WithMessage("Booking ID must be greater than 0")
+                .WithMessage("Booking Photo ID must be greater than 0")
                 .MustAsync(async (id, CancellationToken) =>
                 {
                     var exisit = await _bookingPhotoService.IsExistAsync(id);
                     return exisit.Success && exisit.Data;
                 })
-                .WithMessage("The Booking does not exist.");
+                .WithMessage("The Booking Photo does not exist.");
         }
     }
 }

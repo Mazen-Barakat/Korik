@@ -17,7 +17,7 @@ namespace Korik.Application
             CreateMap<CreateBookingPhotoDTO, BookingPhoto>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.PhotoUrl, opt => opt.Ignore())
-                .ForMember(dest => dest.BookingId, opt => opt.Ignore());
+                .ForMember(dest => dest.Booking, opt => opt.Ignore());
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Korik.Application;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -8,6 +9,7 @@ namespace Korik.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "CAROWNER")]
     public class BookingPhotoController : ControllerBase
     {
         #region Dependency Injection
