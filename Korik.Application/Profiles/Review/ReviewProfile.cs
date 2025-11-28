@@ -14,6 +14,11 @@ namespace Korik.Application
         {
             CreateMap<CreateReviewDTO, Review>().ReverseMap();
             CreateMap<Review, ReviewDTO>().ReverseMap();
+            CreateMap<UpdateReviewDTO, Review>().ReverseMap();
+
+            // Mapping for AvgRatingDTO
+            CreateMap<double, AvgRatingDTO>()
+                .ForMember(dest => dest.AverageRating, opt => opt.MapFrom(src => src));
         }
     }
 }

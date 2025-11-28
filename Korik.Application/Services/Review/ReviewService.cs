@@ -15,5 +15,32 @@ namespace Korik.Application
         {
             _repository = repository;
         }
+
+        public async Task<ServiceResult<IEnumerable<Review>>> GetAllReviewsByWorkShopProfileIdAsync(int workerProfileId)
+        {
+            try
+            {
+                var reviewsQueryable = await _repository.GetAllReviewsByWorkShopProfileIdAsync(workerProfileId);
+                var reviews = reviewsQueryable.ToList();
+                return ServiceResult<IEnumerable<Review>>.Ok(reviews);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<IEnumerable<Review>>.Fail(ex.Message);
+            }
+        }
+
+        public async Task<ServiceResult<double>> GetAverageRatingsByWorkShopProfileIdAsync(int workerProfileId)
+        {
+            try
+            {
+                var averageRating = await _repository.GetAverageRatingsByWorkShopProfileIdAsync(workerProfileId);
+                return ServiceResult<double>.Ok(averageRating);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<double>.Fail(ex.Message);
+            }
+        }
     }
 }
