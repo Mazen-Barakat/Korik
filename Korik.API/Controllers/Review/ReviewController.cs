@@ -21,6 +21,7 @@ namespace Korik.API.Controllers
 
         #endregion
 
+        #region Commands
         [HttpPost]
         [SwaggerOperation(Summary = "Create a new review")]
         public async Task<IActionResult> PostReview([FromBody] CreateReviewDTO model)
@@ -28,5 +29,57 @@ namespace Korik.API.Controllers
             var result = await _mediator.Send(new CreateReviewRequest(model));
             return ApiResponse.FromResult(this, result);
         }
+
+        [HttpDelete("{id}")]
+        [SwaggerOperation(Summary = "Delete an existing review")]
+        public async Task<IActionResult> DeleteReview([FromRoute] int id)
+        {
+            var result = await _mediator.Send(new DeleteReviewRequest(new DeleteReviewDTO { Id = id }));
+            return ApiResponse.FromResult(this, result);
+        }
+
+        [HttpPut]
+        [SwaggerOperation(Summary = "Update an existing review")]
+        public async Task<IActionResult> PutReview([FromBody] UpdateReviewDTO model)
+        {
+            var result = await _mediator.Send(new UpdateReviewRequest(model));
+            return ApiResponse.FromResult(this, result);
+        }
+
+        #endregion    
+
+        #region Queries
+        [HttpGet("{id}")]
+        [SwaggerOperation(Summary = "Get a review by ID")]
+        public async Task<IActionResult> GetReviewById([FromRoute] int id)
+        {
+            var result = await _mediator.Send(new GetByIdReviewRequest(new GetReviewByIdDTO { Id = id }));
+            return ApiResponse.FromResult(this, result);
+        }
+
+        [HttpGet]
+        [SwaggerOperation(Summary = "Get all reviews")]
+        public async Task<IActionResult> GetAllReviews()
+        {
+            var result = await _mediator.Send(new GetAllReviewsRequest());
+            return ApiResponse.FromResult(this, result);
+        }
+
+        [HttpGet("average-rating/{workShopProfileId}")]
+        [SwaggerOperation(Summary = "Get average ratings by WorkShopProfileId")]
+        public async Task<IActionResult> GetAverageRatingsByWorkShopProfileId([FromRoute] int workShopProfileId)
+        {
+            var result = await _mediator.Send(new GetAvgRatingsByWorkShopProfileIdRequest(new GetAvgRatingsByWorkShopProfileIdDTO { WorkShopProfileId = workShopProfileId }));
+            return ApiResponse.FromResult(this, result);
+        }
+
+        [HttpGet("all-ratings/{workShopProfileId}")]
+        [SwaggerOperation(Summary = "Get all ratings by WorkShopProfileId")]
+        public async Task<IActionResult> GetAllRatingsByWorkShopProfileId([FromRoute] int workShopProfileId)
+        {
+            var result = await _mediator.Send(new GetAllRatingsByWorkShopProfileIdRequest(new GetAllRatingsByWorkShopProfileIdDTO { WorkShopProfileId = workShopProfileId }));
+            return ApiResponse.FromResult(this, result);
+        }
+        #endregion
     }
 }

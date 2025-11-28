@@ -10,7 +10,6 @@
     <Folder Include="Common\Behaviors\" />
     <Folder Include="DTOs\CarIndicators\Request_DTOs\GetAllCarIndicatorDTO\" />
     <Folder Include="Features\Account\Handlers\Queries\" />
-    <Folder Include="Features\Review\Handlers\Queries\" />
     <Folder Include="Features\Booking\Handlers\Command\Delete\" />
     <Folder Include="Features\Booking\Handlers\Command\Update\" />
     <Folder Include="Features\Booking\Handlers\Queries\" />

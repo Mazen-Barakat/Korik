@@ -1,27 +1,31 @@
 ﻿using FluentValidation;
-using Korik.Domain;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Korik.Application
 {
-    public class CreateReviewDTOValidator : AbstractValidator<CreateReviewDTO>
+    public class UpdateReviewDTOValidator : AbstractValidator<UpdateReviewDTO>
     {
+        private readonly IReviewRepository _reviewRepository;
         private readonly IBookingRepository _bookingRepository;
         private readonly ICarOwnerProfileRepository _carOwnerProfileRepository;
         private readonly IWorkShopProfileRepository _workShopProfileRepository;
 
-        public CreateReviewDTOValidator(
+        public UpdateReviewDTOValidator(
+            IReviewRepository reviewRepository,
             IBookingRepository bookingRepository,
             ICarOwnerProfileRepository carOwnerProfileRepository,
             IWorkShopProfileRepository workShopProfileRepository)
         {
+            _reviewRepository = reviewRepository;
             _bookingRepository = bookingRepository;
             _carOwnerProfileRepository = carOwnerProfileRepository;
             _workShopProfileRepository = workShopProfileRepository;
+
+            RuleFor(x => x.Id)
+                .GreaterThan(0)
+                .WithMessage("Id must be greater than 0.")
+                .MustAsync(async (id, cancellation) => await _reviewRepository.IsExistAsync(id))
+                .WithMessage("Review with the given Id does not exist.");
 
             RuleFor(x => x.Rating)
                 .InclusiveBetween(1, 5)
@@ -37,15 +41,26 @@ namespace Korik.Application
                 .GreaterThanOrEqualTo(0)
                 .WithMessage("Paid amount must be greater than or equal to 0.");
 
+            RuleFor(x => x.CreatedAt)
+                .LessThanOrEqualTo(DateTime.UtcNow)
+                .WithMessage("CreatedAt cannot be a future date.");
+
+
             RuleFor(x => x.BookingId)
+                .GreaterThan(0)
+                .WithMessage("Booking ID must be greater than 0.")
                 .MustAsync(async (id, cancellation) => await _bookingRepository.IsExistAsync(id))
                 .WithMessage("Booking ID does not exist.");
 
             RuleFor(x => x.CarOwnerProfileId)
+                .GreaterThan(0)
+                .WithMessage("Car Owner Profile ID must be greater than 0.")
                 .MustAsync(async (id, cancellation) => await _carOwnerProfileRepository.IsExistAsync(id))
                 .WithMessage("Car Owner Profile ID does not exist.");
 
             RuleFor(x => x.WorkShopProfileId)
+                .GreaterThan(0)
+                .WithMessage("WorkShop Profile ID must be greater than 0.")
                 .MustAsync(async (id, cancellation) => await _workShopProfileRepository.IsExistAsync(id))
                 .WithMessage("WorkShop Profile ID does not exist.");
         }
