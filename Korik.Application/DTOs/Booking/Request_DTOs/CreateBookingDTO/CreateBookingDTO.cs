@@ -12,7 +12,6 @@ namespace Korik.Application
         public DateTime AppointmentDate { get; set; }
         public string IssueDescription { get; set; }
         public PaymentMethod PaymentMethod { get; set; } 
-        public decimal? PaidAmount { get; set; }
 
 
         public int CarId { get; set; }

@@ -13,10 +13,23 @@ namespace Korik.Application
         public BookingProfile()
         {
             CreateMap<CreateBookingDTO, Booking>()
-                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => BookingStatus.Pending))
-                .ForMember(dest => dest.PaymentStatus, opt => opt.MapFrom(src => src.PaidAmount.HasValue && src.PaidAmount.Value > 0 ? PaymentStatus.Paid : PaymentStatus.Unpaid))
-                .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
+              .ForMember(dest => dest.Status,
+                         opt => opt.MapFrom(src => BookingStatus.Pending))
 
+              // PaidAmount always = 0
+              .ForMember(dest => dest.PaidAmount,
+                         opt => opt.MapFrom(src => 0m))
+
+              // PaymentStatus always unpaid
+              .ForMember(dest => dest.PaymentStatus,
+                         opt => opt.MapFrom(src => PaymentStatus.Unpaid))
+
+              .ForMember(dest => dest.CreatedAt,
+                         opt => opt.MapFrom(src => DateTime.UtcNow));
+
+
+
+            CreateMap<UpdateBookingDTO, Booking>();
 
             CreateMap<Booking, BookingDTO>();
         }
