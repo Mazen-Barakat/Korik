@@ -50,7 +50,7 @@ namespace Korik.Application
 
             var existingWorkShopProfile = await _workShopProfileService.GetByIdAsync(request.Model.Id);
             if (existingWorkShopProfile?.Data == null)
-                return ServiceResult<WorkShopProfileDTO>.Fail("Car Owner Profile not found.");
+                return ServiceResult<WorkShopProfileDTO>.Fail("WorkShopProfile not found.");
 
             _mapper.Map(request.Model, existingWorkShopProfile.Data);
 
@@ -58,7 +58,7 @@ namespace Korik.Application
 
             // UpdateResult : Faild
             if (!result.Success)
-                return ServiceResult<WorkShopProfileDTO>.Fail(result.Message ?? "Failed to Update Car Owner Status Profile.");
+                return ServiceResult<WorkShopProfileDTO>.Fail(result.Message ?? "Failed to Update WorkShopProfile Status.");
 
             //createResult : Success
             //Map Entity => DTO

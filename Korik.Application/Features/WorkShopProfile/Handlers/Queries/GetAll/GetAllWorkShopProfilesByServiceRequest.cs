@@ -55,8 +55,8 @@ namespace Korik.Application
                request.Model.PageNumber,
                 request.Model.PageSize,
                    x => x.VerificationStatus == VerificationStatus.Verified &&
-                                x.WorshopServices.Any(ws => ws.ServiceId == request.Model.ServiceId),
-                   w => w.WorshopServices
+                                x.WorkshopServices.Any(ws => ws.ServiceId == request.Model.ServiceId),
+                   w => w.WorkshopServices
                 );
 
             //Not Valid

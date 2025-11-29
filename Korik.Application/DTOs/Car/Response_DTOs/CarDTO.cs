@@ -19,5 +19,8 @@ namespace Korik.Application
         public TransmissionType TransmissionType { get; set; }
         public FuelType FuelType { get; set; }
         public int CarOwnerProfileId { get; set; }
+
+        public CarOrigin Origin { get; set; }
+
     }
 }

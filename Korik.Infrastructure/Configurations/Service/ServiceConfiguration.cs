@@ -27,17 +27,6 @@ namespace Korik.Infrastructurec
             builder.Property(s => s.Description)
                    .HasMaxLength(1000);
 
-            builder.Property(s => s.Duration)
-                   .IsRequired(); // duration in minutes
-
-            builder.Property(s => s.MinPrice)
-                   .IsRequired()
-                   .HasPrecision(10, 2);
-
-            builder.Property(s => s.MaxPrice)
-                   .IsRequired()
-                   .HasPrecision(10, 2);
-
             builder.Property(s => s.ImageUrl)
                    .HasMaxLength(300);
 
@@ -56,7 +45,7 @@ namespace Korik.Infrastructurec
                    .OnDelete(DeleteBehavior.NoAction);
 
             // One-to-Many with WorkshopService
-            builder.HasMany(s => s.WorshopServices)
+            builder.HasMany(s => s.WorkshopServices)
                    .WithOne(ws => ws.Service)
                    .HasForeignKey(ws => ws.ServiceId)
                    .OnDelete(DeleteBehavior.NoAction);

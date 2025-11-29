@@ -28,27 +28,32 @@ namespace Korik.Application
             _validator = validator;
             _mapper = mapper;
         }
+
         public async Task<ServiceResult<ServiceDTO>> Handle(UpdateServiceRequest request, CancellationToken cancellationToken)
         {
             var validationResult = await _validator.ValidateAsync(request.model, cancellationToken);
             if (!validationResult.IsValid)
             {
-                var errors = validationResult.Errors.Select(e => e.ErrorMessage).ToList();
-                return ServiceResult<ServiceDTO>.Fail(string.Join(", ", errors));
+                var errors = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
+                return ServiceResult<ServiceDTO>.Fail(errors);
             }
 
+            var existsResult = await _serviceService.IsExistAsync(request.model.Id);
+            if (!existsResult.Data)
+            {
+                return ServiceResult<ServiceDTO>.Fail("Service not found.");
+            }
 
             var service = _mapper.Map<Service>(request.model);
-            var updatedService = await _serviceService.UpdateAsync(service);
-            if (!updatedService.Success)
+            var updatedResult = await _serviceService.UpdateAsync(service);
+
+            if (!updatedResult.Success)
             {
-                return ServiceResult<ServiceDTO>.Fail(updatedService.Message ?? "Failed to update service.");
+                return ServiceResult<ServiceDTO>.Fail(updatedResult.Message ?? "Failed to update service.");
             }
 
-
-            var serviceDTO = _mapper.Map<ServiceDTO>(updatedService.Data);
+            var serviceDTO = _mapper.Map<ServiceDTO>(updatedResult.Data);
             return ServiceResult<ServiceDTO>.Ok(serviceDTO, "Service updated successfully.");
         }
     }
-
 }

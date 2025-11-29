@@ -1,5 +1,6 @@
 ﻿using Korik.Application;
 using Korik.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,13 @@ namespace Korik.Infrastructure
         public ServiceRepository(Korik context) : base(context)
         {
             _context = context;
+        }
+
+        public IQueryable<Service>? GetBySubcategoryIdAsync(int subcategoryId)
+        {
+            return _context.Services
+                .Where(s => s.SubcategoryId == subcategoryId)
+                .AsNoTracking();
         }
     }
 }

@@ -12,12 +12,13 @@ namespace Korik.Application
     {
         public ServiceProfile()
         {
-            CreateMap<Service , CreateServiceDTO>().ReverseMap();
+            CreateMap<Service, ServiceDTO>()
+                .ForMember(dest => dest.SubcategoryName,
+                    opt => opt.MapFrom(src => src.Subcategory != null ? src.Subcategory.Name : null))
+                .ReverseMap();
 
-            CreateMap<Service , ServiceDTO>().ReverseMap();
-
-            CreateMap <Service , UpdateServiceDTO>().ReverseMap();
-
+            CreateMap<CreateServiceDTO, Service>();
+            CreateMap<UpdateServiceDTO, Service>();
         }
     }
 }

@@ -9,5 +9,6 @@ namespace Korik.Application
 {
     public interface IServiceRepository : IGenericRepository<Service>
     {
+        IQueryable<Service>? GetBySubcategoryIdAsync(int subcategoryId);
     }
 }
