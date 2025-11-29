@@ -9,5 +9,7 @@ namespace Korik.Application
 {
     public interface IBookingRepository : IGenericRepository<Booking>
     {
+        IQueryable<Booking> GetBookingsByCarIdAsync(int carId);
+        IQueryable<Booking> GetBookingsByWorkshopProfileIdAsync(int workshopProfileId);
     }
 }

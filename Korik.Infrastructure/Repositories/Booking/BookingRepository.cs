@@ -15,5 +15,19 @@ namespace Korik.Infrastructure
         {
             _context = context;
         }
+
+        public IQueryable<Booking> GetBookingsByCarIdAsync(int carId)
+        {
+            var result  = _context.Bookings.Where(b => b.CarId == carId).AsQueryable();
+
+            return result;
+        }
+
+        public IQueryable<Booking> GetBookingsByWorkshopProfileIdAsync(int workshopProfileId)
+        {
+            var result = _context.Bookings.Where(b => b.WorkShopProfileId == workshopProfileId).AsQueryable();
+            
+            return result;
+        }
     }
 }

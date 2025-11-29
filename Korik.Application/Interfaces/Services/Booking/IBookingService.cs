@@ -9,5 +9,8 @@ namespace Korik.Application
 {
     public interface IBookingService : IGenericService<Booking>
     {
+        Task<ServiceResult<IEnumerable<Booking>>> GetBookingsByCarIdAsync(int carId);
+
+        Task<ServiceResult<IEnumerable<Booking>>> GetBookingsByWorkshopProfileIdAsync(int workshopProfileId);
     }
 }
