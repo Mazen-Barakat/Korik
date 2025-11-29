@@ -30,18 +30,13 @@ namespace Korik.Application
                 .WithMessage("Appointment date must be in the future.");
 
             RuleFor(x => x.IssueDescription)
-                .NotEmpty().WithMessage("Issue description is required.")
-                .MinimumLength(10).WithMessage("Issue description must be at least 10 characters.")
+                .NotNull().WithMessage("Issue description is required.")
                 .MaximumLength(500).WithMessage("Issue description must not exceed 500 characters.");
 
             RuleFor(x => x.PaymentMethod)
                 .IsInEnum().WithMessage("Invalid payment method.");
 
-            RuleFor(x => x.PaidAmount)
-                .GreaterThanOrEqualTo(0)
-                .When(x => x.PaidAmount.HasValue)
-                .WithMessage("Paid amount must be non-negative.");
-
+         
             // ----- CarId validation -----
             RuleFor(x => x.CarId)
                 .GreaterThan(0).WithMessage("CarId must be greater than 0.")
