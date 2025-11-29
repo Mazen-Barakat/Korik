@@ -50,6 +50,20 @@ namespace Korik.Application
 
             CreateMap<PagedResult<WorkshopService>, PagedResult<WorkshopServiceOfferingDTO>>()
                      .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
+
+            CreateMap<WorkshopService, WorkshopServiceWithServiceDTO>()
+                //from WorkshopService entity itself
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Duration, opt => opt.MapFrom(src => src.Duration))
+                .ForMember(dest => dest.MinPrice, opt => opt.MapFrom(src => src.MinPrice))
+                .ForMember(dest => dest.MaxPrice, opt => opt.MapFrom(src => src.MaxPrice))
+                .ForMember(dest => dest.Origin, opt => opt.MapFrom(src => src.Origin))
+                // Service Details (from Service table)
+                .ForMember(dest => dest.ServiceName, opt => opt.MapFrom(src => src.Service.Name))
+                .ForMember(dest => dest.ServiceDescription, opt => opt.MapFrom(src => src.Service.Description));
+
+            CreateMap<PagedResult<WorkshopService>, PagedResult<WorkshopServiceWithServiceDTO>>()
+                .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
         }
     }
 }

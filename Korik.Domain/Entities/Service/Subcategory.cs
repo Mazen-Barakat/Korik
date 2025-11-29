@@ -10,8 +10,7 @@ namespace Korik.Domain
     public class Subcategory : BaseEntity
     {
         public string Name { get; set; }
-        public string Description { get; set; }
-
+ 
         #region Subcategory 1----M Service 
         public ICollection<Service> Services { get; set; } = new List<Service>();
         #endregion

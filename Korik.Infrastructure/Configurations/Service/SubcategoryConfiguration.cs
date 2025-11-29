@@ -23,9 +23,7 @@ namespace Korik.Infrastructure
             builder.Property(sc => sc.Name)
                    .IsRequired()
                    .HasMaxLength(150);
-
-            builder.Property(sc => sc.Description)
-                   .HasMaxLength(1000);
+ 
 
             // Relationships
 

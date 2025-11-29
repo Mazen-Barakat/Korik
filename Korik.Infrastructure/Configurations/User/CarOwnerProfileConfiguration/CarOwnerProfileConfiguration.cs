@@ -61,7 +61,7 @@ namespace Korik.Infrastructure
             builder.HasMany(co => co.Cars)
                    .WithOne(c => c.CarOwnerProfile)
                    .HasForeignKey(c => c.CarOwnerProfileId)
-                   .OnDelete(DeleteBehavior.NoAction);
+                   .OnDelete(DeleteBehavior.Cascade);
 
             // Optional: add an index for faster lookups by ApplicationUserId
             builder.HasIndex(co => co.ApplicationUserId).IsUnique();

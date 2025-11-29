@@ -28,7 +28,7 @@ namespace Korik.Infrastructure
             builder.HasOne(wp => wp.WorkShopProfile)
                    .WithMany(ws => ws.WorkShopPhotos)
                    .HasForeignKey(wp => wp.WorkShopProfileId)
-                   .OnDelete(DeleteBehavior.NoAction);
+                   .OnDelete(DeleteBehavior.Cascade);
 
         }
     }

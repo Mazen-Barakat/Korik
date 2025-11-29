@@ -11,8 +11,7 @@ namespace Korik.Domain
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string ImageUrl { get; set; }
-
+ 
         #region Service M----1 Subcategory
 
         [ForeignKey("Subcategory")]
@@ -21,12 +20,6 @@ namespace Korik.Domain
         public Subcategory Subcategory { get; set; }
 
         #endregion Service M----1 Subcategory
-
-        #region Service 1---M Booking
-
-        public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
-
-        #endregion Service 1---M Booking
 
         #region Service 1---M WorkshopService
 

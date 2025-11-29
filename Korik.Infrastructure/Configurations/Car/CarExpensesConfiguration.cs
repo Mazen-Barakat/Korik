@@ -39,7 +39,7 @@ namespace Korik.Infrastructure
             builder.HasOne(ce => ce.Car)
                    .WithMany(c => c.CarExpenses)
                    .HasForeignKey(ce => ce.CarId)
-                   .OnDelete(DeleteBehavior.NoAction);
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

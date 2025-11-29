@@ -27,8 +27,7 @@ namespace Korik.Infrastructurec
             builder.Property(s => s.Description)
                    .HasMaxLength(1000);
 
-            builder.Property(s => s.ImageUrl)
-                   .HasMaxLength(300);
+           
 
             // Relationships
 
@@ -38,11 +37,6 @@ namespace Korik.Infrastructurec
                    .HasForeignKey(s => s.SubcategoryId)
                    .OnDelete(DeleteBehavior.NoAction);
 
-            // One-to-Many with Booking
-            builder.HasMany(s => s.Bookings)
-                   .WithOne(b => b.Service)
-                   .HasForeignKey(b => b.ServiceId)
-                   .OnDelete(DeleteBehavior.NoAction);
 
             // One-to-Many with WorkshopService
             builder.HasMany(s => s.WorkshopServices)

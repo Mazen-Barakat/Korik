@@ -36,7 +36,7 @@ namespace Korik.Domain
         public BookingStatus Status { get; set; } = BookingStatus.Pending;
         public DateTime AppointmentDate { get; set; }
         public string IssueDescription { get; set; }
-        public PaymentMethod PaymentMethod { get; set; } = PaymentMethod.Cash;
+        public PaymentMethod PaymentMethod { get; set; }
         public decimal? PaidAmount { get; set; }
         public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Unpaid;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -66,11 +66,13 @@ namespace Korik.Domain
         #endregion
 
 
-        #region Booking M---1 Service
-        [ForeignKey("Service")]
-        public int ServiceId { get; set; }
-        public virtual Service Service { get; set; }
+        #region Booking M---1 WorkshopService
+        [ForeignKey("WorkshopService")]
+        public int WorkshopServiceId { get; set; }
+        public virtual WorkshopService WorkshopService { get; set; }
+
         #endregion
+
 
     }
 }

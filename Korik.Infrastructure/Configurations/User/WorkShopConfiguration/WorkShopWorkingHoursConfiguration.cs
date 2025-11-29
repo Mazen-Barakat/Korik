@@ -46,7 +46,7 @@ namespace Korik.Infrastructure
             builder.HasOne(wh => wh.WorkShopProfile)
                    .WithMany(ws => ws.WorkingHours)
                    .HasForeignKey(wh => wh.WorkShopProfileId)
-                   .OnDelete(DeleteBehavior.NoAction);
+                   .OnDelete(DeleteBehavior.Cascade);
 
             // Optional: unique constraint to prevent duplicate day entries per workshop
             builder.HasIndex(wh => new { wh.WorkShopProfileId, wh.Day }).IsUnique();

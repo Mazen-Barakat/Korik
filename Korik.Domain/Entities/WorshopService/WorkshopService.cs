@@ -31,5 +31,9 @@ namespace Korik.Domain
         public WorkShopProfile WorkShopProfile { get; set; }
 
         #endregion WorkshopService M---1 Workshop
+
+        #region WorkshopService 1----M Booking
+        public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+        #endregion
     }
 }

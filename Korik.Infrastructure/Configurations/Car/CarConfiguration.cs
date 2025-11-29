@@ -74,13 +74,13 @@ namespace Korik.Infrastructure
             builder.HasMany(c => c.CarExpenses)
                    .WithOne(ce => ce.Car)
                    .HasForeignKey(ce => ce.CarId)
-                   .OnDelete(DeleteBehavior.NoAction);
+                   .OnDelete(DeleteBehavior.Cascade);
 
             // One-to-Many with CarIndicators
             builder.HasMany(c => c.CarIndicators)
                    .WithOne(ci => ci.Car)
                    .HasForeignKey(ci => ci.CarId)
-                   .OnDelete(DeleteBehavior.NoAction);
+                   .OnDelete(DeleteBehavior.Cascade);
 
             // Optional: Unique LicensePlate per car
             builder.HasIndex(c => c.LicensePlate).IsUnique();

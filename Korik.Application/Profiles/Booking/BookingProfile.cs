@@ -17,9 +17,10 @@ namespace Korik.Application
                 .ForMember(dest => dest.PaymentStatus, opt => opt.MapFrom(src => src.PaidAmount.HasValue && src.PaidAmount.Value > 0 ? PaymentStatus.Paid : PaymentStatus.Unpaid))
                 .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow));
 
-            CreateMap<Booking, BookingDTO>();
 
             CreateMap<UpdateBookingDTO, Booking>();
+
+            CreateMap<Booking, BookingDTO>();
         }
     }
 }

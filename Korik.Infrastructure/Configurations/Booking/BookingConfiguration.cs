@@ -61,23 +61,23 @@ namespace Korik.Infrastructure
                    .HasForeignKey(b => b.WorkShopProfileId)
                    .OnDelete(DeleteBehavior.NoAction);
 
-            // Many-to-One with Service
-            builder.HasOne(b => b.Service)
+            // Many-to-One with WorkshopService
+            builder.HasOne(wss => wss.WorkshopService)
                    .WithMany(s => s.Bookings)
-                   .HasForeignKey(b => b.ServiceId)
+                   .HasForeignKey(b => b.WorkshopServiceId)
                    .OnDelete(DeleteBehavior.NoAction);
 
             // One-to-One with Review
             builder.HasOne(b => b.Review)
                    .WithOne(r => r.Booking)
                    .HasForeignKey<Review>(r => r.BookingId)
-                   .OnDelete(DeleteBehavior.NoAction);
+                   .OnDelete(DeleteBehavior.Cascade);
 
             // One-to-Many with BookingPhotos
             builder.HasMany(b => b.BookingPhotos)
                    .WithOne(bp => bp.Booking)
                    .HasForeignKey(bp => bp.BookingId)
-                   .OnDelete(DeleteBehavior.NoAction);
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
