@@ -16,16 +16,19 @@ namespace Korik.Application
         private readonly ICarService _carService;
         private readonly IWorkShopProfileService _workShopProfileService;
         private readonly IBookingService _bookingService;
+        private readonly IWorkshopServiceService _workshopServiceService;
 
         public UpdateBookingDTOValidator(
             ICarService carService,
             IWorkShopProfileService workShopProfileService,
-            IBookingService bookingService
+            IBookingService bookingService,
+            IWorkshopServiceService workshopServiceService
             )
         {
             _carService = carService;
             _workShopProfileService = workShopProfileService;
             _bookingService = bookingService;
+            _workshopServiceService = workshopServiceService;
 
             // ---- ID CHECK USING BOOKING SERVICE ----
             RuleFor(x => x.Id)
