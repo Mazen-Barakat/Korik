@@ -61,6 +61,12 @@ namespace Korik.Infrastructure
 
         #endregion Service
 
+        #region Notification
+
+        public virtual DbSet<Notification> Notifications { get; set; }
+
+        #endregion Notification
+
         #endregion DbSets
 
         #region Fluent API

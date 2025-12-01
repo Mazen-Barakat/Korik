@@ -15,17 +15,26 @@ namespace Korik.Application
     public class CreateBookingRequestHandler : IRequestHandler<CreateBookingRequest, ServiceResult<BookingDTO>>
     {
         private readonly IBookingService _bookingService;
+        private readonly INotificationService _notificationService;
+        private readonly ICarService _carService;
+        private readonly IWorkShopProfileService _workShopProfileService;
         private readonly IValidator<CreateBookingDTO> _validator;
         private readonly IMapper _mapper;
 
         public CreateBookingRequestHandler
             (
             IBookingService bookingService,
+            INotificationService notificationService,
+            ICarService carService,
+            IWorkShopProfileService workShopProfileService,
             IValidator<CreateBookingDTO> validator,
             IMapper mapper
             )
         {
             _bookingService = bookingService;
+            _notificationService = notificationService;
+            _carService = carService;
+            _workShopProfileService = workShopProfileService;
             _validator = validator;
             _mapper = mapper;
         }
@@ -52,6 +61,39 @@ namespace Korik.Application
             }
 
             var bookingDto = _mapper.Map<BookingDTO>(createdBooking.Data);
+
+            // ✅ Send notification to workshop owner
+            try
+            {
+                // Get CarOwnerProfile to extract sender ApplicationUserId
+                var carResult = await _carService.GetByIdWithIncludeAsync(request.model.CarId, c => c.CarOwnerProfile);
+                
+                // Get WorkShopProfile to extract receiver ApplicationUserId
+                var workshopResult = await _workShopProfileService.GetByIdAsync(request.model.WorkShopProfileId);
+
+                if (carResult.Success && carResult.Data != null && 
+                    workshopResult.Success && workshopResult.Data != null)
+                {
+                    var carOwnerUserId = carResult.Data.CarOwnerProfile.ApplicationUserId;
+                    var workshopUserId = workshopResult.Data.ApplicationUserId;
+                    var carOwnerName = $"{carResult.Data.CarOwnerProfile.FirstName} {carResult.Data.CarOwnerProfile.LastName}";
+
+                    // Send notification
+                    await _notificationService.SendNotificationAsync(
+                        senderId: carOwnerUserId,
+                        receiverId: workshopUserId,
+                        message: $"New booking request from {carOwnerName} for {request.model.IssueDescription}",
+                        type: NotificationType.BookingCreated,
+                        bookingId: createdBooking.Data!.Id
+                    );
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the error but don't fail the booking creation
+                Console.WriteLine($"Failed to send notification: {ex.Message}");
+            }
+
             return ServiceResult<BookingDTO>.Created(bookingDto, "Booking created successfully.");
         }
     }
