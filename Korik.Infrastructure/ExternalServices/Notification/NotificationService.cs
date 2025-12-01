@@ -30,11 +30,11 @@ namespace Korik.Infrastructure
         }
 
         public async Task<ServiceResult<NotificationDto>> SendNotificationAsync(
-         string senderId,
+            string senderId,
             string receiverId,
-          string message,
-              NotificationType type,
-             int? bookingId = null)
+            string message,
+            NotificationType type,
+            int? bookingId = null)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace Korik.Infrastructure
                         foreach (var connectionId in connectionIds)
                         {
                             await _hubContext.Clients.Client(connectionId)
-                      .SendAsync("ReceiveNotification", notificationDto);
+                            .SendAsync("ReceiveNotification", notificationDto);
                         }
 
                         Console.WriteLine($"Real-time notification sent to user {receiverId}");

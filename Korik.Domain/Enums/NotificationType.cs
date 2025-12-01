@@ -8,10 +8,10 @@ namespace Korik.Domain
 {
   public enum NotificationType
     {
- BookingCreated,
+        BookingCreated,
         BookingAccepted,
-  BookingRejected,
+        BookingRejected,
         BookingCancelled,
-      BookingCompleted
+        BookingCompleted
     }
 }
