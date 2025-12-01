@@ -84,7 +84,7 @@ namespace Korik.API
                     {
                         var accessToken = context.Request.Query["access_token"];
                         var path = context.HttpContext.Request.Path;
-                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chathub"))
+                        if (!string.IsNullOrEmpty(accessToken) && (path.StartsWithSegments("/chathub") || path.StartsWithSegments("/notificationHub")))
                         {
                             context.Token = accessToken;
                         }
@@ -95,6 +95,15 @@ namespace Korik.API
             //Google External Login
 
             #endregion JWT Authentication Service
+
+            #region SignalR Service
+
+            builder.Services.AddSignalR(options =>
+            {
+                options.EnableDetailedErrors = true;
+            });
+
+            #endregion SignalR Service
 
             #region Controllers Service
 
@@ -165,7 +174,8 @@ namespace Korik.API
                     {
                         policy.WithOrigins(
                                 builder.Configuration["consumers:AllowFrontend"], // frontend origin from configuration
-                                "http://localhost:4200" // explicitly added localhost origin
+                                "http://localhost:4200",
+                                "http://127.0.0.1:5500" // explicitly added localhost origin
                             )
                               .AllowAnyMethod()
                               .AllowAnyHeader()
@@ -212,6 +222,7 @@ namespace Korik.API
             app.UseAuthorization(); // Do you have permission? (roles, policies, claims) After Authentication
 
             app.MapControllers(); //Send request to the right controller action.
+            app.MapHub<NotificationHub>("/notificationHub"); // SignalR hub endpoint
 
             app.Run(); //Start the app & stop pipeline here.
 

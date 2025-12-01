@@ -156,7 +156,16 @@ namespace Korik.Infrastructure
             services.AddScoped<IBookingRepository, BookingRepository>();
             #endregion
 
-            return services;
+            #region Notification Repository
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+            #endregion
+
+      #region Notification Services
+     services.AddSingleton<IUserConnectionManager, UserConnectionManager>();
+        services.AddScoped<INotificationService, NotificationService>();
+        #endregion
+
+         return services;
         }
-    }
+  }
 }
