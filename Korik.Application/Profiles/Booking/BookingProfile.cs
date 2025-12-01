@@ -15,6 +15,8 @@ namespace Korik.Application
             CreateMap<CreateBookingDTO, Booking>()
               .ForMember(dest => dest.Status,
                          opt => opt.MapFrom(src => BookingStatus.Pending))
+              .ForMember(dest => dest.IssueDescription,
+                         opt => opt.MapFrom(src => src.IssueDescription ?? string.Empty))
 
               // PaidAmount always = 0
               .ForMember(dest => dest.PaidAmount,

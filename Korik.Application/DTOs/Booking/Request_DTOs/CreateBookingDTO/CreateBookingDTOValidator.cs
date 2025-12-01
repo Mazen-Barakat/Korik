@@ -29,7 +29,6 @@ namespace Korik.Application
                 .WithMessage("Appointment date must be in the future.");
 
             RuleFor(x => x.IssueDescription)
-                .NotNull().WithMessage("Issue description is required.")
                 .MaximumLength(500).WithMessage("Issue description must not exceed 500 characters.");
 
             RuleFor(x => x.PaymentMethod)
