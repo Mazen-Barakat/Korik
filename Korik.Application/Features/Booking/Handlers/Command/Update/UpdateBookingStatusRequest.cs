@@ -19,6 +19,7 @@ namespace Korik.Application
         private readonly IBookingService _bookingService;
         private readonly INotificationService _notificationService;
         private readonly ICarService _carService;
+        private readonly IWorkShopProfileService _workshopService;
         private readonly IValidator<UpdateBookingStatusDTO> _validator;
         private readonly IMapper _mapper;
 
@@ -27,6 +28,7 @@ namespace Korik.Application
                 IBookingService bookingService,
                 INotificationService notificationService,
                 ICarService carService,
+                IWorkShopProfileService workshopService,
                 IValidator<UpdateBookingStatusDTO> validator,
                 IMapper mapper
             )
@@ -34,6 +36,7 @@ namespace Korik.Application
             _bookingService = bookingService;
             _notificationService = notificationService;
             _carService = carService;
+            _workshopService = workshopService;
             _validator = validator;
             _mapper = mapper;
         }
@@ -83,7 +86,7 @@ namespace Korik.Application
                 ),
 
                 BookingStatus.Cancelled => (
-                    "Your booking has been cancelled.",
+                    "A booking has been cancelled by the car owner.",
                     NotificationType.BookingCancelled
                 ),
 
@@ -110,25 +113,47 @@ namespace Korik.Application
 
             try
             {
-                var carResult = await _carService.GetByIdWithIncludeAsync(updatedBooking.Data!.CarId, c => c.CarOwnerProfile);
-
-                if (carResult.Success && carResult.Data != null)
+                // Determine who should receive the notification based on booking status
+                if (existingBooking.Data.Status == BookingStatus.Cancelled)
                 {
-                    var carOwnerUserId = carResult.Data.CarOwnerProfile.ApplicationUserId;
+                    // When cancelled by car owner, notify the workshop
+                    var workshopResult = await _workshopService.GetByIdAsync(updatedBooking.Data!.WorkShopProfileId);
 
-                    await _notificationService.SendNotificationAsync
-                        (
-                        senderId: request.Model.ApplicationUserId!,
-                        receiverId: carOwnerUserId,
-                        message: message,
-                        type: type,
-                        bookingId: updatedBooking.Data!.Id
-                        );
+                    if (workshopResult.Success && workshopResult.Data != null)
+                    {
+                        await _notificationService.SendNotificationAsync
+                            (
+                                senderId: request.Model.ApplicationUserId!,
+                                receiverId: workshopResult.Data.ApplicationUserId!,
+                                message: message,
+                                type: type,
+                                bookingId: updatedBooking.Data!.Id
+                            );
+                    }
+                }
+                else
+                {
+                    // For other statuses (Confirmed, Rejected, InProgress, etc.), notify the car owner
+                    var carResult = await _carService.GetByIdWithIncludeAsync(updatedBooking.Data!.CarId, c => c.CarOwnerProfile);
+
+                    if (carResult.Success && carResult.Data != null)
+                    {
+                        var carOwnerUserId = carResult.Data.CarOwnerProfile.ApplicationUserId;
+
+                        await _notificationService.SendNotificationAsync
+                            (
+                                senderId: request.Model.ApplicationUserId!,
+                                receiverId: carOwnerUserId,
+                                message: message,
+                                type: type,
+                                bookingId: updatedBooking.Data!.Id
+                            );
+                    }
                 }
             }
             catch (Exception ex)
             {
-                // Log the error but don't fail the booking creation
+                // Log the error but don't fail the booking update
                 Console.WriteLine($"Failed to send notification: {ex.Message}");
             }
 
