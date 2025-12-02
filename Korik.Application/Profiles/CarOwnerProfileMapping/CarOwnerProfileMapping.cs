@@ -26,6 +26,9 @@ namespace Korik.Application
 
             // Map Car to ProfileWithCarDto
             CreateMap<Car, ProfileWithCarDTO>();
+
+            // Map CarOwnerProfile to BookingCarOwnerProfileDTO (for booking-related queries)
+            CreateMap<CarOwnerProfile, BookingCarOwnerProfileDTO>();
         }
     }
 }
