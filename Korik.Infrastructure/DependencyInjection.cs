@@ -143,11 +143,12 @@ namespace Korik.Infrastructure
 
             #endregion WorkshopService
 
-            #region BokkingPhoto
+            #region BookingPhoto
 
             services.AddScoped<IBookingPhotoRepository, BookingPhotoRepository>();
 
             #endregion BokkingPhoto
+
             #region ReviewRepository
             services.AddScoped<IReviewRepository, ReviewRepository>();
             #endregion  
@@ -160,10 +161,10 @@ namespace Korik.Infrastructure
             services.AddScoped<INotificationRepository, NotificationRepository>();
             #endregion
 
-      #region Notification Services
-     services.AddSingleton<IUserConnectionManager, UserConnectionManager>();
-        services.AddScoped<INotificationService, NotificationService>();
-        #endregion
+            #region Notification Services
+                services.AddSingleton<IUserConnectionManager, UserConnectionManager>();
+                services.AddScoped<INotificationService, NotificationService>();
+            #endregion
 
          return services;
         }

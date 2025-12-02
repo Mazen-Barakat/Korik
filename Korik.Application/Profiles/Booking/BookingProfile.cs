@@ -15,6 +15,8 @@ namespace Korik.Application
             CreateMap<CreateBookingDTO, Booking>()
               .ForMember(dest => dest.Status,
                          opt => opt.MapFrom(src => BookingStatus.Pending))
+              .ForMember(dest => dest.IssueDescription,
+                         opt => opt.MapFrom(src => src.IssueDescription ?? string.Empty))
 
               // PaidAmount always = 0
               .ForMember(dest => dest.PaidAmount,
@@ -27,11 +29,15 @@ namespace Korik.Application
               .ForMember(dest => dest.CreatedAt,
                          opt => opt.MapFrom(src => DateTime.UtcNow));
 
-
+            CreateMap<UpdateBookingStatusDTO, Booking>();
 
             CreateMap<UpdateBookingDTO, Booking>();
 
             CreateMap<Booking, BookingDTO>();
+
+            CreateMap<PagedResult<Booking>, PagedResult<BookingDTO>>()
+                    .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
+
         }
     }
 }

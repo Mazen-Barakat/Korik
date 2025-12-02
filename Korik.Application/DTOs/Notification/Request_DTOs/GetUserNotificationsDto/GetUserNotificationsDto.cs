@@ -9,15 +9,16 @@ namespace Korik.Application
 {
     public class GetUserNotificationsDto
     {
-  public string UserId { get; set; } = string.Empty;
-  }
+        public string UserId { get; set; } = string.Empty;
+    }
 
     public class GetUserNotificationsDtoValidator : AbstractValidator<GetUserNotificationsDto>
     {
-   public GetUserNotificationsDtoValidator()
-{
-  RuleFor(x => x.UserId)
-          .NotEmpty().WithMessage("UserId is required.");
+
+        public GetUserNotificationsDtoValidator()
+        {
+            RuleFor(x => x.UserId)
+              .NotEmpty().WithMessage("UserId is required.");
         }
     }
 }

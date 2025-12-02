@@ -24,21 +24,21 @@ namespace Korik.Infrastructure
         {
             var userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
- if (!string.IsNullOrEmpty(userId))
-        {
-   _connectionManager.AddConnection(userId, Context.ConnectionId);
+            if (!string.IsNullOrEmpty(userId))
+            {
+                _connectionManager.AddConnection(userId, Context.ConnectionId);
                 Console.WriteLine($"User {userId} connected with ConnectionId: {Context.ConnectionId}");
-       }
+            }
 
-      await base.OnConnectedAsync();
-   }
+            await base.OnConnectedAsync();
+        }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
- {
-     _connectionManager.RemoveConnection(Context.ConnectionId);
-     Console.WriteLine($"ConnectionId {Context.ConnectionId} disconnected");
+        {
+             _connectionManager.RemoveConnection(Context.ConnectionId);
+             Console.WriteLine($"ConnectionId {Context.ConnectionId} disconnected");
 
-  await base.OnDisconnectedAsync(exception);
+            await base.OnDisconnectedAsync(exception);
         }
     }
 }

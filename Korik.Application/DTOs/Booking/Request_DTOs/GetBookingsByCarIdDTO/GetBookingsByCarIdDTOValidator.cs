@@ -25,6 +25,17 @@ namespace Korik.Application
                     return result.Data;       // true if exists, false if not
                 })
                 .WithMessage("Car does not exist.");
+
+
+            RuleFor(x => x.PageNumber)
+                .GreaterThan(0)
+                .WithMessage("PageNumber must be greater than 0.");
+
+            RuleFor(x => x.PageSize)
+                .GreaterThan(0)
+                .WithMessage("PageSize must be greater than 0.")
+                .LessThanOrEqualTo(100)
+                .WithMessage("PageSize cannot exceed 100.");
         }
     }
 
