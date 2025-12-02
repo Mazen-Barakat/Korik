@@ -64,17 +64,14 @@ namespace Korik.API.Controllers.Booking
 
         #region Queries
 
-        [HttpGet("ByCar/{carId:int}")]
+        [HttpGet("ByCar")]
         [SwaggerOperation(
             Summary = "Get bookings by Car Id",
             Description = "Retrieves all bookings associated with the specified Car Id."
         )]
-        public async Task<IActionResult> GetBookingsByCarId([FromRoute] int carId)
+        public async Task<IActionResult> GetBookingsByCarId([FromQuery] GetBookingsByCarIdDTO  model)
         {
-            var result = await _mediator.Send(
-                new GetBookingsByCarIdRequest(
-                    new GetBookingsByCarIdDTO() { CarId = carId }
-                    ));
+            var result = await _mediator.Send( new GetBookingsByCarIdRequest(model));
             return ApiResponse.FromResult(this, result);
         }
 

@@ -34,6 +34,10 @@ namespace Korik.Application
             CreateMap<UpdateBookingDTO, Booking>();
 
             CreateMap<Booking, BookingDTO>();
+
+            CreateMap<PagedResult<Booking>, PagedResult<BookingDTO>>()
+                    .ForMember(dest => dest.Items, opt => opt.MapFrom(src => src.Items));
+
         }
     }
 }
