@@ -12,7 +12,7 @@ namespace Korik.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "CAROWNER")]
+    [Authorize(Roles = "CAROWNER,WORKSHOP")]
     public class CarOwnerProfileController : ControllerBase
     {
         #region Dependency Injection
