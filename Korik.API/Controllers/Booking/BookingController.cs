@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Security.Claims;
 
 namespace Korik.API.Controllers.Booking
 {
@@ -46,6 +47,21 @@ namespace Korik.API.Controllers.Booking
             return ApiResponse.FromResult(this, result);
         }
 
+        [HttpPut("Update-Booking-Status")]
+        [SwaggerOperation(
+            Summary = "Update an existing booking Status",
+            Description = "Updates the booking Statu of an existing booking."
+        )]
+        public async Task<IActionResult> UpdateBookingStatus([FromBody] UpdateBookingStatusDTO model)
+        {
+            // Get user ID from JWT token
+            var applicationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            model.ApplicationUserId = applicationUserId;
+
+            var result = await _mediator.Send(new UpdateBookingStatusRequest(model));
+            return ApiResponse.FromResult(this, result);
+        }
+
         [HttpDelete("{id:int}")]
         [SwaggerOperation(
             Summary = "Delete a booking by Id",
@@ -64,17 +80,14 @@ namespace Korik.API.Controllers.Booking
 
         #region Queries
 
-        [HttpGet("ByCar/{carId:int}")]
+        [HttpGet("ByCar")]
         [SwaggerOperation(
             Summary = "Get bookings by Car Id",
             Description = "Retrieves all bookings associated with the specified Car Id."
         )]
-        public async Task<IActionResult> GetBookingsByCarId([FromRoute] int carId)
+        public async Task<IActionResult> GetBookingsByCarId([FromQuery] GetBookingsByCarIdDTO  model)
         {
-            var result = await _mediator.Send(
-                new GetBookingsByCarIdRequest(
-                    new GetBookingsByCarIdDTO() { CarId = carId }
-                    ));
+            var result = await _mediator.Send( new GetBookingsByCarIdRequest(model));
             return ApiResponse.FromResult(this, result);
         }
 

@@ -8,9 +8,9 @@ namespace Korik.Application
 {
     public interface IUserConnectionManager
     {
-   void AddConnection(string userId, string connectionId);
+        void AddConnection(string userId, string connectionId);
         void RemoveConnection(string connectionId);
-    List<string> GetConnections(string userId);
+        List<string> GetConnections(string userId);
         bool IsUserConnected(string userId);
     }
 }

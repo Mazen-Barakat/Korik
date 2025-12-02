@@ -11,7 +11,7 @@ namespace Korik.Application
     public class CreateBookingDTO
     {
         public DateTime AppointmentDate { get; set; }
-        public string IssueDescription { get; set; }
+        public string? IssueDescription { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
 
         public int CarId { get; set; }

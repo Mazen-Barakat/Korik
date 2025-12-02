@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Korik.Application
 {
-    public record GetBookingsByCarIdRequest(GetBookingsByCarIdDTO model) : IRequest<ServiceResult<IEnumerable<BookingDTO>>>{ }
+    public record GetBookingsByCarIdRequest(GetBookingsByCarIdDTO model) : IRequest<ServiceResult<PagedResult<BookingDTO>>>{ }
 
 
 
-    public class GetBookingsByCarIdRequestHandler : IRequestHandler<GetBookingsByCarIdRequest, ServiceResult<IEnumerable<BookingDTO>>>
+    public class GetBookingsByCarIdRequestHandler : IRequestHandler<GetBookingsByCarIdRequest, ServiceResult<PagedResult<BookingDTO>>>
     {
         private readonly IBookingService _bookingService;
         private readonly IValidator<GetBookingsByCarIdDTO> _validator;
@@ -29,25 +29,33 @@ namespace Korik.Application
             _validator = validator;
             _mapper = mapper;
         }
-        public async Task<ServiceResult<IEnumerable<BookingDTO>>> Handle(GetBookingsByCarIdRequest request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<PagedResult<BookingDTO>>> Handle(GetBookingsByCarIdRequest request, CancellationToken cancellationToken)
         {
             var validationResult = await _validator.ValidateAsync(request.model, cancellationToken);
             if (!validationResult.IsValid)
             {
                 var errors = validationResult.Errors.Select(e => e.ErrorMessage);
                 var errorMessage = string.Join(", ", errors);
-                return ServiceResult<IEnumerable<BookingDTO>>.Fail(errorMessage);
+                return ServiceResult<PagedResult<BookingDTO>>.Fail(errorMessage);
             }
 
+            var result = await _bookingService.GetAllPagedAsync
+               (
+              request.model.PageNumber,
+               request.model.PageSize,
+                  x => x.CarId == request.model.CarId
+               );
 
-            var bookingsResult = await _bookingService.GetBookingsByCarIdAsync(request.model.CarId);
-            if (!bookingsResult.Success)
+            //Not Valid
+            if (!result.Success)
             {
-                return ServiceResult<IEnumerable<BookingDTO>>.Fail(bookingsResult.Message ?? "Failed to retrieve bookings.");
+                return ServiceResult<PagedResult<BookingDTO>>.Fail($"Bad Request - Error While getting Data: {result.Message}");
             }
 
-            var bookingDTOs = _mapper.Map<IEnumerable<BookingDTO>>(bookingsResult.Data);
-            return ServiceResult<IEnumerable<BookingDTO>>.Ok(bookingDTOs, "Bookings retrieved successfully.");
+         
+            var bookingDTOs = _mapper.Map<PagedResult<BookingDTO>>(result.Data);
+
+            return ServiceResult<PagedResult<BookingDTO>>.Ok(bookingDTOs, "Bookings retrieved successfully.");
 
         }
     }
