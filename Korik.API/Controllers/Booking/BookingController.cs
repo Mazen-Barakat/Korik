@@ -92,20 +92,6 @@ namespace Korik.API.Controllers.Booking
             return ApiResponse.FromResult(this, result);
         }
 
-        [HttpGet("{bookingId:int}/CarOwnerProfile")]
-        [SwaggerOperation(
-            Summary = "Get car owner profile by booking Id",
-            Description = "Retrieves the complete car owner profile data associated with the specified booking Id, including full name, contact information, and address details."
-        )]
-        public async Task<IActionResult> GetCarOwnerProfileByBookingId([FromRoute] int bookingId)
-        {
-            var result = await _mediator.Send(
-                new GetCarOwnerProfileByBookingIdRequest(
-                    new GetCarOwnerProfileByBookingIdDTO() { BookingId = bookingId }
-                    ));
-            return ApiResponse.FromResult(this, result);
-        }
-
         #endregion Queries
     }
 }
