@@ -45,6 +45,32 @@ namespace Korik.Application
                 .IsInEnum()
                 .WithMessage("Invalid booking status.");
 
+            // ✅ SECURITY: Validate cancellation time window (12 hours from creation)
+            RuleFor(x => x)
+                .MustAsync(async (dto, cancellationToken) =>
+                {
+                    // Only validate if status is being changed to Cancelled
+                    if (dto.Status != BookingStatus.Cancelled)
+                        return true;
+
+                    // Get the existing booking to check creation time
+                    var bookingResult = await _bookingService.GetByIdAsync(dto.Id);
+                    if (!bookingResult.Success || bookingResult.Data == null)
+                        return false;
+
+                    // Check if current status is already Cancelled (allow updates to cancelled bookings)
+                    if (bookingResult.Data.Status == BookingStatus.Cancelled)
+                        return true;
+
+                    // Calculate time elapsed since booking creation
+                    var timeElapsed = DateTime.UtcNow - bookingResult.Data.CreatedAt;
+                    
+                    // Allow cancellation only within 12 hours window
+                    return timeElapsed.TotalHours <= 12;
+                })
+                .WithMessage("Booking cancellation is only allowed within 12 hours of creation. Please contact support for assistance.")
+                .When(x => x.Status == BookingStatus.Cancelled);
+
             RuleFor(x => x.AppointmentDate)
                 .NotEmpty().WithMessage("Appointment date is required.")
                 .GreaterThan(DateTime.UtcNow)

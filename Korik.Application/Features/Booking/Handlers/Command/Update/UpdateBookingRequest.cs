@@ -56,7 +56,20 @@ namespace Korik.Application
                 return ServiceResult<BookingDTO>.Fail("Booking not found.");
             }
 
-            var previousStatus = existingBookingResult.Data.Status;
+            var existingBooking = existingBookingResult.Data;
+            var previousStatus = existingBooking.Status;
+
+            // ✅ SECURITY: Additional server-side check for cancellation window (defense in depth)
+            if (request.model.Status == BookingStatus.Cancelled && previousStatus != BookingStatus.Cancelled)
+            {
+                var timeElapsed = DateTime.UtcNow - existingBooking.CreatedAt;
+                if (timeElapsed.TotalHours > 12)
+                {
+                    return ServiceResult<BookingDTO>.Fail(
+                        "Booking cancellation is only allowed within 12 hours of creation. " +
+                        "The cancellation window has expired. Please contact support for assistance.");
+                }
+            }
 
             var bookingtoUpdate = _mapper.Map<Booking>(request.model);
             var updatedBooking = await _bookingService.UpdateAsync(bookingtoUpdate);
@@ -155,12 +168,12 @@ namespace Korik.Application
                             bookingId: updatedBooking.Data!.Id
                         );
                     }
- }
- catch (Exception ex)
-     {
-    Console.WriteLine($"Failed to send notification: {ex.Message}");
-           }
-       }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to send notification: {ex.Message}");
+                }
+            }
 
             // ✅ Send notification if status changed to Cancelled
             else if (request.model.Status == BookingStatus.Cancelled && previousStatus != BookingStatus.Cancelled)
@@ -191,7 +204,7 @@ namespace Korik.Application
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Failed to send notification: {ex.Message}");
-   }
+                }
             }
 
             var bookingDto = _mapper.Map<BookingDTO>(updatedBooking.Data);
