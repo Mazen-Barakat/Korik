@@ -13,6 +13,7 @@ namespace Korik.Domain
         Confirmed,
         InProgress,
         Cancelled,
+        ReadyForPickup,
         Completed,
         Rejected,
         NoShow

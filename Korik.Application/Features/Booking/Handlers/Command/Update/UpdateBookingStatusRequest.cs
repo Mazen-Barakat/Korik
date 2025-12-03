@@ -95,6 +95,11 @@ namespace Korik.Application
                     NotificationType.BookingCompleted
                 ),
 
+                BookingStatus.ReadyForPickup => (
+               "Your Car is Ready For Pickup!",
+               NotificationType.CarReadyForPickup
+                ),
+
                 BookingStatus.Rejected => (
                     "Your booking request has been rejected.",
                     NotificationType.BookingRejected

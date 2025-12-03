@@ -12,6 +12,7 @@ namespace Korik.Domain
         BookingAccepted,
         BookingRejected,
         BookingCancelled,
+        CarReadyForPickup,
         BookingCompleted
     }
 }
