@@ -13,5 +13,20 @@ namespace Korik.Application
         Task<WorkShopProfile?> GetByApplicationUserIdAsync(string applicationUserId);
 
         Task<WorkShopProfile?> GetByApplicationUserIdWithIncludeAsync(string applicationUserId, params Expression<Func<WorkShopProfile, object>>[] includes);
+
+        Task<PagedResult<WorkShopProfile>> FilterWorkshopsAsync
+            (
+            int PageNumber,
+            int PageSize,
+            string? Name,
+            decimal? Latitude,
+            decimal? Longitude,
+            string? Country,
+            string? Governorate,
+            string? City,
+            bool? DESCRating,
+            WorkShopType? WorkShopType,
+            CarOrigin? Origin
+            );
     }
 }

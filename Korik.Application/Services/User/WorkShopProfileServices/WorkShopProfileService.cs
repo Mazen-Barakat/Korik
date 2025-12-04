@@ -48,5 +48,35 @@ namespace Korik.Application
                 return ServiceResult<WorkShopProfile>.Fail(ex.Message);
             }
         }
+
+        public async Task<ServiceResult<PagedResult<WorkShopProfile>>> FilterWorkshopsAsync(PagedRequestDTO pagedRequestDTO)
+        {
+            try
+            {
+                var pagedResult = await _workShopProfileRepository.FilterWorkshopsAsync
+                    (
+                    PageNumber: pagedRequestDTO.PageNumber,
+                    PageSize: pagedRequestDTO.PageSize,
+                    Name: pagedRequestDTO.Name,
+                    Latitude: pagedRequestDTO.Latitude,
+                    Longitude: pagedRequestDTO.Longitude,
+                    Country: pagedRequestDTO.Country,
+                    Governorate: pagedRequestDTO.Governorate,
+                    City: pagedRequestDTO.City,
+                    DESCRating: pagedRequestDTO.DESCRating,
+                    WorkShopType: pagedRequestDTO.WorkShopType,
+                    Origin: pagedRequestDTO.Origin
+                    );
+
+                if (pagedResult == null)
+                    return ServiceResult<PagedResult<WorkShopProfile>>.Fail("profile not found.");
+
+                return ServiceResult<PagedResult<WorkShopProfile>>.Ok(pagedResult);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<PagedResult<WorkShopProfile>>.Fail(ex.Message);
+            }
+        }
     }
 }
