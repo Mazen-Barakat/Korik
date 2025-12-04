@@ -10,7 +10,7 @@ namespace Korik.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "WORKSHOP")]
+    [Authorize]
     public class WorkShopPhotoController : ControllerBase
     {
         #region Dependency Injection
@@ -32,6 +32,7 @@ namespace Korik.API.Controllers
             Description = "Uploads one or multiple photos and associates them with a workshop profile. "
                         + "This endpoint accepts form-data containing images and stores them in the system."
         )]
+        [Authorize(Roles = "WORKSHOP")]
         public async Task<IActionResult> CreateWorkShopPhotos([FromForm] CreateWorkShopPhotosDTO model)
         {
             var result = await _mediator.Send(new CreateWorkShopPhotosRequest(model));
@@ -44,6 +45,7 @@ namespace Korik.API.Controllers
             Description = "Deletes a specific workshop photo using its unique ID. "
                         + "Useful for removing outdated or incorrect workshop gallery images."
         )]
+        [Authorize(Roles = "WORKSHOP")]
         public async Task<IActionResult> DeleteWorkShopPhotoById([FromRoute] int id)
         {
             var result = await _mediator.Send(new DeleteWorkShopPhotosByIdRequest(new DeleteWorkShopPhotosByIdDTO { Id = id }));

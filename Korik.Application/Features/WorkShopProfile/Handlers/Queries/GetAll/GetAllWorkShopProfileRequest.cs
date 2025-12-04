@@ -48,12 +48,7 @@ namespace Korik.Application
 
             #region Valid
 
-            var result = await _workShopProfileService.GetAllPagedAsync
-                (
-               request.Model.PageNumber,
-                request.Model.PageSize,
-                   x => x.VerificationStatus == VerificationStatus.Verified
-                );
+            var result = await _workShopProfileService.FilterWorkshopsAsync(request.Model);
 
             //Not Valid
             if (!result.Success)
