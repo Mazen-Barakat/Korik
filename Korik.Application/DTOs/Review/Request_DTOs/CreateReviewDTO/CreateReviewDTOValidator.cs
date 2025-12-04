@@ -10,18 +10,18 @@ namespace Korik.Application
 {
     public class CreateReviewDTOValidator : AbstractValidator<CreateReviewDTO>
     {
-        private readonly IBookingRepository _bookingRepository;
-        private readonly ICarOwnerProfileRepository _carOwnerProfileRepository;
-        private readonly IWorkShopProfileRepository _workShopProfileRepository;
+        private readonly IBookingService _bookingService;
+        private readonly ICarOwnerProfileService _carOwnerProfileService;
+        private readonly IWorkShopProfileService _workShopProfileService;
 
         public CreateReviewDTOValidator(
-            IBookingRepository bookingRepository,
-            ICarOwnerProfileRepository carOwnerProfileRepository,
-            IWorkShopProfileRepository workShopProfileRepository)
+            IBookingService bookingService,
+            ICarOwnerProfileService carOwnerProfileService,
+            IWorkShopProfileService workShopProfileService)
         {
-            _bookingRepository = bookingRepository;
-            _carOwnerProfileRepository = carOwnerProfileRepository;
-            _workShopProfileRepository = workShopProfileRepository;
+            _bookingService = bookingService;
+            _carOwnerProfileService = carOwnerProfileService;
+            _workShopProfileService = workShopProfileService;
 
             RuleFor(x => x.Rating)
                 .InclusiveBetween(1, 5)
@@ -38,16 +38,28 @@ namespace Korik.Application
                 .WithMessage("Paid amount must be greater than or equal to 0.");
 
             RuleFor(x => x.BookingId)
-                .MustAsync(async (id, cancellation) => await _bookingRepository.IsExistAsync(id))
-                .WithMessage("Booking ID does not exist.");
+                .MustAsync(async (id, cancellation) =>
+                {
+                    var result = await _bookingService.IsExistAsync(id);
+                    return !result.Data;
+                })
+                .WithMessage("Booking ID does Already exist.");
 
             RuleFor(x => x.CarOwnerProfileId)
-                .MustAsync(async (id, cancellation) => await _carOwnerProfileRepository.IsExistAsync(id))
-                .WithMessage("Car Owner Profile ID does not exist.");
+                .MustAsync(async (id, cancellation) => 
+                {
+                    var result = await _carOwnerProfileService.IsExistAsync(id);
+                    return result.Data;
+                })
+                .WithMessage("Car Owner Profile ID does Already exist.");
 
             RuleFor(x => x.WorkShopProfileId)
-                .MustAsync(async (id, cancellation) => await _workShopProfileRepository.IsExistAsync(id))
-                .WithMessage("WorkShop Profile ID does not exist.");
+                .MustAsync(async (id, cancellation) =>
+                {
+                    var result = await _workShopProfileService.IsExistAsync(id);
+                    return result.Data;
+                })
+                .WithMessage("WorkShop Profile ID does Already exist.");
         }
     }
 }

@@ -63,6 +63,12 @@ namespace Korik.Application
 
             _mapper.Map(request.Model, existingBooking.Data);
 
+            //if status is Compeleted , set the PaymentStatus to Paid
+            if (request.Model.Status == BookingStatus.Completed)
+            {
+                existingBooking.Data.PaymentStatus = PaymentStatus.Paid;
+            }
+
             var updatedBooking = await _bookingService.UpdateAsync(existingBooking.Data);
 
             if (!updatedBooking.Success)

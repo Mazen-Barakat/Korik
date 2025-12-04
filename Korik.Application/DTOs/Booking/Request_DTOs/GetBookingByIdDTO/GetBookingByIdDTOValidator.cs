@@ -1,0 +1,29 @@
+﻿using FluentValidation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Korik.Application
+{
+    public class GetBookingByIdDTOValidator : AbstractValidator<GetBookingByIdDTO>
+    {
+        private readonly IBookingService _bookingService;
+
+        public GetBookingByIdDTOValidator(IBookingService bookingService)
+        {
+            _bookingService = bookingService;
+
+            RuleFor(x => x.Id)
+                .GreaterThan(0)
+                .WithMessage("Booking Id must be greater than 0.")
+                .MustAsync(async (id, _) =>
+                {
+                    var result = await _bookingService.IsExistAsync(id);
+                    return result.Data; 
+                })
+                .WithMessage("Booking does not exist.");
+        }
+    }
+}

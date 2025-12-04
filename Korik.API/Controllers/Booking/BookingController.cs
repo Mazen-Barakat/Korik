@@ -105,6 +105,19 @@ namespace Korik.API.Controllers.Booking
             return ApiResponse.FromResult(this, result);
         }
 
+        [HttpGet("{id:int}")]
+        [SwaggerOperation(
+            Summary = "Get a booking by Id",
+            Description = "Retrieves the booking identified by the provided Id."
+        )]
+        public async Task<IActionResult> GetBookingById([FromRoute] int id)
+        {
+            var result = await _mediator.Send(
+                new GetBookingByIdRequest(
+                    new GetBookingByIdDTO() { Id = id }
+                    ));
+            return ApiResponse.FromResult(this, result);
+        }
         #endregion Queries
     }
 }

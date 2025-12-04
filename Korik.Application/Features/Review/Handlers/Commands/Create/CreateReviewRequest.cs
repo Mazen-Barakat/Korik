@@ -35,7 +35,7 @@ namespace Korik.Application
             var validationResult = await _validator.ValidateAsync(request.Model);
             if (!validationResult.IsValid)
             {
-                var errors = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
+                var errors = string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
                 return ServiceResult<ReviewDTO>.Fail(errors);
             }
 
