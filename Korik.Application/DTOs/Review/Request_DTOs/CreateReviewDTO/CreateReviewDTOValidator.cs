@@ -40,10 +40,12 @@ namespace Korik.Application
             RuleFor(x => x.BookingId)
                 .MustAsync(async (id, cancellation) =>
                 {
-                    var result = await _bookingService.IsExistAsync(id);
-                    return !result.Data;
+                    var bookingWithReviewResult = await _bookingService.GetByIdWithIncludeAsync(id, b => b.Review);
+                    if(bookingWithReviewResult.Success && bookingWithReviewResult.Data.Review != null)
+                        return false;
+                    return true;
                 })
-                .WithMessage("Booking ID does Already exist.");
+                .WithMessage("Booking has already a review.");
 
             RuleFor(x => x.CarOwnerProfileId)
                 .MustAsync(async (id, cancellation) => 
