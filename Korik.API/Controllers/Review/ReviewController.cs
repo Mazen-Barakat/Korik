@@ -8,10 +8,10 @@ namespace Korik.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class ReviewController : ControllerBase
     {
         #region Dependency Injection
+
         private readonly IMediator _mediator;
 
         public ReviewController(IMediator mediator)
@@ -19,9 +19,10 @@ namespace Korik.API.Controllers
             _mediator = mediator;
         }
 
-        #endregion
+        #endregion Dependency Injection
 
         #region Commands
+
         [HttpPost]
         [SwaggerOperation(Summary = "Create a new review")]
         public async Task<IActionResult> PostReview([FromBody] CreateReviewDTO model)
@@ -46,9 +47,12 @@ namespace Korik.API.Controllers
             return ApiResponse.FromResult(this, result);
         }
 
-        #endregion    
+        #endregion Commands
+
+
 
         #region Queries
+
         [HttpGet("{id}")]
         [SwaggerOperation(Summary = "Get a review by ID")]
         public async Task<IActionResult> GetReviewById([FromRoute] int id)
@@ -73,13 +77,14 @@ namespace Korik.API.Controllers
             return ApiResponse.FromResult(this, result);
         }
 
-        [HttpGet("all-ratings/{workShopProfileId}")]
-        [SwaggerOperation(Summary = "Get all ratings by WorkShopProfileId")]
+        [HttpGet("all-Review/{workShopProfileId}")]
+        [SwaggerOperation(Summary = "Get all Review by WorkShopProfileId")]
         public async Task<IActionResult> GetAllRatingsByWorkShopProfileId([FromRoute] int workShopProfileId)
         {
             var result = await _mediator.Send(new GetAllRatingsByWorkShopProfileIdRequest(new GetAllRatingsByWorkShopProfileIdDTO { WorkShopProfileId = workShopProfileId }));
             return ApiResponse.FromResult(this, result);
         }
-        #endregion
+
+        #endregion Queries
     }
 }

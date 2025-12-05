@@ -9,7 +9,7 @@ namespace Korik.Application
 {
     public interface IReviewRepository : IGenericRepository<Review>
     {
-        Task<IQueryable<Review>> GetAllReviewsByWorkShopProfileIdAsync(int workerProfileId);
+        IQueryable<Review> GetAllReviewsByWorkShopProfileIdAsync(int workerProfileId);
 
         Task<double> GetAverageRatingsByWorkShopProfileIdAsync(int workerProfileId);
     }

@@ -27,6 +27,7 @@ namespace Korik.Application
         public async Task<ServiceResult<AvgRatingDTO>> Handle(GetAvgRatingsByWorkShopProfileIdRequest request, CancellationToken cancellationToken)
         {
             #region Not Valid
+
             var validationResult = await _validator.ValidateAsync(request.Model, cancellationToken);
             if (!validationResult.IsValid)
             {
@@ -34,16 +35,19 @@ namespace Korik.Application
                 return ServiceResult<AvgRatingDTO>.Fail(errors);
             }
 
-            #endregion
+            #endregion Not Valid
 
             #region Valid
+
             var averageRatingResult = await _reviewService.GetAverageRatingsByWorkShopProfileIdAsync(request.Model.WorkShopProfileId);
             if (!averageRatingResult.Success)
             {
                 return ServiceResult<AvgRatingDTO>.Fail(averageRatingResult.Message ?? "An error occurred while fetching the average rating.");
             }
 
-            #endregion            
+            #endregion Valid
+
+
 
             return ServiceResult<AvgRatingDTO>.Ok(_mapper.Map<AvgRatingDTO>(averageRatingResult.Data));
         }

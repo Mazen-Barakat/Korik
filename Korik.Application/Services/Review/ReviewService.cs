@@ -1,4 +1,5 @@
 ﻿using Korik.Domain;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,8 @@ namespace Korik.Application
         {
             try
             {
-                var reviewsQueryable = await _repository.GetAllReviewsByWorkShopProfileIdAsync(workerProfileId);
-                var reviews = reviewsQueryable.ToList();
+                var reviewsQueryable = _repository.GetAllReviewsByWorkShopProfileIdAsync(workerProfileId);
+                var reviews = await reviewsQueryable.ToListAsync();
                 return ServiceResult<IEnumerable<Review>>.Ok(reviews);
             }
             catch (Exception ex)
