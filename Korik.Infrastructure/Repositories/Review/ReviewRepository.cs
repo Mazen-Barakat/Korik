@@ -18,19 +18,20 @@ namespace Korik.Infrastructure
             _context = context;
         }
 
-        public async Task<IQueryable<Review>> GetAllReviewsByWorkShopProfileIdAsync(int workerProfileId)
+        public IQueryable<Review> GetAllReviewsByWorkShopProfileIdAsync(int workerProfileId)
         {
-            return _context.Reviews.Where(r => r.WorkShopProfileId == workerProfileId).AsNoTracking();
+            return _context.Reviews
+                .Where(r => r.WorkShopProfileId == workerProfileId)
+                .Include(r => r.CarOwnerProfile)
+                .AsNoTracking();
         }
 
         public async Task<double> GetAverageRatingsByWorkShopProfileIdAsync(int workerProfileId)
         {
-            var reviews = _context.Reviews.Where(r => r.WorkShopProfileId == workerProfileId);
-            if (!reviews.Any())
-            {
-                return 0.0;
-            }
-            return reviews.Average(r => r.Rating);
+            var rating = await _context.Reviews.Where(r => r.WorkShopProfileId == workerProfileId)
+                .AverageAsync(r => (double?)r.Rating) ?? 0.0;
+
+            return rating;
         }
     }
 }
