@@ -58,7 +58,7 @@ namespace Korik.Application
 
             var workShopProfile = await _workShopProfileService.GetByIdAsync(createdReviewResult.Data!.WorkShopProfileId);
 
-            workShopProfile.Data!.Rating = rating.Data;
+            workShopProfile.Data!.Rating = Math.Round(rating.Data, 1);
 
             await _workShopProfileService.UpdateAsync(workShopProfile.Data);
 
