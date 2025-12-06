@@ -34,15 +34,52 @@ namespace Korik.Infrastructure
                 .CountAsync();
         }
 
-       public async Task<bool> MarkAsReadAsync(int notificationId)
-       {
+        public async Task<bool> MarkAsReadAsync(int notificationId)
+        {
             var notification = await _context.Notifications.FindAsync(notificationId);
             if (notification == null)
-            return false;
+                return false;
 
             notification.IsRead = true;
             await _context.SaveChangesAsync();
             return true;
-       }
+        }
+
+        public async Task<IEnumerable<Notification>> GetPendingConfirmationNotificationsAsync(string userId)
+        {
+            return await _context.Notifications
+                .Include(n => n.Booking)
+                    .ThenInclude(b => b!.Car)
+                        .ThenInclude(c => c.CarOwnerProfile)
+                .Include(n => n.Booking)
+                    .ThenInclude(b => b!.WorkShopProfile)
+                .Include(n => n.Booking)
+                    .ThenInclude(b => b!.WorkshopService)
+                        .ThenInclude(ws => ws.Service)
+                .Where(n => n.ReceiverId == userId 
+                            && n.Type == NotificationType.AppointmentConfirmationRequest
+                            && n.BookingId.HasValue
+                            && n.Booking != null
+                            && n.Booking.Status == BookingStatus.Confirmed) // Only if booking still needs confirmation
+                .OrderByDescending(n => n.CreatedAt)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
+        public async Task<Notification?> GetNotificationWithBookingDetailsAsync(int notificationId, string userId)
+        {
+            return await _context.Notifications
+                .Include(n => n.Booking)
+                    .ThenInclude(b => b!.Car)
+                        .ThenInclude(c => c.CarOwnerProfile)
+                .Include(n => n.Booking)
+                    .ThenInclude(b => b!.WorkShopProfile)
+                .Include(n => n.Booking)
+                    .ThenInclude(b => b!.WorkshopService)
+                        .ThenInclude(ws => ws.Service)
+                .Where(n => n.Id == notificationId && n.ReceiverId == userId)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
+        }
     }
 }

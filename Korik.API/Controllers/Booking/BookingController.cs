@@ -1,5 +1,6 @@
 ﻿using Korik.Application;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -62,6 +63,35 @@ namespace Korik.API.Controllers.Booking
             return ApiResponse.FromResult(this, result);
         }
 
+        [HttpPut("{bookingId:int}/response")]
+        [Authorize]
+        [SwaggerOperation(
+            Summary = "Update booking response status",
+            Description = "Changes the workshop's response to a booking (Accept/Decline). Includes validation for business rules."
+        )]
+        public async Task<IActionResult> UpdateBookingResponse([FromRoute] int bookingId, [FromBody] UpdateBookingResponseDTO model)
+        {
+            var applicationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _mediator.Send(new UpdateBookingResponseRequest(bookingId, model, applicationUserId!));
+            return ApiResponse.FromResult(this, result);
+        }
+
+        [HttpPost("confirm-appointment")]
+        [Authorize]
+        [SwaggerOperation(
+            Summary = "Confirm or decline appointment arrival",
+            Description = "Allows car owner or workshop owner to confirm or decline appointment. Both parties must confirm for booking to proceed to InProgress status."
+        )]
+        public async Task<IActionResult> ConfirmAppointment([FromBody] ConfirmAppointmentDTO model)
+        {
+            // Get user ID from JWT token
+            var applicationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            model.ApplicationUserId = applicationUserId!;
+
+            var result = await _mediator.Send(new ConfirmAppointmentRequest(model));
+            return ApiResponse.FromResult(this, result);
+        }
+
         [HttpDelete("{id:int}")]
         [SwaggerOperation(
             Summary = "Delete a booking by Id",
@@ -79,6 +109,45 @@ namespace Korik.API.Controllers.Booking
         #endregion Commands
 
         #region Queries
+
+        [HttpGet("{bookingId:int}/details")]
+        [Authorize]
+        [SwaggerOperation(
+            Summary = "Get enhanced booking details",
+            Description = "Retrieves complete booking information including customer, vehicle, service details, and response status."
+        )]
+        public async Task<IActionResult> GetEnhancedBookingDetails([FromRoute] int bookingId)
+        {
+            var applicationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _mediator.Send(new GetEnhancedBookingDetailsRequest(bookingId, applicationUserId!));
+            return ApiResponse.FromResult(this, result);
+        }
+
+        [HttpGet("{bookingId:int}/time-status")]
+        [Authorize]
+        [SwaggerOperation(
+            Summary = "Get booking time status",
+            Description = "Returns precise timing information for a booking, including seconds until appointment time."
+        )]
+        public async Task<IActionResult> GetBookingTimeStatus([FromRoute] int bookingId)
+        {
+            var applicationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _mediator.Send(new GetBookingTimeStatusRequest(bookingId, applicationUserId!));
+            return ApiResponse.FromResult(this, result);
+        }
+
+        [HttpGet("{bookingId:int}/confirmation-status")]
+        [Authorize]
+        [SwaggerOperation(
+            Summary = "Get booking confirmation status",
+            Description = "Returns the confirmation status for both car owner and workshop owner."
+        )]
+        public async Task<IActionResult> GetConfirmationStatus([FromRoute] int bookingId)
+        {
+            var applicationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var result = await _mediator.Send(new GetConfirmationStatusRequest(bookingId, applicationUserId!));
+            return ApiResponse.FromResult(this, result);
+        }
 
         [HttpGet("ByCar")]
         [SwaggerOperation(

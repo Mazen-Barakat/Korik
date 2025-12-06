@@ -22,6 +22,11 @@ namespace Korik.Application
         public int CarId { get; set; }
         public int WorkShopProfileId { get; set; }
         public int WorkshopServiceId { get; set; }
-  
+
+        // Confirmation fields
+        public bool? CarOwnerConfirmed { get; set; }
+        public bool? WorkshopOwnerConfirmed { get; set; }
+        public DateTime? ConfirmationSentAt { get; set; }
+        public DateTime? ConfirmationDeadline { get; set; }
     }
 }

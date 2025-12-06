@@ -42,6 +42,30 @@ namespace Korik.Domain
         public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Unpaid;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        #region Appointment Confirmation Fields
+        
+        /// <summary>
+        /// Indicates whether car owner confirmed arrival for the appointment
+        /// </summary>
+        public bool? CarOwnerConfirmed { get; set; }
+
+        /// <summary>
+        /// Indicates whether workshop owner confirmed readiness for the appointment
+        /// </summary>
+        public bool? WorkshopOwnerConfirmed { get; set; }
+
+        /// <summary>
+        /// Timestamp when confirmation notifications were sent
+        /// </summary>
+        public DateTime? ConfirmationSentAt { get; set; }
+
+        /// <summary>
+        /// Deadline for both parties to respond (e.g., 15 minutes after appointment time)
+        /// </summary>
+        public DateTime? ConfirmationDeadline { get; set; }
+
+        #endregion
+
 
         #region Booking 1---M BookingPhoto
         public virtual ICollection<BookingPhoto> BookingPhotos { get; set; } = new List<BookingPhoto>();
