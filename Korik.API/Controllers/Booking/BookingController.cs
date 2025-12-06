@@ -1,9 +1,11 @@
 ﻿using Korik.Application;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace Korik.API.Controllers.Booking
 {
@@ -85,9 +87,9 @@ namespace Korik.API.Controllers.Booking
             Summary = "Get bookings by Car Id",
             Description = "Retrieves all bookings associated with the specified Car Id."
         )]
-        public async Task<IActionResult> GetBookingsByCarId([FromQuery] GetBookingsByCarIdDTO  model)
+        public async Task<IActionResult> GetBookingsByCarId([FromQuery] GetBookingsByCarIdDTO model)
         {
-            var result = await _mediator.Send( new GetBookingsByCarIdRequest(model));
+            var result = await _mediator.Send(new GetBookingsByCarIdRequest(model));
             return ApiResponse.FromResult(this, result);
         }
 
@@ -118,6 +120,21 @@ namespace Korik.API.Controllers.Booking
                     ));
             return ApiResponse.FromResult(this, result);
         }
+
+        [HttpGet("Get-Booking-Services-With-Review-By-CarId/{CarId:int}")]
+        [Authorize]
+        [SwaggerOperation(
+            Summary = "Get completed booking services with reviews by Car ID",
+            Description = "Retrieves all completed bookings with their associated service details and reviews for a specific car. "
+                        + "Only returns bookings with 'Completed' status. Useful for displaying service history and customer reviews."
+        )]
+        public async Task<IActionResult> GetBookingServicesWithReview([FromRoute] GetBookingServicesWithReviewByCarIdDTO model)
+        {
+            var result = await _mediator.Send(new GetBookingServicesWithReviewByCarIdRequest(model));
+
+            return ApiResponse.FromResult(this, result);
+        }
+
         #endregion Queries
     }
 }

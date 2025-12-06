@@ -40,12 +40,3 @@ namespace Korik.Application
         }
     }
 }
-
-
-
-
-
-
-
-
-
