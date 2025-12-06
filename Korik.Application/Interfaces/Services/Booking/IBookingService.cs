@@ -15,5 +15,7 @@ namespace Korik.Application
         Task<ServiceResult<IEnumerable<Booking>>> GetBookingsByWorkshopProfileIdAsync(int workshopProfileId);
 
         Task<ServiceResult<Booking>> CreateBookingWithPhotosAsync(Booking booking, List<IFormFile>? photos);
+
+        Task<ServiceResult<IEnumerable<BookingServicesWithReviewDTO>>> GetBookingServicesWithReviewAsync(int carId);
     }
 }

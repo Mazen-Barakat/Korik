@@ -4,8 +4,10 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Korik.Application
 {
@@ -117,6 +119,30 @@ namespace Korik.Application
             {
                 return ServiceResult<Booking>.Fail(
                     $"An error occurred while creating booking: {ex.Message}");
+            }
+        }
+
+        public async Task<ServiceResult<IEnumerable<BookingServicesWithReviewDTO>>> GetBookingServicesWithReviewAsync(int carId)
+        {
+            try
+            {
+                var query = _bookingRepository.GetBookingServicesWithReviewAsync(carId);
+                var result = await query
+                                    .OrderByDescending(b => b.AppointmentDate)
+                                    .ToListAsync();
+
+                if (!result.Any())
+                {
+                    return ServiceResult<IEnumerable<BookingServicesWithReviewDTO>>.Fail(
+                        "No completed bookings found for this car.");
+                }
+
+                return ServiceResult<IEnumerable<BookingServicesWithReviewDTO>>.Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<IEnumerable<BookingServicesWithReviewDTO>>.Fail(
+                   $"An error occurred while getting booking: {ex.Message}");
             }
         }
     }
