@@ -1,8 +1,10 @@
 ﻿using Korik.Application;
 using Korik.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -28,6 +30,13 @@ namespace Korik.API
             builder.Services.AddInfrastructureService(configuration);
 
             #endregion Layers Registerations
+
+            #region Background Services
+
+            // Register Appointment Confirmation Background Service
+            builder.Services.AddHostedService<AppointmentConfirmationBackgroundService>();
+
+            #endregion Background Services
 
             #region JWT Authentication Service
 
@@ -97,6 +106,10 @@ namespace Korik.API
             #endregion JWT Authentication Service
 
             #region SignalR Service
+
+            // ✅ CRITICAL: Register custom UserIdProvider for SignalR
+            // This ensures Clients.User(userId) works correctly with JWT NameIdentifier claim
+            builder.Services.AddSingleton<IUserIdProvider, NameIdentifierUserIdProvider>();
 
             builder.Services.AddSignalR(options =>
             {
@@ -227,6 +240,19 @@ namespace Korik.API
             app.Run(); //Start the app & stop pipeline here.
 
             #endregion Middlewares
+        }
+    }
+
+    /// <summary>
+    /// ✅ CRITICAL: Custom UserIdProvider for SignalR
+    /// Maps Context.UserIdentifier to the JWT NameIdentifier claim
+    /// This ensures Clients.User(userId) works correctly
+    /// </summary>
+    public class NameIdentifierUserIdProvider : IUserIdProvider
+    {
+        public string? GetUserId(HubConnectionContext connection)
+        {
+            return connection.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
     }
 }
