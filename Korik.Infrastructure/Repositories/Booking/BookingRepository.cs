@@ -42,7 +42,7 @@ namespace Korik.Infrastructure
                                     Id = b.Id,
                                     AppointmentDate = b.AppointmentDate,
                                     IssueDescription = b.IssueDescription,
-                                    ReviewPaidAmount = b.Review != null ? b.Review.PaidAmount : null,
+                                    ReviewPaidAmount = b.Review != null ? b.Review.PaidAmount : 0,
                                     ServiceName = b.WorkshopService.Service.Name,
                                     ServiceDescription = b.WorkshopService.Service.Description
                                 });
