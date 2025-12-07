@@ -16,6 +16,8 @@ namespace Korik.Application
         public int EngineCapacity { get; set; }
         public int CurrentMileage { get; set; }
         public string LicensePlate { get; set; } = string.Empty;
+
+        public CarOrigin Origin { get; set; }
     }
 
     public class CarOwnerProfileWithCarDTO
