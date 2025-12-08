@@ -131,11 +131,7 @@ namespace Korik.Application
                                     .OrderByDescending(b => b.AppointmentDate)
                                     .ToListAsync();
 
-                if (!result.Any())
-                {
-                    return ServiceResult<IEnumerable<BookingServicesWithReviewDTO>>.Fail(
-                        "No completed bookings found for this car.");
-                }
+                  
 
                 return ServiceResult<IEnumerable<BookingServicesWithReviewDTO>>.Ok(result);
             }
