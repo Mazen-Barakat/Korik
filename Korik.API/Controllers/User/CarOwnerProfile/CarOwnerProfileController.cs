@@ -12,7 +12,7 @@ namespace Korik.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "CAROWNER,WORKSHOP")]
+    [Authorize(Roles = "CAROWNER,WORKSHOP,ADMIN")]
     public class CarOwnerProfileController : ControllerBase
     {
         #region Dependency Injection
@@ -94,6 +94,15 @@ namespace Korik.API.Controllers
                 new GetCarOwnerProfileByBookingIdRequest(
                     new GetCarOwnerProfileByBookingIdDTO() { BookingId = bookingId }
                     ));
+            return ApiResponse.FromResult(this, result);
+        }
+
+
+        [HttpGet("all")]
+        [SwaggerOperation(Summary = "Get all car Owner Profiles")]
+        public async Task<IActionResult> GetAllCarOwnerProfiles()
+        {
+            var result = await _mediator.Send(new GetAllCarOwnerProfileRequest());
             return ApiResponse.FromResult(this, result);
         }
 

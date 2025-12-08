@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace Korik.API.Controllers
 {
-    [Authorize(Roles = "CAROWNER,WORKSHOP")]
+    [Authorize(Roles = "CAROWNER,WORKSHOP,ADMIN")]
     [Route("api/[controller]")]
     [ApiController]
 

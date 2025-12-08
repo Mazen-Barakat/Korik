@@ -11,6 +11,8 @@ namespace Korik.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "CAROWNER,WORKSHOP,ADMIN")]
+
     public class WorkShopProfileController : ControllerBase
     {
         #region Dependency Injection
@@ -101,7 +103,6 @@ namespace Korik.API.Controllers
         }
 
         [HttpGet("Get-All-Unverified-WorkShop-Profile")]
-        [Authorize(Roles = "ADMIN")]
         [SwaggerOperation(Summary = "Get all unverified workshop profiles",
                           Description = "This endpoint retrieves a paginated list of all unverified workshop profiles.")]
         public async Task<IActionResult> GetAllUnverifiedWorkShopProfile([FromQuery] PagedRequestDTO model)

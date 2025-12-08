@@ -203,6 +203,18 @@ namespace Korik.API.Controllers.Booking
             return ApiResponse.FromResult(this, result);
         }
 
+
+        [HttpGet("All")]
+        [Authorize]
+        [SwaggerOperation(
+            Summary = "Get all bookings",
+            Description = "Retrieves all bookings in the system. Requires authorization."
+        )]
+        public async Task<IActionResult> GetAllBookings()
+        {
+            var result = await _mediator.Send(new GetAllBookingsRequest());
+            return ApiResponse.FromResult(this, result);
+        }
         #endregion Queries
     }
 }
