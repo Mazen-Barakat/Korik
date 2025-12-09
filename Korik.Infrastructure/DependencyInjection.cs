@@ -166,6 +166,16 @@ namespace Korik.Infrastructure
                 services.AddScoped<INotificationService, NotificationService>();
             #endregion
 
+            #region AI Services
+                // Chat context manager - Singleton to maintain conversation history across requests
+                services.AddSingleton<IChatContextManager>(sp => 
+                    new InMemoryChatContextManager(
+                        maxMessagesPerSession: 20,
+                        sessionTimeoutMinutes: 30));
+                
+                services.AddScoped<IAiAssistantService, AiAssistantService>();
+            #endregion
+
          return services;
         }
   }

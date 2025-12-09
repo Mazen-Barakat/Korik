@@ -226,8 +226,8 @@ namespace Korik.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-                    c.RoutePrefix = string.Empty;
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Korik API V1");
+                    c.RoutePrefix = "swagger"; // Set Swagger UI at /swagger
                 });
             }
 
