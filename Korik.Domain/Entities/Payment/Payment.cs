@@ -7,7 +7,8 @@ namespace Korik.Domain
         Pending,
         Succeeded,
         Failed,
-        Refunded
+        Refunded,
+        Canceled
     }
 
     public class Payment : BaseEntity

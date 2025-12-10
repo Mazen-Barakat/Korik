@@ -1,0 +1,101 @@
+? QUICK START - Webhook Testing in 5 Minutes
+=====================================================
+
+?? Your webhook code is FIXED! Now let's test it.
+
+?? PREREQUISITES (One-Time Setup)
+---------------------------------
+1. Install Stripe CLI:
+   Windows: scoop install stripe
+   Mac: brew install stripe/stripe-cli/stripe
+   
+2. Login to Stripe:
+   stripe login
+
+? TESTING STEPS (Every Debug Session)
+---------------------------------------
+
+STEP 1: Start Your API
+-----------------------
+Press F5 in Visual Studio (or dotnet run)
+? Wait for: "Now listening on: https://localhost:44352"
+
+STEP 2: Start Stripe Listener
+------------------------------
+Open NEW terminal and run:
+
+    stripe listen --forward-to https://localhost:44352/api/payment/webhook
+
+? You'll see: "Your webhook signing secret is whsec_xxxxx"
+?? COPY THAT SECRET!
+
+STEP 3: Update Webhook Secret
+------------------------------
+1. Open: Korik.API/appsettings.json
+2. Find:
+   "Stripe": {
+     "WebhookSecret": "PASTE_SECRET_HERE"
+   }
+3. Paste the secret from Step 2
+4. Save the file
+
+STEP 4: Restart API
+-------------------
+?? IMPORTANT: Stop and restart your API (F5 again)
+Why? API needs to reload the new webhook secret
+
+STEP 5: Test It!
+----------------
+In another terminal, run:
+
+    stripe trigger payment_intent.succeeded
+
+? SUCCESS INDICATORS:
+----------------------
+Stripe CLI shows:
+  ? payment_intent.succeeded [evt_xxxxx]
+  ? POST .../api/payment/webhook [200]
+
+API Console shows:
+  ? [Webhook] Received event: payment_intent.succeeded
+  ? [PaymentService] ? Payment processed successfully
+
+?? IT WORKS!
+
+? TROUBLESHOOTING
+------------------
+Problem: "No signatures found matching the expected signature"
+Solution: 
+  1. Restart stripe listen
+  2. Copy NEW secret
+  3. Update appsettings.json
+  4. Restart API
+
+Problem: Webhook not called
+Solution:
+  - Check stripe listen is running
+  - Verify API is running
+  - Check the port number (44352)
+
+Problem: Payment status not updating
+Solution:
+  - Check API console for errors
+  - Verify PaymentIntent exists in database
+  - See WEBHOOK_TROUBLESHOOTING.md
+
+?? DETAILED GUIDES
+------------------
+- WEBHOOK_FIX_SUMMARY.md - What was fixed
+- STRIPE_WEBHOOK_SETUP_GUIDE.md - Complete setup guide
+- WEBHOOK_TROUBLESHOOTING.md - Detailed troubleshooting
+
+?? AUTOMATED SETUP
+------------------
+Or just run this PowerShell script:
+    .\setup-stripe-webhooks.ps1
+
+It will guide you through the setup automatically!
+
+---
+?? TIP: Keep stripe listen running in a separate terminal while debugging.
+    Every time you restart debugging, you can reuse the same listener.

@@ -22,7 +22,7 @@ namespace Korik.Domain
         Normal,
         Warning,
         Critical,
-        //NotChecked,
+        Good,
         //Checked,
         UnKnown,
         //Replaced,

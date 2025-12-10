@@ -43,23 +43,110 @@ namespace Korik.API.Controllers
             
             try
             {
+                // Validate required Stripe-Signature header exists
+                if (!Request.Headers.ContainsKey("Stripe-Signature"))
+                {
+                    return BadRequest(new { error = "Missing Stripe-Signature header. This endpoint must be called by Stripe webhooks." });
+                }
+
+                var signature = Request.Headers["Stripe-Signature"].ToString();
+                if (string.IsNullOrEmpty(signature))
+                {
+                    return BadRequest(new { error = "Empty Stripe-Signature header" });
+                }
+
                 var webhookSecret = _configuration["Stripe:WebhookSecret"];
+                if (string.IsNullOrEmpty(webhookSecret))
+                {
+                    return StatusCode(500, new { error = "Webhook secret not configured" });
+                }
+
+                // ? FIX: Suppress API version mismatch error
                 var stripeEvent = EventUtility.ConstructEvent(
                     json,
-                    Request.Headers["Stripe-Signature"],
-                    webhookSecret
+                    signature,
+                    webhookSecret,
+                    throwOnApiVersionMismatch: false
                 );
 
-                if (stripeEvent.Type == "payment_intent.succeeded")
+                // Log the event for debugging
+                Console.WriteLine($"[Webhook] Received event: {stripeEvent.Type} with ID: {stripeEvent.Id}");
+
+                // Handle different event types
+                switch (stripeEvent.Type)
                 {
-                    var paymentIntent = stripeEvent.Data.Object as PaymentIntent;
-                    await _paymentService.HandlePaymentSuccessAsync(paymentIntent.Id);
+                    case "payment_intent.succeeded":
+                        {
+                            var successIntent = stripeEvent.Data.Object as PaymentIntent;
+                            if (successIntent != null)
+                            {
+                                Console.WriteLine($"[Webhook] Processing payment success for PaymentIntent: {successIntent.Id}");
+                                await _paymentService.HandlePaymentSuccessAsync(successIntent.Id);
+                            }
+                            break;
+                        }
+
+                    case "payment_intent.payment_failed":
+                        {
+                            var failedIntent = stripeEvent.Data.Object as PaymentIntent;
+                            if (failedIntent != null)
+                            {
+                                Console.WriteLine($"[Webhook] Processing payment failure for PaymentIntent: {failedIntent.Id}");
+                                await _paymentService.HandlePaymentFailureAsync(failedIntent.Id);
+                            }
+                            break;
+                        }
+
+                    case "payment_intent.canceled":
+                        {
+                            var canceledIntent = stripeEvent.Data.Object as PaymentIntent;
+                            if (canceledIntent != null)
+                            {
+                                Console.WriteLine($"[Webhook] Processing payment cancelation for PaymentIntent: {canceledIntent.Id}");
+                                await _paymentService.HandlePaymentCanceledAsync(canceledIntent.Id);
+                            }
+                            break;
+                        }
+
+                    case "charge.refunded":
+                        {
+                            var refund = stripeEvent.Data.Object as Charge;
+                            if (refund != null)
+                            {
+                                Console.WriteLine($"[Webhook] Refund completed for Charge: {refund.Id}");
+                                // Refund is already handled in RefundPaymentAsync endpoint
+                                // This webhook just confirms it completed successfully
+                            }
+                            break;
+                        }
+
+                    case "charge.dispute.created":
+                        {
+                            var dispute = stripeEvent.Data.Object as Dispute;
+                            if (dispute != null)
+                            {
+                                Console.WriteLine($"[Webhook] ?? DISPUTE CREATED for Charge: {dispute.ChargeId}");
+                                // TODO: Implement dispute handling (notify admin, flag payment, etc.)
+                                // For now, just log it for manual review
+                            }
+                            break;
+                        }
+
+                    default:
+                        Console.WriteLine($"[Webhook] Unhandled event type: {stripeEvent.Type}");
+                        break;
                 }
 
                 return Ok();
             }
+            catch (StripeException ex)
+            {
+                Console.WriteLine($"[Webhook Error] Stripe exception: {ex.Message}");
+                return BadRequest(new { error = $"Stripe webhook error: {ex.Message}" });
+            }
             catch (Exception ex)
             {
+                Console.WriteLine($"[Webhook Error] General exception: {ex.Message}");
                 return BadRequest(new { error = ex.Message });
             }
         }

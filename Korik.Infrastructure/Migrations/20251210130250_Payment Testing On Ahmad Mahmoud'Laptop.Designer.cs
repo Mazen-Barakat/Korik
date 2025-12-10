@@ -4,6 +4,7 @@ using Korik.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Korik.Infrastructure.Migrations
 {
     [DbContext(typeof(Korik))]
-    partial class KorikModelSnapshot : ModelSnapshot
+    [Migration("20251210130250_Payment Testing On Ahmad Mahmoud'Laptop")]
+    partial class PaymentTestingOnAhmadMahmoudLaptop
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

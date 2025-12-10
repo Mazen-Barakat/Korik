@@ -103,17 +103,33 @@ namespace Korik.Application
         {
             try
             {
+                Console.WriteLine($"[PaymentService] Starting HandlePaymentSuccessAsync for PaymentIntent: {paymentIntentId}");
+                
                 var payment = await _paymentRepository.GetByStripePaymentIntentIdAsync(paymentIntentId);
                 if (payment == null)
+                {
+                    Console.WriteLine($"[PaymentService] ERROR: Payment not found for PaymentIntent: {paymentIntentId}");
                     return ServiceResult<Payment>.Fail("Payment not found.");
+                }
+
+                Console.WriteLine($"[PaymentService] Found payment ID: {payment.Id}, Current status: {payment.StripePaymentStatus}");
 
                 if (payment.StripePaymentStatus == StripePaymentStatus.Succeeded)
+                {
+                    Console.WriteLine($"[PaymentService] Payment already processed for ID: {payment.Id}");
                     return ServiceResult<Payment>.Ok(payment, "Payment already processed.");
+                }
 
                 // Confirm payment with Stripe
+                Console.WriteLine($"[PaymentService] Confirming payment with Stripe...");
                 var stripeResult = await _stripeService.ConfirmPaymentIntentAsync(paymentIntentId);
                 if (!stripeResult.Success || stripeResult.Data?.Status != "succeeded")
+                {
+                    Console.WriteLine($"[PaymentService] ERROR: Payment confirmation failed: {stripeResult.Message}");
                     return ServiceResult<Payment>.Fail("Payment confirmation failed.");
+                }
+
+                Console.WriteLine($"[PaymentService] Stripe confirmation successful. Status: {stripeResult.Data.Status}");
 
                 // Update payment status
                 payment.StripePaymentStatus = StripePaymentStatus.Succeeded;
@@ -121,19 +137,115 @@ namespace Korik.Application
 
                 // Update booking
                 var booking = payment.Booking;
+                Console.WriteLine($"[PaymentService] Updating booking ID: {payment.BookingId}");
                 booking.PaymentStatus = PaymentStatus.Paid;
                 booking.Status = BookingStatus.Completed;
-                booking.PaymentMethod = PaymentMethod.CreditCard;
                 booking.PaidAmount = payment.TotalAmount;
 
                 await _paymentRepository.UpdateAsync(payment);
                 await _bookingRepository.UpdateAsync(booking);
 
+                Console.WriteLine($"[PaymentService] ? Payment processed successfully. Payment ID: {payment.Id}, Booking ID: {payment.BookingId}");
+
                 return ServiceResult<Payment>.Ok(payment, "Payment processed successfully.");
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"[PaymentService] EXCEPTION in HandlePaymentSuccessAsync: {ex.Message}");
+                Console.WriteLine($"[PaymentService] Stack trace: {ex.StackTrace}");
                 return ServiceResult<Payment>.Fail($"Error processing payment: {ex.Message}");
+            }
+        }
+
+        public async Task<ServiceResult<Payment>> HandlePaymentFailureAsync(string paymentIntentId)
+        {
+            try
+            {
+                Console.WriteLine($"[PaymentService] Starting HandlePaymentFailureAsync for PaymentIntent: {paymentIntentId}");
+                
+                var payment = await _paymentRepository.GetByStripePaymentIntentIdAsync(paymentIntentId);
+                if (payment == null)
+                {
+                    Console.WriteLine($"[PaymentService] ERROR: Payment not found for PaymentIntent: {paymentIntentId}");
+                    return ServiceResult<Payment>.Fail("Payment not found.");
+                }
+
+                Console.WriteLine($"[PaymentService] Found payment ID: {payment.Id}, Current status: {payment.StripePaymentStatus}");
+
+                if (payment.StripePaymentStatus == StripePaymentStatus.Failed)
+                {
+                    Console.WriteLine($"[PaymentService] Payment already marked as failed for ID: {payment.Id}");
+                    return ServiceResult<Payment>.Ok(payment, "Payment already marked as failed.");
+                }
+
+                // Update payment status
+                payment.StripePaymentStatus = StripePaymentStatus.Failed;
+
+                // Update booking - keep it in pending state so user can retry payment
+                var booking = payment.Booking;
+                Console.WriteLine($"[PaymentService] Updating booking ID: {payment.BookingId} to Pending (allow retry)");
+                booking.PaymentStatus = PaymentStatus.Unpaid;
+                booking.Status = BookingStatus.Pending;
+                booking.PaidAmount = null;
+
+                await _paymentRepository.UpdateAsync(payment);
+                await _bookingRepository.UpdateAsync(booking);
+
+                Console.WriteLine($"[PaymentService] ? Payment marked as failed. Payment ID: {payment.Id}, Booking ID: {payment.BookingId}");
+
+                return ServiceResult<Payment>.Ok(payment, "Payment marked as failed. Customer can retry payment.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[PaymentService] EXCEPTION in HandlePaymentFailureAsync: {ex.Message}");
+                Console.WriteLine($"[PaymentService] Stack trace: {ex.StackTrace}");
+                return ServiceResult<Payment>.Fail($"Error handling payment failure: {ex.Message}");
+            }
+        }
+
+        public async Task<ServiceResult<Payment>> HandlePaymentCanceledAsync(string paymentIntentId)
+        {
+            try
+            {
+                Console.WriteLine($"[PaymentService] Starting HandlePaymentCanceledAsync for PaymentIntent: {paymentIntentId}");
+                
+                var payment = await _paymentRepository.GetByStripePaymentIntentIdAsync(paymentIntentId);
+                if (payment == null)
+                {
+                    Console.WriteLine($"[PaymentService] ERROR: Payment not found for PaymentIntent: {paymentIntentId}");
+                    return ServiceResult<Payment>.Fail("Payment not found.");
+                }
+
+                Console.WriteLine($"[PaymentService] Found payment ID: {payment.Id}, Current status: {payment.StripePaymentStatus}");
+
+                if (payment.StripePaymentStatus == StripePaymentStatus.Canceled)
+                {
+                    Console.WriteLine($"[PaymentService] Payment already marked as canceled for ID: {payment.Id}");
+                    return ServiceResult<Payment>.Ok(payment, "Payment already marked as canceled.");
+                }
+
+                // Update payment status
+                payment.StripePaymentStatus = StripePaymentStatus.Canceled;
+
+                // Update booking - cancel the booking since payment was explicitly canceled
+                var booking = payment.Booking;
+                Console.WriteLine($"[PaymentService] Canceling booking ID: {payment.BookingId}");
+                booking.PaymentStatus = PaymentStatus.Unpaid;
+                booking.Status = BookingStatus.Cancelled;
+                booking.PaidAmount = null;
+
+                await _paymentRepository.UpdateAsync(payment);
+                await _bookingRepository.UpdateAsync(booking);
+
+                Console.WriteLine($"[PaymentService] ?? Payment canceled. Payment ID: {payment.Id}, Booking ID: {payment.BookingId}");
+
+                return ServiceResult<Payment>.Ok(payment, "Payment marked as canceled. Booking has been cancelled.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[PaymentService] EXCEPTION in HandlePaymentCanceledAsync: {ex.Message}");
+                Console.WriteLine($"[PaymentService] Stack trace: {ex.StackTrace}");
+                return ServiceResult<Payment>.Fail($"Error handling payment cancelation: {ex.Message}");
             }
         }
 
