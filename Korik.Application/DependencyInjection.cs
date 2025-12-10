@@ -169,6 +169,10 @@ namespace Korik.Application
             services.AddScoped<IBookingService, BookingService>();
             #endregion Booking Service
 
+            #region Payment Service
+            services.AddScoped<IPaymentService, PaymentService>();
+            #endregion Payment Service
+
             return services;
         }
     }

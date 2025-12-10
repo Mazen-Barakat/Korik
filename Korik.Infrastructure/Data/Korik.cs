@@ -67,6 +67,12 @@ namespace Korik.Infrastructure
 
         #endregion Notification
 
+        #region Payment
+
+        public virtual DbSet<Payment> Payments { get; set; }
+
+        #endregion Payment
+
         #endregion DbSets
 
         #region Fluent API

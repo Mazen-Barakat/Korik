@@ -176,6 +176,14 @@ namespace Korik.Infrastructure
                 services.AddScoped<IAiAssistantService, AiAssistantService>();
             #endregion
 
+            #region Payment Repository
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
+            #endregion
+
+            #region Stripe Service
+            services.AddScoped<IStripeService, StripeService>();
+            #endregion
+
          return services;
         }
   }
