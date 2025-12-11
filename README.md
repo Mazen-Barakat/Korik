@@ -9,7 +9,7 @@
 
 **A comprehensive platform connecting car owners with workshops for seamless vehicle maintenance and service management**
 
-[Features](#-features) • [Architecture](#-architecture) • [Tech Stack](#-tech-stack) • [Installation](#-installation) • [API Documentation](#-api-documentation)
+[Features](#-features) • [Architecture](#-system-architecture) • [Tech Stack](#-tech-stack) 
 
 </div>
 
