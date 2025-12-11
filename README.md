@@ -23,10 +23,6 @@
 - [System Architecture](#-system-architecture)
 - [Database Design](#-database-design)
 - [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [API Documentation](#-api-documentation)
-- [Deployment](#-deployment)
 - [Contributing](#-contributing)
 - [Contact](#-contact)
 
