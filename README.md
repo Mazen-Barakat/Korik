@@ -23,15 +23,10 @@
 - [Database Design](#-database-design)
 - [Tech Stack](#-tech-stack)
 - [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [API Documentation](#-api-documentation)
-- [Frontend Components](#-frontend-components)
 - [Payment Integration](#-payment-integration)
 - [Real-time Features](#-real-time-features)
 - [Authentication & Authorization](#-authentication--authorization)
 - [Background Services](#-background-services)
-- [Deployment](#-deployment)
-- [Contributing](#-contributing)
 - [Contact](#-contact)
 
 
