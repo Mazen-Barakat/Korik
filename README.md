@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Live Demo](https://img.shields.io/badge/🌐-Live%20Demo-blue?style=for-the-badge)]([YOUR_HOSTED_URL_HERE](https://koriek.vercel.app/select-role))
+[![Live Demo](https://img.shields.io/badge/🌐-Live%20Demo-blue?style=for-the-badge)]([https://koriek.vercel.app/select-role](https://koriek.vercel.app/select-role))
 [![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?style=for-the-badge&logo=dotnet)](https://dotnet.microsoft.com/)
 [![Angular](https://img.shields.io/badge/Angular-20.3-DD0031?style=for-the-badge&logo=angular)](https://angular.io/)
 [![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-CC2927?style=for-the-badge&logo=microsoft-sql-server)](https://www.microsoft.com/sql-server)
@@ -33,7 +33,7 @@
 - [Deployment](#-deployment)
 - [Contributing](#-contributing)
 - [Contact](#-contact)
-- [License](#-license)
+
 
 ---
 
@@ -162,7 +162,7 @@ The backend follows **Clean Architecture** principles with clear separation of c
 ```
 
 ### Backend Architecture Diagram
-![Uploading diagram-export-12-11-2025-5_53_20-PM.png…](./attachments/backend-mindmap.png)
+<img width="3971" height="5803" alt="diagram-export-12-11-2025-5_53_20-PM" src="https://github.com/user-attachments/assets/e9fda49c-8ffb-4ce1-bbae-fcf9511ecf1c" />
 
 The system architecture includes:
 
@@ -176,7 +176,8 @@ The system architecture includes:
 ## 🗄 Database Design
 
 ### Entity Relationship Diagram (ERD)
-![Uploading Capture.PNG…](./attachments/database-erd.png)
+<img width="1137" height="662" alt="Capture" src="https://github.com/user-attachments/assets/755910e5-1b15-4ff7-bceb-a9ded534b19a" />
+
 
 ### Core Database Tables
 
@@ -233,7 +234,7 @@ The system architecture includes:
 
 ### Project Links
 
-- 🌐 **Live Demo**: [[YOUR_HOSTED_URL_HERE](https://koriek.vercel.app/select-role)]
+- 🌐 **Live Demo**: [[https://koriek.vercel.app/select-role](https://koriek.vercel.app/select-role)]
 - 📦 **Repository**: [https://github.com/Diaaassem/KORIEK](https://github.com/Diaaassem/KORIEK)
 - 🐛 **Report Bug**: [GitHub Issues](https://github.com/Diaaassem/KORIEK/issues)
 - 💡 **Request Feature**: [GitHub Issues](https://github.com/Diaaassem/KORIEK/issues)
