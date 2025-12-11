@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Live Demo](https://img.shields.io/badge/🌐-Live%20Demo-blue?style=for-the-badge)]([https://koriek.vercel.app/select-role](https://koriek.vercel.app/select-role))
+[![Live Demo](https://img.shields.io/badge/🌐-Live%20Demo-blue?style=for-the-badge)][[https://koriek.vercel.app/select-role](https://koriek.vercel.app/select-role)]
 [![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?style=for-the-badge&logo=dotnet)](https://dotnet.microsoft.com/)
 [![Angular](https://img.shields.io/badge/Angular-20.3-DD0031?style=for-the-badge&logo=angular)](https://angular.io/)
 [![SQL Server](https://img.shields.io/badge/SQL%20Server-2022-CC2927?style=for-the-badge&logo=microsoft-sql-server)](https://www.microsoft.com/sql-server)
@@ -15,6 +15,7 @@
 
 ---
 
+
 ## 📋 Table of Contents
 
 - [Overview](#-overview)
@@ -23,10 +24,10 @@
 - [Database Design](#-database-design)
 - [Tech Stack](#-tech-stack)
 - [Project Structure](#-project-structure)
-- [Payment Integration](#-payment-integration)
-- [Real-time Features](#-real-time-features)
-- [Authentication & Authorization](#-authentication--authorization)
-- [Background Services](#-background-services)
+- [Getting Started](#-getting-started)
+- [API Documentation](#-api-documentation)
+- [Deployment](#-deployment)
+- [Contributing](#-contributing)
 - [Contact](#-contact)
 
 
@@ -182,13 +183,13 @@ The system architecture includes:
 
 | Technology | Purpose | Version |
 |------------|---------|---------|
-| **ASP.NET Core** | Web API Framework | 8.0 |
-| **Entity Framework Core** | ORM & Database Access | 8.0 |
+| **ASP.NET Core** | Web API Framework | 9.0 |
+| **Entity Framework Core** | ORM & Database Access | 9.0 |
 | **MediatR** | CQRS Pattern Implementation | Latest |
 | **AutoMapper** | Object-Object Mapping | Latest |
 | **FluentValidation** | Input Validation | Latest |
 | **JWT Bearer** | Authentication | Latest |
-| **SignalR** | Real-time Communication | 8.0 |
+| **SignalR** | Real-time Communication | 9.0 |
 | **Stripe.net** | Payment Processing | Latest |
 | **FluentEmail** | Email Service | Latest |
 | **OpenAI** | AI Chat Integration | Latest |
@@ -216,6 +217,9 @@ The system architecture includes:
 - **Postman** - API Testing
 - **Git** - Version Control
 - **Stripe CLI** - Webhook Testing
+
+
+
 
 ## 📞 Contact
 
