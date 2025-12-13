@@ -199,14 +199,135 @@ namespace Korik.Application
             await _fluentEmail
                 .To(user.Email)
                 .Subject("Confirm your email for My Car App")
-                .Body($@"
-                <div style='font-family: Arial, sans-serif; text-align: center; padding: 30px; background-color: #f9f9f9;'>
-                    <div style='background: #ffffff; padding: 25px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); display: inline-block;'>
-                        <h2 style='color: #4CAF50; margin-bottom: 10px;'>Welcome {user.UserName} 🚗</h2>
-                        <p style='font-size: 16px; color: #555;'>Please confirm your email by clicking below:</p>
-                        <a href='{confirmationLink}' style='display: inline-block; padding: 14px 28px; background-color: #4CAF50; color: white; border-radius: 8px; font-size: 16px; font-weight: bold;'>✅ Confirm My Email</a>
-                    </div>
-                </div>", true)
+              .Body($@"
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+</head>
+<body style='margin: 0; padding: 0; font-family: Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif; background: linear-gradient(135deg, #f8fafc 0%, #e5e7eb 100%);'>
+    <table role='presentation' style='width: 100%; border-collapse: collapse;'>
+        <tr>
+            <td align='center' style='padding: 40px 20px;'>
+                <!-- Main Container -->
+                <table role='presentation' style='max-width: 600px; width: 100%; background: #ffffff; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.12); overflow: hidden;'>
+                    
+                    <!-- Header with Brand Colors -->
+                    <tr>
+                        <td style='background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); padding: 40px 30px; text-align: center;'>
+                            <div style='background: rgba(255,255,255,0.15); border-radius: 50%; width: 80px; height: 80px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px);'>
+                                <span style='font-size: 40px;'>🚗</span>
+                            </div>
+                            <h1 style='margin: 0; color: #ffffff; font-size: 28px; font-weight: 700; letter-spacing: -0.5px;'>KORIEK</h1>
+                            <p style='margin: 8px 0 0; color: rgba(255,255,255,0.9); font-size: 14px; font-weight: 500;'>Your Trusted Auto Service Platform</p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Welcome Content -->
+                    <tr>
+                        <td style='padding: 40px 35px;'>
+                            <h2 style='margin: 0 0 16px; color: #1e3a5f; font-size: 24px; font-weight: 700; text-align: center;'>
+                                Welcome Aboard, {user.UserName}! 👋
+                            </h2>
+                            <p style='margin: 0 0 24px; color: #4b5563; font-size: 16px; line-height: 1.6; text-align: center;'>
+                                We're excited to have you join the KORIEK community! You're just one step away from accessing premium auto services, trusted workshops, and seamless vehicle maintenance.
+                            </p>
+                            
+                            <!-- Confirmation Button -->
+                            <table role='presentation' style='width: 100%; margin: 32px 0;'>
+                                <tr>
+                                    <td align='center'>
+                                        <a href='{confirmationLink}' style='display: inline-block; padding: 16px 40px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: #ffffff; text-decoration: none; border-radius: 12px; font-size: 16px; font-weight: 700; box-shadow: 0 8px 24px rgba(239,68,68,0.25); transition: all 0.3s ease;'>
+                                            ✅ Confirm My Email Address
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Alternative Link -->
+                            <p style='margin: 24px 0 0; padding: 20px; background: #f8fafc; border-radius: 8px; color: #6b7280; font-size: 13px; line-height: 1.5; text-align: center; border-left: 4px solid #ef4444;'>
+                                <strong style='color: #1e3a5f;'>Button not working?</strong><br>
+                                Copy and paste this link into your browser:<br>
+                                <a href='{confirmationLink}' style='color: #ef4444; word-break: break-all;'>{confirmationLink}</a>
+                            </p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Features Section -->
+                    <tr>
+                        <td style='padding: 0 35px 40px;'>
+                            <div style='background: linear-gradient(135deg, #fef3f2 0%, #fee2e2 100%); border-radius: 12px; padding: 24px; border: 1px solid #fecaca;'>
+                                <h3 style='margin: 0 0 16px; color: #1e3a5f; font-size: 18px; font-weight: 700; text-align: center;'>What's Waiting For You</h3>
+                                <table role='presentation' style='width: 100%;'>
+                                    <tr>
+                                        <td style='padding: 8px 0;'>
+                                            <span style='color: #ef4444; font-size: 18px; margin-right: 12px;'>🔧</span>
+                                            <span style='color: #4b5563; font-size: 14px;'>Book services at certified workshops</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding: 8px 0;'>
+                                            <span style='color: #ef4444; font-size: 18px; margin-right: 12px;'>📅</span>
+                                            <span style='color: #4b5563; font-size: 14px;'>Manage appointments & vehicle records</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding: 8px 0;'>
+                                            <span style='color: #ef4444; font-size: 18px; margin-right: 12px;'>💰</span>
+                                            <span style='color: #4b5563; font-size: 14px;'>Secure payments & digital wallet</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style='padding: 8px 0;'>
+                                            <span style='color: #ef4444; font-size: 18px; margin-right: 12px;'>⭐</span>
+                                            <span style='color: #4b5563; font-size: 14px;'>Read reviews & rate your experiences</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style='background: #1e3a5f; padding: 30px 35px; text-align: center;'>
+                            <p style='margin: 0 0 16px; color: rgba(255,255,255,0.9); font-size: 14px;'>
+                                Need help? We're here for you!
+                            </p>
+                            <p style='margin: 0 0 20px; color: rgba(255,255,255,0.7); font-size: 13px;'>
+                                📧 support@koriek.com | 📞 +20 123 456 7890
+                            </p>
+                            <div style='border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; margin-top: 20px;'>
+                                <p style='margin: 0 0 8px; color: rgba(255,255,255,0.5); font-size: 12px;'>
+                                    © 2025 KORIEK. All rights reserved.
+                                </p>
+                                <p style='margin: 0; color: rgba(255,255,255,0.5); font-size: 11px;'>
+                                    This email was sent to verify your account registration.
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                </table>
+                
+                <!-- Security Notice -->
+                <table role='presentation' style='max-width: 600px; width: 100%; margin-top: 20px;'>
+                    <tr>
+                        <td style='text-align: center; padding: 0 20px;'>
+                            <p style='margin: 0; color: #6b7280; font-size: 12px; line-height: 1.5;'>
+                                🔒 This link will expire in 24 hours for your security.<br>
+                                If you didn't create a KORIEK account, please ignore this email.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+                
+            </td>
+        </tr>
+    </table>
+</body>
+</html>", true)
                 .SendAsync();
         }
 
