@@ -19,11 +19,13 @@ namespace Korik.API.Controllers
         #region Dependency Injection
         private readonly IMediator _mediator;
         private readonly ICarOwnerProfileService _carOwnerProfileService;
+        private readonly CarService _carService;
 
-        public CarController(IMediator mediator, ICarOwnerProfileService carOwnerProfileService)
+        public CarController(IMediator mediator, ICarOwnerProfileService carOwnerProfileService , CarService carService)
         {
             _mediator = mediator;
             _carOwnerProfileService = carOwnerProfileService;
+            _carService = carService;
         }
         #endregion
 
@@ -85,7 +87,20 @@ namespace Korik.API.Controllers
         [SwaggerOperation(Summary = "Get a car by Id")]
         public async Task<IActionResult> GetByIdCar([FromRoute] int id)
         {
+            var applicationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var carOwnerProfileResult = await _carOwnerProfileService.GetByApplicationUserIdAsync(applicationUserId);
+            var carResult = await _carService.GetByIdAsync(id);
+            if (carOwnerProfileResult.Success && carResult.Success)
+            {
+                if (carResult.Data.CarOwnerProfileId != carOwnerProfileResult.Data.Id)
+                {
+                    return Forbid("You do not have permission to access this car.");
+                }
+            }
+
+
             var result = await _mediator.Send(new GetByIdCarRequest(new GetByIdCarDTO { Id = id }));
+
             return ApiResponse.FromResult(this, result);
         }
 
@@ -101,6 +116,16 @@ namespace Korik.API.Controllers
         [SwaggerOperation(Summary = "Get all cars by CarOwnerProfileId")]
         public async Task<IActionResult> GetCarsByOwnerProfileId([FromRoute] int carOwnerProfileId)
         {
+            //var applicationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var carOwnerProfileResult = await _carOwnerProfileService.GetByApplicationUserIdAsync(applicationUserId);
+            //if (carOwnerProfileResult.Success)
+            //{
+            //    if (carOwnerProfileId != carOwnerProfileResult.Data.Id)
+            //    {
+            //        return Forbid("You do not have permission to access this car.");
+            //    }
+            //}
+
             var result = await _mediator.Send(new GetAllCarsByCarOwnerProfileIdRequest(new GetCarsByCarOwnerProfileIdDTO
             {
                 CarOwnerProfileId = carOwnerProfileId

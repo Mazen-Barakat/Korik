@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Security.Claims;
 
 namespace Korik.API.Controllers
 {
@@ -14,11 +15,13 @@ namespace Korik.API.Controllers
 
         private readonly IMediator _mediator;
         private readonly ICarService _carService;
+        private readonly ICarOwnerProfileService _carOwnerProfileService;
 
-        public CarExpenseController(IMediator mediator, ICarService carService)
+        public CarExpenseController(IMediator mediator, ICarService carService, ICarOwnerProfileService carOwnerProfileService)
         {
             _mediator = mediator;
             _carService = carService;
+            _carOwnerProfileService = carOwnerProfileService;
         }
 
         #endregion Dependency Injection
@@ -77,6 +80,17 @@ namespace Korik.API.Controllers
         [SwaggerOperation(Summary = "Get all car expenses by Car Id")]
         public async Task<IActionResult> GetAllCarExpensesByCarId([FromRoute] int carId)
         {
+            var applicationUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var carOwnerProfileResult = await _carOwnerProfileService.GetByApplicationUserIdAsync(applicationUserId);
+            var carResult = await _carService.GetByIdAsync(carId);
+            if (carOwnerProfileResult.Success && carResult.Success)
+            {
+                if (carResult.Data.CarOwnerProfileId != carOwnerProfileResult.Data.Id)
+                {
+                    return Forbid("You do not have permission to access this car.");
+                }
+            }
+
             var result = await _mediator.Send(new GetAllCarExpensesByCarIdRequest(new GetAllCarExpensesByCarIdDTO { CarId = carId }));
             return ApiResponse.FromResult(this, result);
         }
