@@ -215,21 +215,7 @@ The system architecture includes:
 - **Stripe CLI** - Webhook Testing
 
 
-
-
-## 📞 Contact
-
-### Project Maintainer
-
-**Ahmed Mahmoud**
-
-- 💼 **LinkedIn**: [Ahmed Mahmoud](https://www.linkedin.com/in/ahmed-mahmoud-951a5716b/)
-- 📧 **Email**: [Ahmedmah1284@gmail.com](mailto:Ahmedmah1284@gmail.com)
-- 📱 **Mobile/WhatsApp**: +20 1028207883
-
 ### Project Links
 
 - 🌐 **Live Demo**: [[https://koriek.vercel.app/select-role](https://koriek.vercel.app/select-role)]
-- 📦 **Repository**: [https://github.com/Diaaassem/KORIEK](https://github.com/Diaaassem/KORIEK)
-- 🐛 **Report Bug**: [GitHub Issues](https://github.com/Diaaassem/KORIEK/issues)
-- 💡 **Request Feature**: [GitHub Issues](https://github.com/Diaaassem/KORIEK/issues)
+- 📦 **FrontEnd**: [https://github.com/Mazen-Barakat/KORIEK](https://github.com/Mazen-Barakat/KORIEK)
