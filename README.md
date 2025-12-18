@@ -9,12 +9,18 @@
 
 **A comprehensive platform connecting car owners with workshops for seamless vehicle maintenance and service management**
 
-[Features](#-features) • [Architecture](#-system-architecture) • [Tech Stack](#-tech-stack) 
+[Features](#-features) • [Architecture](#-system-architecture) • [Tech Stack](#-tech-stack) • [Frontend Repository](https://github.com/Mazen-Barakat/KORIEK) 
+ 
 
 </div>
 
 ---
 
+📽️ Project Demo (Video)
+
+https://github.com/user-attachments/assets/4fe93a65-2b3f-4b51-8948-385f9b9ddbfa
+
+---
 
 ## 📋 Table of Contents
 
